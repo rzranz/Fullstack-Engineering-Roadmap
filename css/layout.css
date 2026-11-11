@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Layout Styles
-   Architectural grids, Swiss layouting, fully responsive breakpoints
+   Layout Styles — iCraft Edition
+   Architectural grids, Glassmorphic topbar, Swiss layouting
    ========================================================================== */
 
 *, *::before, *::after {
@@ -19,6 +19,7 @@ html {
 
 body {
   font-family: var(--font-sans);
+  background: var(--color-canvas-gradient);
   background-color: var(--color-canvas);
   color: var(--color-ink);
   line-height: 1.6;
@@ -55,7 +56,7 @@ input, select, textarea {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-brand-magenta);
+  outline: 2px solid var(--color-brand-blue);
   outline-offset: 2px;
 }
 
@@ -63,14 +64,15 @@ input, select, textarea {
   position: absolute;
   top: -100px;
   left: 20px;
-  background: var(--color-dark);
-  color: var(--color-on-dark);
+  background: var(--color-brand-blue);
+  color: #ffffff;
   padding: 10px 18px;
   border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 700;
   z-index: 999;
-  border: 1px solid var(--color-brand-magenta);
+  border: 1px solid var(--color-border-ice);
+  box-shadow: var(--shadow-glow);
   transition: top var(--transition-fast);
 }
 .skip-link:focus {
@@ -78,16 +80,22 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   Header / Sticky Top Navigation
+   Header / Sticky Top Navigation (iCraft Glassmorphism)
    ========================================================================== */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
   height: var(--header-height);
-  background: var(--color-canvas);
+  background: rgba(240, 246, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border-subtle);
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+body.dark .site-header {
+  background: rgba(9, 14, 23, 0.82);
 }
 
 .site-header-inner {
@@ -108,7 +116,7 @@ input, select, textarea {
   }
 }
 
-/* Brand Logo */
+/* Brand Logo (iCraft Style) */
 .brand-link {
   display: flex;
   align-items: center;
@@ -123,15 +131,16 @@ input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  background: var(--color-dark);
-  color: var(--color-on-dark);
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #1d64ec 0%, #0284c7 100%);
+  color: #ffffff;
   border-radius: var(--radius-sm);
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: -0.04em;
+  box-shadow: 0 4px 12px rgba(29, 100, 236, 0.32);
   flex-shrink: 0;
 }
 
@@ -139,7 +148,7 @@ input, select, textarea {
   .brand-badge {
     width: 38px;
     height: 38px;
-    font-size: 13px;
+    font-size: 13.5px;
   }
 }
 
@@ -149,7 +158,7 @@ input, select, textarea {
   right: -2px;
   width: 8px;
   height: 8px;
-  background: var(--color-brand-magenta);
+  background: #38bdf8;
   border: 2px solid var(--color-canvas);
   border-radius: var(--radius-full);
 }
@@ -162,7 +171,7 @@ input, select, textarea {
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -174,14 +183,14 @@ input, select, textarea {
 
 @media (min-width: 768px) {
   .brand-title {
-    font-size: 15px;
+    font-size: 15.5px;
   }
 }
 
 .brand-subtitle {
   font-size: 10px;
-  font-weight: 500;
-  color: var(--color-muted);
+  font-weight: 600;
+  color: var(--color-brand-cyan);
   letter-spacing: -0.01em;
   display: none;
 }
@@ -220,18 +229,19 @@ input, select, textarea {
 }
 
 .header-nav-btn:hover {
-  background: var(--color-surface);
-  color: var(--color-ink);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-brand-blue);
+}
+
+body.dark .header-nav-btn:hover {
+  background: var(--color-surface-soft);
+  color: #fff;
 }
 
 .header-nav-btn.active {
-  background: var(--color-dark);
-  color: var(--color-on-dark);
-}
-
-body.dark .header-nav-btn.active {
-  background: var(--color-elevated);
-  color: var(--color-ink);
+  background: var(--color-brand-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(29, 100, 236, 0.28);
 }
 
 /* Header Action Tools */
@@ -255,13 +265,14 @@ body.dark .header-nav-btn.active {
   gap: 6px;
   padding: 6px 10px;
   background: var(--color-elevated);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border-ice);
   border-radius: var(--radius-full);
   font-size: 12px;
   color: var(--color-muted);
   cursor: pointer;
   transition: all var(--transition-fast);
   height: 34px;
+  box-shadow: var(--shadow-sm);
 }
 
 @media (min-width: 768px) {
@@ -273,9 +284,9 @@ body.dark .header-nav-btn.active {
 }
 
 .search-trigger-btn:hover {
-  border-color: var(--color-brand-magenta);
+  border-color: var(--color-brand-blue);
   color: var(--color-ink);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .search-trigger-text {
@@ -295,10 +306,10 @@ body.dark .header-nav-btn.active {
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
-  background: var(--color-surface);
+  background: var(--color-surface-soft);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-xs);
-  color: var(--color-subtle);
+  color: var(--color-brand-cyan);
 }
 
 @media (min-width: 640px) {
@@ -314,7 +325,7 @@ body.dark .header-nav-btn.active {
   gap: 6px;
   padding: 6px 12px;
   background: var(--color-elevated);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border-ice);
   border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 700;
@@ -322,6 +333,7 @@ body.dark .header-nav-btn.active {
   text-decoration: none;
   transition: all var(--transition-fast);
   height: 36px;
+  box-shadow: var(--shadow-sm);
 }
 
 @media (min-width: 640px) {
@@ -331,14 +343,16 @@ body.dark .header-nav-btn.active {
 }
 
 .header-progress-chip:hover {
-  border-color: var(--color-brand-magenta);
+  border-color: var(--color-brand-blue);
+  box-shadow: var(--shadow-md);
 }
 
 .progress-dot {
   width: 7px;
   height: 7px;
   border-radius: var(--radius-full);
-  background: var(--color-brand-magenta);
+  background: var(--color-brand-blue);
+  box-shadow: 0 0 8px rgba(29, 100, 236, 0.6);
 }
 
 /* Icon Action Buttons */
@@ -350,11 +364,12 @@ body.dark .header-nav-btn.active {
   height: 34px;
   border-radius: var(--radius-sm);
   background: var(--color-elevated);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border-ice);
   color: var(--color-ink);
   cursor: pointer;
   transition: all var(--transition-fast);
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 @media (min-width: 768px) {
@@ -365,8 +380,9 @@ body.dark .header-nav-btn.active {
 }
 
 .icon-action-btn:hover {
-  background: var(--color-surface);
-  border-color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border-color: var(--color-brand-blue);
+  color: var(--color-brand-blue);
 }
 
 .mobile-menu-toggle {
@@ -426,10 +442,11 @@ body.dark .header-nav-btn.active {
 
 .sidebar-card {
   background: var(--color-elevated);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border-ice);
   border-radius: var(--radius-md);
   padding: 16px;
   margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
 .sidebar-category-group {
@@ -442,7 +459,7 @@ body.dark .header-nav-btn.active {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-muted);
+  color: var(--color-brand-cyan);
   margin-bottom: 8px;
   padding-left: 6px;
   display: flex;
@@ -473,19 +490,14 @@ body.dark .header-nav-btn.active {
 
 .sidebar-track-btn:hover {
   background: var(--color-surface);
-  color: var(--color-ink);
+  color: var(--color-brand-blue);
 }
 
 .sidebar-track-btn.active {
-  background: var(--color-dark);
-  color: var(--color-on-dark);
-  border-color: var(--color-dark);
-}
-
-body.dark .sidebar-track-btn.active {
-  background: var(--color-elevated);
-  color: var(--color-ink);
-  border-color: var(--color-border-strong);
+  background: var(--color-brand-blue);
+  color: #ffffff;
+  border-color: var(--color-brand-blue);
+  box-shadow: 0 4px 12px rgba(29, 100, 236, 0.25);
 }
 
 .sidebar-track-left {
@@ -502,15 +514,15 @@ body.dark .sidebar-track-btn.active {
   width: 22px;
   height: 22px;
   border-radius: var(--radius-xs);
-  background: var(--color-surface);
-  color: var(--color-ink);
+  background: var(--color-brand-blue-soft);
+  color: var(--color-brand-blue);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
 }
 
 .sidebar-track-btn.active .sidebar-track-icon {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
 
@@ -532,24 +544,24 @@ body.dark .sidebar-track-btn.active {
 }
 
 .sidebar-track-btn.active .sidebar-track-count {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   color: #fff;
 }
 
-/* Main Stage / Content Container */
+/* Main Stage */
 .main-stage {
   min-width: 0;
   max-width: 100%;
 }
 
 /* ==========================================================================
-   Footer
+   Footer — iCraft Deep Obsidian Navy
    ========================================================================== */
 .site-footer {
   margin-top: auto;
-  background: var(--color-dark);
-  color: var(--color-on-dark);
-  border-top: 1px solid var(--color-border-dark);
+  background: #0b132b;
+  color: #ffffff;
+  border-top: 1px solid #1e293b;
   padding: 44px 0 28px;
 }
 
@@ -575,7 +587,7 @@ body.dark .sidebar-track-btn.active {
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
-  border-bottom: 1px solid var(--color-border-dark);
+  border-bottom: 1px solid #1e293b;
   padding-bottom: 36px;
 }
 
@@ -593,11 +605,11 @@ body.dark .sidebar-track-btn.active {
   gap: 8px;
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: var(--color-dark-elevated);
-  border: 1px solid var(--color-border-dark-strong);
+  background: rgba(29, 100, 236, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
   font-size: 10px;
-  font-weight: 600;
-  color: var(--color-on-dark-muted);
+  font-weight: 700;
+  color: #38bdf8;
   margin-bottom: 14px;
   max-width: 100%;
   overflow: hidden;
@@ -623,7 +635,7 @@ body.dark .sidebar-track-btn.active {
 .footer-desc {
   margin-top: 12px;
   font-size: 13px;
-  color: var(--color-on-dark-muted);
+  color: #94a3b8;
   line-height: 1.6;
   max-width: 440px;
 }
@@ -634,7 +646,7 @@ body.dark .sidebar-track-btn.active {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-on-dark-subtle);
+  color: #38bdf8;
   margin-bottom: 14px;
 }
 
@@ -647,7 +659,7 @@ body.dark .sidebar-track-btn.active {
 }
 
 .footer-link-list a {
-  color: var(--color-on-dark-muted);
+  color: #cbd5e1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -655,7 +667,7 @@ body.dark .sidebar-track-btn.active {
 }
 
 .footer-link-list a:hover {
-  color: #fff;
+  color: #38bdf8;
 }
 
 .footer-bottom {
@@ -664,7 +676,7 @@ body.dark .sidebar-track-btn.active {
   gap: 12px;
   padding-top: 24px;
   font-size: 12px;
-  color: var(--color-on-dark-subtle);
+  color: #64748b;
 }
 
 @media (min-width: 640px) {
@@ -681,8 +693,8 @@ body.dark .sidebar-track-btn.active {
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
   z-index: 90;
   opacity: 0;
   pointer-events: none;
@@ -702,7 +714,7 @@ body.dark .sidebar-track-btn.active {
   height: 100vh;
   height: 100dvh;
   background: var(--color-canvas);
-  border-left: 1px solid var(--color-border-subtle);
+  border-left: 1px solid var(--color-border-ice);
   z-index: 100;
   transform: translateX(100%);
   transition: transform var(--transition-normal);

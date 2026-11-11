@@ -1,6 +1,7 @@
 /**
  * UI Rendering Engine for Full-Stack Engineering Academy
- * Swiss Editorial & Design Playground Aesthetic
+ * Aesthetic: Design Playground Layout + iCraft Luminous Color Theme
+ * Distinctive Feature: Realistic Folder-Shaped Cards
  */
 
 (function (window) {
@@ -26,40 +27,46 @@
     return 'intermediate';
   }
 
-  // --- Components ---
+  // --- Folder Card Components ---
 
   function renderModuleCard(module, index) {
     const state = window.academyState;
     const isDone = state.isCompleted(module.id);
     const levelClass = getLevelClass(module.level);
     const concepts = (module.concepts || []).slice(0, 3).map(([title]) => 
-      `<span class="concept-mini-pill">${escapeHTML(title)}</span>`
+      `<span class="folder-chip-item">${escapeHTML(title)}</span>`
     ).join('');
 
     return `
-      <article class="module-specimen-card ${isDone ? 'is-completed' : ''}" 
+      <article class="folder-card ${isDone ? 'is-completed' : ''}" 
                tabindex="0" 
                role="button" 
                data-open-module="${module.id}" 
                aria-label="Buka materi ${escapeHTML(module.title)}">
-        <div class="module-card-head">
-          <span class="level-chip ${levelClass}">
-            <span style="font-size:7px;">●</span> ${escapeHTML(module.level)}
-          </span>
-          <span class="track-index-chip">M${String(index + 1).padStart(2, '0')}</span>
+        <!-- Top Folder Tab Header -->
+        <div class="folder-tab-header">
+          <div class="folder-tab">
+            <span class="folder-tab-icon">📁</span>
+            <span>DIR · M${String(index + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="folder-tab-filler">
+            <span class="level-badge ${levelClass}">${escapeHTML(module.level)}</span>
+          </div>
         </div>
-        <h4 class="module-card-title">${escapeHTML(module.title)}</h4>
-        <p class="module-card-summary">${escapeHTML(module.summary)}</p>
-        <div class="module-concept-pills">
-          ${concepts}
-        </div>
-        <div class="module-card-bottom">
-          <span class="status-indicator ${isDone ? 'done' : 'todo'}">
-            ${isDone ? '✓ Selesai dipelajari' : '○ Belum dipelajari'}
-          </span>
-          <span style="font-family:var(--font-display); font-weight:700; color:var(--color-brand-magenta); font-size:11px;">
-            Pelajari →
-          </span>
+
+        <!-- Folder Main Body / Pocket -->
+        <div class="folder-body">
+          <h4 class="folder-title">${escapeHTML(module.title)}</h4>
+          <p class="folder-summary">${escapeHTML(module.summary)}</p>
+          <div class="folder-chips">
+            ${concepts}
+          </div>
+          <div class="folder-footer">
+            <span class="folder-status ${isDone ? 'done' : 'todo'}">
+              ${isDone ? '✓ Selesai dipelajari' : '○ Belum dipelajari'}
+            </span>
+            <span class="folder-footer-action">Buka Materi →</span>
+          </div>
         </div>
       </article>
     `;
@@ -70,24 +77,32 @@
     const counts = state.getTrackStats(track.id);
 
     return `
-      <article class="track-specimen-card" 
+      <article class="folder-card" 
                tabindex="0" 
                role="button" 
                data-open-track="${escapeHTML(track.id)}" 
                aria-label="Buka jalur ${escapeHTML(track.name)}">
-        <div class="track-card-top">
-          <span class="track-index-chip">TRACK 0${index + 1}</span>
-          <span class="track-icon-badge">${escapeHTML(track.icon || '❖')}</span>
-        </div>
-        <h4 class="track-card-title">${escapeHTML(track.name)}</h4>
-        <p class="track-card-desc">${escapeHTML(track.desc)}</p>
-        <div class="track-card-footer">
-          <div class="track-footer-left">
-            <span>${counts.total} Modul</span>
-            <span>·</span>
-            <span>${counts.completed} Selesai</span>
+        <!-- Top Folder Tab Header -->
+        <div class="folder-tab-header">
+          <div class="folder-tab">
+            <span class="folder-tab-icon">${escapeHTML(track.icon || '❖')}</span>
+            <span>TRACK · 0${index + 1}</span>
           </div>
-          <span class="track-footer-action">Buka Jalur →</span>
+          <div class="folder-tab-filler">
+            <span class="level-badge beginner">${counts.total} MODUL</span>
+          </div>
+        </div>
+
+        <!-- Folder Main Body / Pocket -->
+        <div class="folder-body">
+          <h4 class="folder-title">${escapeHTML(track.name)}</h4>
+          <p class="folder-summary">${escapeHTML(track.desc)}</p>
+          <div class="folder-footer">
+            <span style="font-size:11px; color:var(--color-muted); font-weight:600;">
+              ${counts.completed}/${counts.total} Selesai
+            </span>
+            <span class="folder-footer-action">Buka Jalur →</span>
+          </div>
         </div>
       </article>
     `;
@@ -103,8 +118,6 @@
 
     // Group tracks by category
     const categories = [...new Set(tracks.map(t => t.category))];
-
-    // Find recommended module
     const nextModule = modules.find(m => !state.isCompleted(m.id)) || modules[0];
 
     const clustersHTML = categories.map(category => {
@@ -118,7 +131,7 @@
         <div class="section-cluster">
           <div class="section-cluster-head">
             <h3 class="cluster-title">
-              <span style="width:8px; height:8px; border-radius:50%; background:var(--color-brand-magenta);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:var(--color-brand-blue); box-shadow:0 0 8px var(--color-brand-blue);"></span>
               ${escapeHTML(category)}
             </h3>
             <span class="cluster-meta">${groupTracks.length} Jalur Kurikulum</span>
@@ -131,77 +144,126 @@
     }).join('');
 
     container.innerHTML = `
-      <!-- Hero Section (Design Playground Style) -->
-      <section class="hero-section playground-grid-bg">
-        <div class="hero-layout">
-          <div>
-            <div class="hero-kicker-row">
-              <span class="kicker-tag">
-                <span style="width:6px; height:6px; border-radius:50%; background:var(--color-brand-magenta);"></span>
-                FULL-STACK ROADMAP · 2026 EDITION
-              </span>
-              <span class="kicker-tag">TERBUKA &amp; GRATIS</span>
-            </div>
-            <h1 class="hero-title">
-              REKAYASA SISTEM MODERN<br>
-              <span class="hero-title-accent">dari Web Dasar hingga Distributed Scale</span>
-            </h1>
-            <p class="hero-description">
-              Platform pembelajaran rekayasa perangkat lunak berbasis kurikulum praktis:
-              fondasi web, framework modern, arsitektur backend, edge security, AI/RAG, 
-              hingga reliability engineering tingkat enterprise.
-            </p>
-            <div class="hero-pill-row">
-              <span class="feature-pill">✦ 29 Jalur Terstruktur</span>
-              <span class="feature-pill">✦ 156 Modul Fokus</span>
-              <span class="feature-pill">✦ Visual Arsitektur</span>
-              <span class="feature-pill">✦ Evaluasi Mandiri</span>
-              <span class="feature-pill">✦ 100% Offline Ready</span>
-            </div>
-            <div class="hero-cta-group">
-              <button class="btn btn-primary" id="startLearningBtn" data-open-module="${nextModule?.id || 'w01'}">
-                Mulai Belajar Sekarang →
-              </button>
-              <button class="btn btn-outline" id="browseTracksBtn">
-                Jelajahi Semua Jalur
-              </button>
-            </div>
-          </div>
+      <!-- Hero Section (Exact Design Playground Layout with iCraft Luminous Glow) -->
+      <section class="hero-editorial-section playground-grid-bg">
+        <div class="hero-kicker-badge">
+          <span class="hero-badge-dot"></span>
+          <span>FULL-STACK ENGINEERING ACADEMY / 29 JALUR · 156 MODUL · PRODUCTION GRADE</span>
+        </div>
 
-          <!-- Specimen Bento Box -->
-          <div class="hero-specimen-card">
-            <div class="specimen-header">
-              <span class="specimen-eyebrow">PORTFOLIO PROGRESS SPEC</span>
-              <span class="specimen-badge">LIVE TRACKER</span>
-            </div>
-            <div class="specimen-stats-grid">
-              <div class="specimen-stat-box">
-                <div class="stat-value" id="heroCompletedStat">${stats.completed}</div>
-                <div class="stat-label">Modul Selesai</div>
-              </div>
-              <div class="specimen-stat-box">
-                <div class="stat-value">${stats.total}</div>
-                <div class="stat-label">Total Kurikulum</div>
-              </div>
-            </div>
-            <div class="specimen-progress-wrap">
-              <div class="specimen-progress-label">
-                <span>Penguasaan Materi</span>
-                <strong id="heroPercentStat">${stats.percent}%</strong>
-              </div>
-              <div class="progress-track-bar">
-                <div class="progress-fill-bar" id="heroProgressBar" style="width: ${stats.percent}%;"></div>
-              </div>
-            </div>
-            <div class="specimen-note">
-              <span>●</span>
-              <span>Progres disimpan otomatis di browser tanpa registrasi akun.</span>
-            </div>
+        <h1 class="hero-main-heading">
+          FROM WEB FUNDAMENTALS<br>
+          TO DISTRIBUTED ARCHITECTURE.
+        </h1>
+
+        <span class="hero-quote-accent">
+          “From Clean Code to Enterprise Scalability &amp; Edge Security”
+        </span>
+
+        <p class="hero-lead-text">
+          Kurikulum komprehensif terarah untuk mendalami rekayasa perangkat lunak modern:
+          fondasi browser, request lifecycle, framework frontend (Vue/Nuxt/React/Next),
+          arsitektur backend multi-bahasa (Go/Java/C#), edge security (Cloudflare/Turnstile),
+          hingga reliability engineering tingkat industri.
+        </p>
+
+        <!-- 3 Action Buttons -->
+        <div class="hero-action-buttons">
+          <button class="btn btn-primary" id="startLearningBtn" data-open-module="${nextModule?.id || 'w01'}">
+            Mulai Belajar Sekarang →
+          </button>
+          <button class="btn btn-outline" id="browseTracksBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-blue);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Jelajahi Kurikulum
+          </button>
+          <button class="btn btn-outline" id="quickSearchBtn" data-action="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-cyan);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Cari Cepat (⌘K)
+          </button>
+        </div>
+
+        <!-- 4-Column Metadata Info Strip -->
+        <div class="hero-meta-strip">
+          <div class="meta-strip-col">
+            <span class="meta-strip-label">Fokus Rekayasa</span>
+            <span class="meta-strip-value">Web to Enterprise Scale</span>
+          </div>
+          <div class="meta-strip-col">
+            <span class="meta-strip-label">Cakupan Kurikulum</span>
+            <span class="meta-strip-value">29 Jalur · 156 Modul</span>
+          </div>
+          <div class="meta-strip-col">
+            <span class="meta-strip-label">Teknologi Utama</span>
+            <span class="meta-strip-value">TypeScript · Go · Java · C# · Cloudflare</span>
+          </div>
+          <div class="meta-strip-col">
+            <span class="meta-strip-label">Akses Belajar</span>
+            <span class="meta-strip-value">100% Gratis · Offline Ready</span>
           </div>
         </div>
       </section>
 
-      <!-- Learning Path Clusters -->
+      <!-- 4-Stage Methodology Section (Exact Design Playground Pattern) -->
+      <section class="methodology-section">
+        <div class="methodology-header">
+          <div>
+            <div class="methodology-kicker">Metodologi Rekayasa</div>
+            <h2 class="methodology-title">UNDERSTAND → EXPLORE → BUILD → SHIP</h2>
+          </div>
+          <p class="methodology-subcopy">
+            Bangun intuisi sistem dari siklus request dasar, uji trade-off arsitektur,
+            buat implementasi kode riil, lalu amankan di production edge.
+          </p>
+        </div>
+
+        <div class="stages-grid">
+          <div class="stage-card">
+            <div class="stage-card-head">
+              <span class="stage-card-label">Stage 01</span>
+              <span class="stage-card-pill">UNDERSTAND</span>
+            </div>
+            <h4 class="stage-card-title">Fondasi Web</h4>
+            <p class="stage-card-desc">
+              Pahami request lifecycle, batas tanggung jawab frontend vs backend, DNS, TLS, dan integritas data persisten.
+            </p>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-card-head">
+              <span class="stage-card-label">Stage 02</span>
+              <span class="stage-card-pill">EXPLORE</span>
+            </div>
+            <h4 class="stage-card-title">Arsitektur &amp; Trade-off</h4>
+            <p class="stage-card-desc">
+              Bandingkan monolith vs microservices, REST API contract, SQL indexing, ACID transaction, dan caching strategy.
+            </p>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-card-head">
+              <span class="stage-card-label">Stage 03</span>
+              <span class="stage-card-pill">BUILD</span>
+            </div>
+            <h4 class="stage-card-title">Implementasi Riil</h4>
+            <p class="stage-card-desc">
+              Pelajari contoh kode specimen, tangani skenario kegagalan, terapkan unit testing, dan bangun best practice industri.
+            </p>
+          </div>
+
+          <div class="stage-card dark-highlight">
+            <div class="stage-card-head">
+              <span class="stage-card-label">Stage 04</span>
+              <span class="stage-card-pill">SHIP &amp; SECURE</span>
+            </div>
+            <h4 class="stage-card-title">Keamanan &amp; Edge</h4>
+            <p class="stage-card-desc">
+              Lindungi origin dengan Cloudflare WAF, Turnstile, bot protection, webhook idempotency, dan observabilitas production.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Learning Path Clusters (Folder-Shaped Cards) -->
       <div id="tracksDirectory">
         ${clustersHTML}
       </div>
@@ -212,6 +274,16 @@
       browseBtn.addEventListener('click', () => {
         const dir = container.querySelector('#tracksDirectory');
         if (dir) dir.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    const quickSearch = container.querySelector('#quickSearchBtn');
+    if (quickSearch) {
+      quickSearch.addEventListener('click', () => {
+        const input = document.getElementById('searchModalInput');
+        const modal = document.getElementById('searchModalBackdrop');
+        if (modal) modal.classList.add('open');
+        if (input) setTimeout(() => input.focus(), 50);
       });
     }
   }
@@ -232,7 +304,7 @@
       <div class="reader-wrapper">
         <div class="reader-breadcrumb">
           <span class="breadcrumb-back-btn" data-action="home">← Kembali ke Beranda</span>
-          <span>${counts.total} Modul dalam Jalur</span>
+          <span style="font-family:var(--font-mono); font-weight:700;">${counts.total} Modul dalam Jalur</span>
         </div>
 
         <div class="lesson-hero-box playground-grid-bg">
@@ -244,8 +316,8 @@
           
           <div class="lesson-actions-bar">
             <div class="lesson-meta-chips">
-              <span class="feature-pill">${counts.total} Materi</span>
-              <span class="feature-pill">${counts.completed} Selesai (${counts.percent}%)</span>
+              <span class="level-badge beginner">${counts.total} Materi</span>
+              <span class="level-badge intermediate">${counts.completed} Selesai (${counts.percent}%)</span>
             </div>
             <div class="progress-track-bar" style="width: 140px;">
               <div class="progress-fill-bar" style="width: ${counts.percent}%;"></div>
@@ -255,8 +327,8 @@
 
         <div class="section-cluster" style="margin-top: 10px;">
           <div class="section-cluster-head">
-            <h3 class="cluster-title">Daftar Materi Pembelajaran</h3>
-            <span class="cluster-meta">Pilih modul untuk membaca secara terstruktur</span>
+            <h3 class="cluster-title">Daftar Modul Pembelajaran (Berkas Kurikulum)</h3>
+            <span class="cluster-meta">Klik berkas modul untuk membuka materi fokus</span>
           </div>
           <div class="bento-grid">
             ${cardsHTML}
@@ -278,7 +350,7 @@
         ).join('');
 
         const refs = (module.refs || []).map(r => 
-          `<li style="margin-bottom:6px;"><a href="${escapeHTML(r)}" target="_blank" rel="noopener" style="color:var(--color-brand-magenta); text-decoration:underline;">${escapeHTML(r)}</a></li>`
+          `<li style="margin-bottom:6px;"><a href="${escapeHTML(r)}" target="_blank" rel="noopener" style="color:var(--color-brand-blue); text-decoration:underline;">${escapeHTML(r)}</a></li>`
         ).join('');
 
         return `
@@ -336,10 +408,10 @@
             <span class="stage-number">03</span>
             <h3 class="stage-heading">Arsitektur &amp; Komparasi Pendekatan</h3>
           </div>
-          <div class="callout-block" style="background:var(--color-canvas); border-color:var(--color-border-strong);">
+          <div class="callout-block" style="background:var(--color-canvas); border-color:var(--color-border-ice);">
             <div class="callout-head">Trade-off &amp; Hubungan Antar Ekosistem:</div>
             <p style="font-size:14px; line-height:1.7; color:var(--color-ink-secondary);">
-              ${escapeHTML(module.compare || 'Di arsitektur modern, setiap framework atau pola memiliki perbandingan trade-off antara kesederhanaan, skalabilitas, dan kompleksitas operasional.')}
+              ${escapeHTML(module.compare || 'Di arsitektur modern, setiap framework atau pola memiliki perbandingan trade-off antara kesederhanaan, skalabilitas, dan biaya operasional.')}
             </p>
           </div>
         `;
@@ -371,7 +443,7 @@
       case 'practices': {
         const practices = (module.practices || []).map((p, i) => `
           <li style="margin-bottom:10px; display:flex; align-items:flex-start; gap:10px;">
-            <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:var(--color-brand-magenta); background:var(--color-brand-magenta-soft); padding:1px 6px; border-radius:3px;">
+            <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:var(--color-brand-blue); background:var(--color-brand-blue-soft); padding:1px 6px; border-radius:3px;">
               #0${i + 1}
             </span>
             <span style="font-size:13px; line-height:1.6; color:var(--color-ink);">${escapeHTML(p)}</span>
@@ -533,9 +605,9 @@
 
           <div class="lesson-actions-bar">
             <div class="lesson-meta-chips">
-              <span class="level-chip ${getLevelClass(module.level)}">${escapeHTML(module.level)}</span>
-              <span class="feature-pill">${(module.refs || []).length} Referensi</span>
-              <span class="feature-pill" id="lessonStatusBadge">
+              <span class="level-badge ${getLevelClass(module.level)}">${escapeHTML(module.level)}</span>
+              <span class="level-badge beginner">${(module.refs || []).length} Referensi</span>
+              <span class="level-badge ${isDone ? 'intermediate' : ''}" id="lessonStatusBadge">
                 ${isDone ? '✓ Sudah Selesai' : '○ Belum Selesai'}
               </span>
             </div>
@@ -568,7 +640,7 @@
             </button>
             <div style="display:flex; gap:8px;">
               ${safeStepIndex === LESSON_STEPS.length - 1 ? `
-                <button class="btn btn-magenta" id="finishModuleBtn">
+                <button class="btn btn-primary" id="finishModuleBtn">
                   ${isDone ? '✓ Materi Sudah Selesai' : 'Selesaikan Materi Ini'}
                 </button>
               ` : ''}
@@ -671,11 +743,11 @@
     const cardsHTML = bookmarkedModules.length
       ? bookmarkedModules.map((m, i) => renderModuleCard(m, i)).join('')
       : `
-        <div style="grid-column: 1 / -1; background:var(--color-elevated); border:1px solid var(--color-border-subtle); border-radius:var(--radius-md); padding:40px; text-align:center;">
-          <div style="font-size:32px; margin-bottom:12px;">☆</div>
-          <h4 style="font-family:var(--font-display); font-size:18px; font-weight:800; margin-bottom:8px;">Belum Ada Materi Tersimpan</h4>
+        <div style="grid-column: 1 / -1; background:var(--color-elevated); border:1px solid var(--color-border-ice); border-radius:var(--radius-md); padding:40px; text-align:center; box-shadow:var(--shadow-sm);">
+          <div style="font-size:32px; margin-bottom:12px; color:var(--color-brand-cyan);">☆</div>
+          <h4 style="font-family:var(--font-display); font-size:18px; font-weight:800; margin-bottom:8px; color:var(--color-ink);">Belum Ada Berkas Tersimpan</h4>
           <p style="font-size:13px; color:var(--color-muted); max-width:420px; margin:0 auto 20px;">
-            Saat membaca materi, klik tombol "Simpan Materi" untuk menyimpan modul penting agar mudah diakses kembali.
+            Saat membaca modul, klik tombol "Simpan Materi" untuk menyimpan berkas penting agar mudah diakses kembali.
           </p>
           <button class="btn btn-primary" data-action="home">Kembali ke Beranda</button>
         </div>
@@ -685,16 +757,16 @@
       <div class="reader-wrapper">
         <div class="reader-breadcrumb">
           <span class="breadcrumb-back-btn" data-action="home">← Kembali ke Beranda</span>
-          <span>${bookmarkedModules.length} Tersimpan</span>
+          <span style="font-family:var(--font-mono); font-weight:700;">${bookmarkedModules.length} Berkas Tersimpan</span>
         </div>
 
         <div class="lesson-hero-box playground-grid-bg">
           <div class="lesson-eyebrow">
-            <span>●</span> MATERI PILIHAN TERSIMPAN
+            <span>●</span> ARSIP BERKAS PILIHAN
           </div>
           <h1 class="lesson-main-title">Koleksi Belajarmu</h1>
           <p class="lesson-main-summary">
-            Daftar modul yang kamu tandai untuk diulang, didalami, atau dipraktikkan kembali dalam project pribadimu.
+            Daftar modul yang kamu simpan untuk ditinjau ulang, didalami, atau dijadikan acuan kode riil dalam project pribadimu.
           </p>
         </div>
 
@@ -721,14 +793,14 @@
             <h4 class="search-item-title">${escapeHTML(r.module.title)}</h4>
             <p style="font-size:12px; color:var(--color-muted); margin:0;">${escapeHTML(r.module.summary)}</p>
             <div class="search-item-snippet">
-              <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-brand-magenta); font-weight:700;">Cocok Pada:</span>
+              <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-brand-blue); font-weight:700;">Cocok Pada:</span>
               <code>${escapeHTML(r.snippet)}</code>
             </div>
           </div>
         `).join('')
       : `
-        <div style="background:var(--color-elevated); border:1px solid var(--color-border-subtle); border-radius:var(--radius-md); padding:40px; text-align:center;">
-          <h4 style="font-family:var(--font-display); font-size:16px; font-weight:800; margin-bottom:8px;">Tidak ditemukan hasil untuk "${escapeHTML(query)}"</h4>
+        <div style="background:var(--color-elevated); border:1px solid var(--color-border-ice); border-radius:var(--radius-md); padding:40px; text-align:center; box-shadow:var(--shadow-sm);">
+          <h4 style="font-family:var(--font-display); font-size:16px; font-weight:800; margin-bottom:8px; color:var(--color-ink);">Tidak ditemukan hasil untuk "${escapeHTML(query)}"</h4>
           <p style="font-size:13px; color:var(--color-muted);">Coba gunakan istilah pencarian lain seperti 'REST', 'JWT', 'Vue', 'Spring', atau 'Cloudflare'.</p>
         </div>
       `;
@@ -737,7 +809,7 @@
       <div class="reader-wrapper">
         <div class="reader-breadcrumb">
           <span class="breadcrumb-back-btn" data-action="home">← Kembali ke Beranda</span>
-          <span>${results.length} Hasil Ditemukan</span>
+          <span style="font-family:var(--font-mono); font-weight:700;">${results.length} Hasil Ditemukan</span>
         </div>
 
         <div class="lesson-hero-box playground-grid-bg">
@@ -803,4 +875,3 @@
     renderSidebar
   };
 })(window);
-

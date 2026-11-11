@@ -1,65 +1,83 @@
 /* ==========================================================================
-   Design Tokens & Variables
-   Inspired by Design Playground (Creative Workshop: From Design to UI/UX)
-   Aesthetic: Swiss Minimalist Editorial, Tactile Canvas, Hairline Borders
+   Design Tokens & Variables — iCraft Color Theme
+   Atmosphere: Luminous Ice-Blue Canvas, Glassmorphism, Ethereal Ambient Glows
+   Accents: Electric Royal Blue (#1D64EC), Vivid Cyan (#0EA5E9), Purple (#8B5CF6)
    ========================================================================== */
 
 :root {
-  /* Canvas & Neutral Surfaces */
-  --color-canvas: #f2f2f2;
-  --color-surface: #eaeaea;
-  --color-surface-soft: #f7f7f6;
+  /* iCraft Radiant Canvas & Surfaces */
+  --color-canvas: #f0f6ff;
+  --color-canvas-gradient: radial-gradient(circle at 50% 0%, #dbeafe 0%, #ebf3fe 32%, #f4f8fe 65%, #f8fafd 100%);
+  --color-surface: #ffffff;
+  --color-surface-soft: #f4f8fd;
   --color-elevated: #ffffff;
-  --color-elevated-hover: #fafafa;
-  --color-dark: #171717;
-  --color-dark-elevated: #22201f;
-  --color-dark-surface: #2a2928;
+  --color-elevated-hover: #fcfdff;
   
-  /* Ink & Typography Colors */
-  --color-ink: #171717;
-  --color-ink-secondary: #403b38;
-  --color-muted: #746c68;
-  --color-muted-surface: #59524f;
-  --color-subtle: #9c948e;
+  /* iCraft Deep Navy Ink & Typography */
+  --color-ink: #0f172a;            /* Rich Obsidian Navy */
+  --color-ink-secondary: #334155;  /* Slate */
+  --color-muted: #64748b;          /* Muted Slate */
+  --color-muted-surface: #475569;
+  --color-subtle: #94a3b8;
   --color-on-dark: #ffffff;
-  --color-on-dark-muted: #d4d0ce;
-  --color-on-dark-subtle: #8a8480;
+  --color-on-dark-muted: #cbd5e1;
+  --color-on-dark-subtle: #94a3b8;
 
-  /* Architectural Hairline Borders */
-  --color-border-subtle: #dedcd9;
-  --color-border-strong: #c9c5c2;
-  --color-border-dark: #2d2b2a;
-  --color-border-dark-strong: #3b3836;
+  /* Architectural Hairline Borders (Crisp Cyan-Tinted Ice) */
+  --color-border-subtle: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-border-ice: #bfdbfe;
+  --color-border-dark: #1e293b;
+  --color-border-dark-strong: #334155;
 
-  /* Brand & Status Accents */
-  --color-brand-magenta: #c2185b;
-  --color-brand-magenta-hover: #a3144c;
-  --color-brand-magenta-soft: #fcecf1;
-  --color-brand-magenta-border: #f2b8cd;
-
-  --color-brand-orange: #ff8a3d;
-  --color-brand-orange-hover: #e07630;
-  --color-brand-orange-soft: #fff2ea;
-
-  --color-brand-lime: #1f4a24;
-  --color-brand-lime-bg: #edf5ed;
-  --color-brand-lime-border: #c6dec8;
-
-  --color-brand-blue: #2563eb;
+  /* iCraft Brand Accents */
+  --color-brand-blue: #1d64ec;          /* iCraft Electric Royal Blue */
+  --color-brand-blue-hover: #1550c2;
   --color-brand-blue-soft: #eff6ff;
+  --color-brand-blue-border: #bfdbfe;
+  --color-brand-blue-glow: rgba(29, 100, 236, 0.28);
 
-  --color-brand-red: #f04438;
-  --color-brand-red-soft: #fef3f2;
+  --color-brand-cyan: #0284c7;          /* iCraft Cyan (#IC-MARKET) */
+  --color-brand-cyan-hover: #0369a1;
+  --color-brand-cyan-soft: #e0f2fe;
+  --color-brand-cyan-border: #bae6fd;
+
+  --color-brand-purple: #7c3aed;        /* iCraft Purple (#IC-GAMES) */
+  --color-brand-purple-hover: #6d28d9;
+  --color-brand-purple-soft: #f3e8ff;
+  --color-brand-purple-border: #ddd6fe;
+
+  --color-brand-amber: #d97706;         /* iCraft Amber (#BUY-COFFEE) */
+  --color-brand-amber-hover: #b45309;
+  --color-brand-amber-soft: #fef3c7;
+  --color-brand-amber-border: #fde68a;
+
+  --color-brand-magenta: #c2185b;
+  --color-brand-lime: #059669;
+  --color-brand-lime-bg: #ecfdf5;
+  --color-brand-lime-border: #a7f3d0;
+
+  --color-brand-red: #e11d48;
+  --color-brand-red-soft: #fff1f2;
+
+  /* Folder Component Specific Tokens */
+  --color-folder-tab-bg: #e2eeff;
+  --color-folder-tab-border: #bfdbfe;
+  --color-folder-tab-text: #1d4ed8;
+  --color-folder-bg: #ffffff;
+  --color-folder-border: #cbd5e1;
+  --color-folder-shadow: 0 4px 18px -2px rgba(29, 100, 236, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03);
+  --color-folder-shadow-hover: 0 14px 34px -4px rgba(29, 100, 236, 0.16), 0 4px 8px rgba(0, 0, 0, 0.04);
 
   /* Code Block Colors */
-  --color-code-bg: #141414;
-  --color-code-surface: #1e1e1e;
-  --color-code-text: #e6edf3;
-  --color-code-keyword: #ff7b72;
-  --color-code-string: #a5d6ff;
-  --color-code-comment: #8b949e;
-  --color-code-function: #d2a8ff;
-  --color-code-number: #79c0ff;
+  --color-code-bg: #0b1120;
+  --color-code-surface: #111827;
+  --color-code-text: #e2e8f0;
+  --color-code-keyword: #38bdf8;
+  --color-code-string: #86efac;
+  --color-code-comment: #64748b;
+  --color-code-function: #c084fc;
+  --color-code-number: #f472b6;
 
   /* Typography Scales */
   --font-sans: 'Montserrat', 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -67,78 +85,101 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-display: 'Montserrat', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 
-  /* Shadows (Subtle, non-muddy) */
-  --shadow-sm: 0 1px 2px rgba(23, 23, 23, 0.04);
-  --shadow-md: 0 4px 12px rgba(23, 23, 23, 0.06);
-  --shadow-lg: 0 12px 32px rgba(23, 23, 23, 0.08);
-  --shadow-overlay: 0 24px 60px rgba(0, 0, 0, 0.22);
+  /* iCraft Luminous Shadows */
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.03);
+  --shadow-md: 0 8px 24px -4px rgba(29, 100, 236, 0.08), 0 2px 6px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 16px 40px -6px rgba(29, 100, 236, 0.14), 0 4px 12px rgba(15, 23, 42, 0.04);
+  --shadow-glow: 0 10px 30px -4px rgba(29, 100, 236, 0.35);
+  --shadow-overlay: 0 24px 60px rgba(15, 23, 42, 0.25);
 
   /* Radii */
   --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Layout dimensions */
   --header-height: 64px;
   --sidebar-width: 290px;
-  --max-width: 1320px;
+  --max-width: 1280px;
 
   /* Easing */
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 0.15s var(--ease-editorial);
-  --transition-normal: 0.22s var(--ease-editorial);
+  --transition-normal: 0.25s var(--ease-editorial);
 }
 
-/* Dark Mode Tokens */
+/* iCraft Midnight Dark Mode Tokens */
 body.dark {
-  --color-canvas: #121212;
-  --color-surface: #1a1a1a;
-  --color-surface-soft: #202020;
-  --color-elevated: #1e1e1e;
-  --color-elevated-hover: #262626;
-  --color-dark: #0a0a0a;
-  --color-dark-elevated: #171717;
-  --color-dark-surface: #222222;
+  --color-canvas: #090e17;
+  --color-canvas-gradient: radial-gradient(circle at 50% 0%, #172554 0%, #0d1527 40%, #090e17 100%);
+  --color-surface: #0f172a;
+  --color-surface-soft: #141f36;
+  --color-elevated: #111a2e;
+  --color-elevated-hover: #17233d;
 
-  --color-ink: #f0f0f0;
-  --color-ink-secondary: #dcdad8;
-  --color-muted: #9e9894;
-  --color-muted-surface: #aba49f;
-  --color-subtle: #756f6b;
+  --color-ink: #f8fafc;
+  --color-ink-secondary: #cbd5e1;
+  --color-muted: #94a3b8;
+  --color-muted-surface: #cbd5e1;
+  --color-subtle: #64748b;
   --color-on-dark: #ffffff;
-  --color-on-dark-muted: #d4d0ce;
+  --color-on-dark-muted: #94a3b8;
 
-  --color-border-subtle: #2d2b29;
-  --color-border-strong: #3d3b38;
-  --color-border-dark: #202020;
-  --color-border-dark-strong: #2c2c2c;
+  --color-border-subtle: #1e293b;
+  --color-border-strong: #334155;
+  --color-border-ice: #1d4ed8;
+  --color-border-dark: #0f172a;
+  --color-border-dark-strong: #1e293b;
 
-  --color-brand-magenta-soft: #351421;
-  --color-brand-magenta-border: #601837;
+  --color-brand-blue: #38bdf8;
+  --color-brand-blue-hover: #60a5fa;
+  --color-brand-blue-soft: #172554;
+  --color-brand-blue-border: #1e40af;
+  --color-brand-blue-glow: rgba(56, 189, 248, 0.25);
 
-  --color-brand-orange-soft: #382012;
-  --color-brand-lime-bg: #142718;
-  --color-brand-lime-border: #234629;
-  --color-brand-lime: #9ad6a0;
+  --color-brand-cyan-soft: #082f49;
+  --color-brand-cyan-border: #0369a1;
 
-  --color-brand-blue-soft: #142646;
-  --color-brand-red-soft: #3b1716;
+  --color-brand-purple-soft: #2e1065;
+  --color-brand-purple-border: #581c87;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --color-brand-amber-soft: #451a03;
+  --color-brand-amber-border: #78350f;
+
+  --color-brand-lime-bg: #064e3b;
+  --color-brand-lime-border: #047857;
+  --color-brand-lime: #6ee7b7;
+
+  --color-brand-red-soft: #4c0519;
+
+  --color-folder-tab-bg: #172554;
+  --color-folder-tab-border: #1e40af;
+  --color-folder-tab-text: #93c5fd;
+  --color-folder-bg: #111a2e;
+  --color-folder-border: #1e293b;
+  --color-folder-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.3);
+  --color-folder-shadow-hover: 0 14px 34px -4px rgba(56, 189, 248, 0.15);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px -6px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 10px 30px -4px rgba(56, 189, 248, 0.25);
 }
 
-/* Background Grid Pattern */
+/* Background Grid Pattern with Subtle iCraft Mesh */
 .playground-grid-bg {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(23,23,23,0.045)' stroke-width='1'/%3E%3C/svg%3E");
-  background-size: 24px 24px;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(191, 219, 254, 0.35) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(29,100,236,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 100% 100%, 24px 24px;
 }
 
 body.dark .playground-grid-bg {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(255,255,255,0.035)' stroke-width='1'/%3E%3C/svg%3E");
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(29, 78, 216, 0.2) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(56,189,248,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 100% 100%, 24px 24px;
 }
-
