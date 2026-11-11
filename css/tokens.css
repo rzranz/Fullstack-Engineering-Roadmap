@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Design Tokens & Variables
+   Inspired by Design Playground (Creative Workshop: From Design to UI/UX)
+   Aesthetic: Swiss Minimalist Editorial, Tactile Canvas, Hairline Borders
+   ========================================================================== */
+
+:root {
+  /* Canvas & Neutral Surfaces */
+  --color-canvas: #f2f2f2;
+  --color-surface: #eaeaea;
+  --color-surface-soft: #f7f7f6;
+  --color-elevated: #ffffff;
+  --color-elevated-hover: #fafafa;
+  --color-dark: #171717;
+  --color-dark-elevated: #22201f;
+  --color-dark-surface: #2a2928;
+  
+  /* Ink & Typography Colors */
+  --color-ink: #171717;
+  --color-ink-secondary: #403b38;
+  --color-muted: #746c68;
+  --color-muted-surface: #59524f;
+  --color-subtle: #9c948e;
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #d4d0ce;
+  --color-on-dark-subtle: #8a8480;
+
+  /* Architectural Hairline Borders */
+  --color-border-subtle: #dedcd9;
+  --color-border-strong: #c9c5c2;
+  --color-border-dark: #2d2b2a;
+  --color-border-dark-strong: #3b3836;
+
+  /* Brand & Status Accents */
+  --color-brand-magenta: #c2185b;
+  --color-brand-magenta-hover: #a3144c;
+  --color-brand-magenta-soft: #fcecf1;
+  --color-brand-magenta-border: #f2b8cd;
+
+  --color-brand-orange: #ff8a3d;
+  --color-brand-orange-hover: #e07630;
+  --color-brand-orange-soft: #fff2ea;
+
+  --color-brand-lime: #1f4a24;
+  --color-brand-lime-bg: #edf5ed;
+  --color-brand-lime-border: #c6dec8;
+
+  --color-brand-blue: #2563eb;
+  --color-brand-blue-soft: #eff6ff;
+
+  --color-brand-red: #f04438;
+  --color-brand-red-soft: #fef3f2;
+
+  /* Code Block Colors */
+  --color-code-bg: #141414;
+  --color-code-surface: #1e1e1e;
+  --color-code-text: #e6edf3;
+  --color-code-keyword: #ff7b72;
+  --color-code-string: #a5d6ff;
+  --color-code-comment: #8b949e;
+  --color-code-function: #d2a8ff;
+  --color-code-number: #79c0ff;
+
+  /* Typography Scales */
+  --font-sans: 'Montserrat', 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-display: 'Montserrat', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Shadows (Subtle, non-muddy) */
+  --shadow-sm: 0 1px 2px rgba(23, 23, 23, 0.04);
+  --shadow-md: 0 4px 12px rgba(23, 23, 23, 0.06);
+  --shadow-lg: 0 12px 32px rgba(23, 23, 23, 0.08);
+  --shadow-overlay: 0 24px 60px rgba(0, 0, 0, 0.22);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 9999px;
+
+  /* Layout dimensions */
+  --header-height: 64px;
+  --sidebar-width: 290px;
+  --max-width: 1320px;
+
+  /* Easing */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.15s var(--ease-editorial);
+  --transition-normal: 0.22s var(--ease-editorial);
+}
+
+/* Dark Mode Tokens */
+body.dark {
+  --color-canvas: #121212;
+  --color-surface: #1a1a1a;
+  --color-surface-soft: #202020;
+  --color-elevated: #1e1e1e;
+  --color-elevated-hover: #262626;
+  --color-dark: #0a0a0a;
+  --color-dark-elevated: #171717;
+  --color-dark-surface: #222222;
+
+  --color-ink: #f0f0f0;
+  --color-ink-secondary: #dcdad8;
+  --color-muted: #9e9894;
+  --color-muted-surface: #aba49f;
+  --color-subtle: #756f6b;
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #d4d0ce;
+
+  --color-border-subtle: #2d2b29;
+  --color-border-strong: #3d3b38;
+  --color-border-dark: #202020;
+  --color-border-dark-strong: #2c2c2c;
+
+  --color-brand-magenta-soft: #351421;
+  --color-brand-magenta-border: #601837;
+
+  --color-brand-orange-soft: #382012;
+  --color-brand-lime-bg: #142718;
+  --color-brand-lime-border: #234629;
+  --color-brand-lime: #9ad6a0;
+
+  --color-brand-blue-soft: #142646;
+  --color-brand-red-soft: #3b1716;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Background Grid Pattern */
+.playground-grid-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(23,23,23,0.045)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 24px 24px;
+}
+
+body.dark .playground-grid-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M24 0H0v24' fill='none' stroke='rgba(255,255,255,0.035)' stroke-width='1'/%3E%3C/svg%3E");
+}

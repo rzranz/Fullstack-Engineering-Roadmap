@@ -1,0 +1,234 @@
+[
+  {
+    "id": "Web Fundamentals",
+    "name": "Web Fundamentals",
+    "category": "Fondasi Web",
+    "desc": "Pahami internet, browser, request lifecycle, terminal, dan cara kerja aplikasi web.",
+    "icon": "◎",
+    "outcome": "Mampu menelusuri request dari browser ke server dan bekerja dengan tool developer."
+  },
+  {
+    "id": "HTML",
+    "name": "HTML",
+    "category": "Fondasi Web",
+    "desc": "Bangun struktur dokumen web yang semantik, valid, dan aksesibel.",
+    "icon": "H",
+    "outcome": "Mampu membuat halaman, form, navigasi, dan struktur konten yang benar."
+  },
+  {
+    "id": "CSS",
+    "name": "CSS",
+    "category": "Fondasi Web",
+    "desc": "Kuasai cascade, box model, layout, responsive design, dan design system.",
+    "icon": "▤",
+    "outcome": "Mampu membuat UI konsisten, responsif, dan mudah dirawat."
+  },
+  {
+    "id": "JavaScript",
+    "name": "JavaScript",
+    "category": "Fondasi Web",
+    "desc": "Pelajari bahasa browser: data, function, DOM, event, asynchronous flow, dan module.",
+    "icon": "JS",
+    "outcome": "Mampu membangun interaksi web dan memahami runtime JavaScript."
+  },
+  {
+    "id": "TypeScript & Frontend Tooling",
+    "name": "TypeScript & Tooling",
+    "category": "Fondasi Web",
+    "desc": "Tambahkan type safety, tooling, bundling, linting, dan runtime schema validation.",
+    "icon": "TS",
+    "outcome": "Mampu membangun frontend JavaScript yang typed dan konsisten."
+  },
+  {
+    "id": "Vue 3",
+    "name": "Vue 3",
+    "category": "Frontend Framework",
+    "desc": "Pelajari component, Composition API, reactivity, router, state, forms, dan testing.",
+    "icon": "V",
+    "outcome": "Mampu membangun aplikasi Vue yang modular dan teruji."
+  },
+  {
+    "id": "Nuxt",
+    "name": "Nuxt",
+    "category": "Frontend Framework",
+    "desc": "Gunakan Vue melalui Nuxt: file routing, rendering, data fetching, server routes, dan deployment.",
+    "icon": "N",
+    "outcome": "Mampu membangun aplikasi Nuxt yang aman dan production-minded."
+  },
+  {
+    "id": "React",
+    "name": "React",
+    "category": "Frontend Framework",
+    "desc": "Pahami JSX, components, props, state, hooks, effects, forms, dan architecture.",
+    "icon": "R",
+    "outcome": "Mampu membangun UI React yang terstruktur dan efisien."
+  },
+  {
+    "id": "Next.js",
+    "name": "Next.js",
+    "category": "Frontend Framework",
+    "desc": "Pelajari App Router, server/client components, data fetching, caching, mutations, dan deployment.",
+    "icon": "NX",
+    "outcome": "Mampu membangun aplikasi Next.js dengan trust boundary yang jelas."
+  },
+  {
+    "id": "API Design & REST",
+    "name": "API Design & REST",
+    "category": "Backend Foundations",
+    "desc": "Rancang HTTP API yang konsisten, RESTful, terdokumentasi, dan aman.",
+    "icon": "API",
+    "outcome": "Mampu merancang API contract yang digunakan web, mobile, dan integrasi partner."
+  },
+  {
+    "id": "Web Security & Authentication",
+    "name": "Web Security & Auth",
+    "category": "Security & Platform",
+    "desc": "Pahami authentication, authorization, sessions, CORS, CSRF, OWASP, dan secure coding.",
+    "icon": "SEC",
+    "outcome": "Mampu mengamankan browser-to-backend flow dan data pengguna."
+  },
+  {
+    "id": "SQL & Database",
+    "name": "SQL & Database",
+    "category": "Backend Foundations",
+    "desc": "Pelajari relational modeling, SQL, query plan, indexing, transaction, dan locking.",
+    "icon": "DB",
+    "outcome": "Mampu merancang schema dan menjaga data consistency."
+  },
+  {
+    "id": "Go",
+    "name": "Go",
+    "category": "Backend Languages",
+    "desc": "Dalami Go: type system, pointers, interfaces, errors, context, HTTP, database, concurrency, dan testing.",
+    "icon": "GO",
+    "outcome": "Mampu membuat backend Go idiomatis dan dapat dioperasikan."
+  },
+  {
+    "id": "Java",
+    "name": "Java",
+    "category": "Backend Languages",
+    "desc": "Kuasai Java modern: OOP, types, generics, collections, exceptions, JVM, dan memory.",
+    "icon": "J",
+    "outcome": "Mampu membaca dan menulis Java sebelum menggunakan Spring."
+  },
+  {
+    "id": "Spring Boot",
+    "name": "Spring Boot",
+    "category": "Backend Frameworks",
+    "desc": "Bangun backend Java dengan Spring Core, MVC, JPA, transactions, security, dan testing.",
+    "icon": "SB",
+    "outcome": "Mampu membangun modular monolith Spring Boot yang siap dikembangkan."
+  },
+  {
+    "id": "C#",
+    "name": "C#",
+    "category": "Backend Languages",
+    "desc": "Pelajari C#: types, OOP, records, generics, LINQ, async/await, dan CLR.",
+    "icon": "C#",
+    "outcome": "Mampu memahami bahasa C# dan runtime .NET."
+  },
+  {
+    "id": "ASP.NET Core",
+    "name": "ASP.NET Core",
+    "category": "Backend Frameworks",
+    "desc": "Bangun API .NET dengan middleware, DI, controllers, EF Core, security, dan observability.",
+    "icon": ".NET",
+    "outcome": "Mampu membangun backend ASP.NET Core yang maintainable."
+  },
+  {
+    "id": "Software Architecture & System Design",
+    "name": "System Design & Architecture",
+    "category": "Architecture & Professional Engineering",
+    "desc": "Rancang sistem dengan clean code, SOLID, architecture styles, patterns, reliability, dan trade-off.",
+    "icon": "SYS",
+    "outcome": "Mampu menjelaskan keputusan arsitektur berdasarkan kebutuhan, risiko, tim, dan skala."
+  },
+  {
+    "id": "Git & Team Collaboration",
+    "name": "Git & Team Collaboration",
+    "category": "Professional Engineering",
+    "icon": "GIT",
+    "desc": "Workflow version control, branching, pull request, code review, dan release untuk kerja tim.",
+    "outcome": "Mampu mengirim perubahan yang kecil, dapat direview, dan aman untuk digabungkan."
+  },
+  {
+    "id": "Testing & Quality Engineering",
+    "name": "Testing & Quality Engineering",
+    "category": "Professional Engineering",
+    "icon": "QA",
+    "desc": "Strategi unit, integration, contract, E2E, performance, dan quality gates lintas stack.",
+    "outcome": "Mampu membuktikan behavior sistem melalui test yang stabil dan relevan."
+  },
+  {
+    "id": "DevOps & Delivery",
+    "name": "DevOps & Delivery",
+    "category": "Professional Engineering",
+    "icon": "OPS",
+    "desc": "Linux, Docker, CI/CD, deployment, configuration, monitoring, backup, dan incident response.",
+    "outcome": "Mampu membawa aplikasi dari laptop ke staging/production dan mengoperasikannya."
+  },
+  {
+    "id": "Cloudflare & Edge Security",
+    "name": "Cloudflare & Edge Security",
+    "category": "Security & Platform",
+    "icon": "CF",
+    "desc": "Pahami DNS proxy, CDN, WAF, bot prevention, Turnstile, rate limiting, dan origin protection.",
+    "outcome": "Mampu menerapkan perlindungan edge secara bertahap tanpa merusak traffic valid."
+  },
+  {
+    "id": "Professional Full-stack Workflow",
+    "name": "Professional Full-stack Workflow",
+    "category": "Professional Engineering",
+    "icon": "PRO",
+    "desc": "Cara bekerja end-to-end: requirement, design, estimasi, coding, review, release, dan maintenance.",
+    "outcome": "Mampu memiliki feature secara end-to-end dan berkomunikasi efektif di tim."
+  },
+  {
+    "id": "Cloudflare Bot Prevention",
+    "name": "Cloudflare Bot Prevention",
+    "category": "Security & Platform",
+    "desc": "Threat modeling bot, bot signals, Bot Fight Mode, WAF, Turnstile, rate limiting, origin protection, dan incident response.",
+    "icon": "BOT",
+    "outcome": "Mampu merancang mitigasi bot berdasarkan risiko tanpa memblokir traffic sah."
+  },
+  {
+    "id": "AI & RAG Engineering",
+    "name": "AI & RAG Engineering",
+    "category": "AI & Data Engineering",
+    "desc": "AI/ML fundamentals, embeddings, document ingestion, vector search, RAG pipeline, evaluation, dan local-first AI.",
+    "icon": "AI",
+    "outcome": "Mampu membangun dan mengevaluasi semantic search/RAG dengan kontrol biaya dan data."
+  },
+  {
+    "id": "Android & Mobile Reengineering",
+    "name": "Android & Mobile Reengineering",
+    "category": "Application & Reengineering",
+    "desc": "Android Java/Kotlin, lifecycle, API integration, secure storage, dan strategi migrasi aplikasi lama.",
+    "icon": "AND",
+    "outcome": "Mampu memahami dan memodernisasi mobile client yang terhubung ke backend."
+  },
+  {
+    "id": "Realtime Web & Game Systems",
+    "name": "Realtime Web & Game Systems",
+    "category": "Application & Reengineering",
+    "desc": "Polling, SSE, WebSocket, Phaser, multiplayer state, authoritative server, dan reconnect.",
+    "icon": "RT",
+    "outcome": "Mampu memilih dan membangun komunikasi realtime sesuai kebutuhan produk."
+  },
+  {
+    "id": "Payment Integration & Webhooks",
+    "name": "Payment Integration & Webhooks",
+    "category": "Backend & Integration",
+    "desc": "Payment lifecycle, provider adapter, webhook signature, idempotency, refund, dan reconciliation.",
+    "icon": "PAY",
+    "outcome": "Mampu mengintegrasikan payment provider dengan aman dan dapat diaudit."
+  },
+  {
+    "id": "Project Labs & Reengineering",
+    "name": "Project Labs & Reengineering",
+    "category": "Project Implementation",
+    "desc": "Studi kasus implementasi FlowLedger, ClaimFlow, cinema booking, dan SmartFind yang menggabungkan stack dan best practices.",
+    "icon": "LAB",
+    "outcome": "Mampu menerapkan ilmu lintas jalur ke proyek nyata dan menjelaskan trade-off-nya."
+  }
+]

@@ -1,0 +1,6 @@
+# Git ignore for project
+.agents/
+.agents
+*.log
+.DS_Store
+Thumbs.db
