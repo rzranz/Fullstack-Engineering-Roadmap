@@ -582,6 +582,13 @@
     `;
 
     // Event Wire-up
+    setTimeout(() => {
+      const activeTab = container.querySelector('.step-tab-btn.active');
+      if (activeTab && typeof activeTab.scrollIntoView === 'function') {
+        activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 40);
+
     container.querySelectorAll('[data-step-tab]').forEach(btn => {
       btn.addEventListener('click', () => {
         renderModule(container, moduleId, Number(btn.dataset.stepTab));

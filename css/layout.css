@@ -1,6 +1,6 @@
 /* ==========================================================================
    Layout Styles
-   Architectural grids, Swiss layouting, responsive wrappers
+   Architectural grids, Swiss layouting, fully responsive breakpoints
    ========================================================================== */
 
 *, *::before, *::after {
@@ -11,8 +11,10 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + 24px);
+  scroll-padding-top: calc(var(--header-height) + 20px);
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -22,8 +24,11 @@ body {
   line-height: 1.6;
   font-size: 14px;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -41,6 +46,7 @@ button {
   background: none;
   cursor: pointer;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 input, select, textarea {
@@ -88,20 +94,28 @@ input, select, textarea {
   max-width: var(--max-width);
   height: 100%;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .site-header-inner {
+    padding: 0 24px;
+    gap: 16px;
+  }
 }
 
 /* Brand Logo */
 .brand-link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
   user-select: none;
+  min-width: 0;
 }
 
 .brand-badge {
@@ -109,15 +123,24 @@ input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   background: var(--color-dark);
   color: var(--color-on-dark);
   border-radius: var(--radius-sm);
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: -0.04em;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .brand-badge {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
 }
 
 .brand-dot {
@@ -134,22 +157,40 @@ input, select, textarea {
 .brand-meta {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.15;
   color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .brand-title {
+    font-size: 15px;
+  }
 }
 
 .brand-subtitle {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   color: var(--color-muted);
   letter-spacing: -0.01em;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .brand-subtitle {
+    display: block;
+    font-size: 11px;
+  }
 }
 
 /* Header Navigation Links */
@@ -159,7 +200,7 @@ input, select, textarea {
   gap: 4px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 960px) {
   .header-nav {
     display: flex;
   }
@@ -169,7 +210,7 @@ input, select, textarea {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
+  padding: 7px 13px;
   border-radius: var(--radius-sm);
   font-family: var(--font-display);
   font-size: 12px;
@@ -197,15 +238,22 @@ body.dark .header-nav-btn.active {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .header-actions {
+    gap: 10px;
+  }
 }
 
 /* Search Trigger Pill */
 .search-trigger-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 6px 10px;
   background: var(--color-elevated);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-full);
@@ -213,6 +261,15 @@ body.dark .header-nav-btn.active {
   color: var(--color-muted);
   cursor: pointer;
   transition: all var(--transition-fast);
+  height: 34px;
+}
+
+@media (min-width: 768px) {
+  .search-trigger-btn {
+    padding: 6px 12px;
+    height: 36px;
+    gap: 8px;
+  }
 }
 
 .search-trigger-btn:hover {
@@ -221,11 +278,22 @@ body.dark .header-nav-btn.active {
   box-shadow: var(--shadow-sm);
 }
 
+.search-trigger-text {
+  display: none;
+  font-weight: 600;
+}
+
+@media (min-width: 480px) {
+  .search-trigger-text {
+    display: inline;
+  }
+}
+
 .kbd-badge {
-  display: inline-block;
-  padding: 1px 6px;
+  display: none;
+  padding: 1px 5px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   background: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
@@ -233,20 +301,27 @@ body.dark .header-nav-btn.active {
   color: var(--color-subtle);
 }
 
+@media (min-width: 640px) {
+  .kbd-badge {
+    display: inline-block;
+  }
+}
+
 /* Progress Chip Pill */
 .header-progress-chip {
   display: none;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   background: var(--color-elevated);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-full);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--color-ink);
   text-decoration: none;
   transition: all var(--transition-fast);
+  height: 36px;
 }
 
 @media (min-width: 640px) {
@@ -266,19 +341,27 @@ body.dark .header-nav-btn.active {
   background: var(--color-brand-magenta);
 }
 
-/* Icon Buttons (Theme toggle & mobile menu) */
+/* Icon Action Buttons */
 .icon-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-sm);
   background: var(--color-elevated);
   border: 1px solid var(--color-border-strong);
   color: var(--color-ink);
   cursor: pointer;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .icon-action-btn {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 .icon-action-btn:hover {
@@ -302,12 +385,19 @@ body.dark .header-nav-btn.active {
 .app-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 16px 14px 40px;
   width: 100%;
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
+  grid-template-columns: 100%;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    padding: 24px 20px 48px;
+    gap: 28px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -325,8 +415,8 @@ body.dark .header-nav-btn.active {
   .catalog-sidebar {
     display: block;
     position: sticky;
-    top: calc(var(--header-height) + 24px);
-    max-height: calc(100vh - var(--header-height) - 48px);
+    top: calc(var(--header-height) + 20px);
+    max-height: calc(100vh - var(--header-height) - 40px);
     overflow-y: auto;
     padding-right: 8px;
     scrollbar-width: thin;
@@ -343,7 +433,7 @@ body.dark .header-nav-btn.active {
 }
 
 .sidebar-category-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .sidebar-category-label {
@@ -438,6 +528,7 @@ body.dark .sidebar-track-btn.active {
   padding: 1px 6px;
   border-radius: var(--radius-full);
   background: var(--color-canvas);
+  flex-shrink: 0;
 }
 
 .sidebar-track-btn.active .sidebar-track-count {
@@ -445,40 +536,54 @@ body.dark .sidebar-track-btn.active {
   color: #fff;
 }
 
-/* Main Stage / Main Content */
+/* Main Stage / Content Container */
 .main-stage {
   min-width: 0;
+  max-width: 100%;
 }
 
 /* ==========================================================================
    Footer
-   Inspired by Design Playground's dark architectural bottom section
    ========================================================================== */
 .site-footer {
   margin-top: auto;
   background: var(--color-dark);
   color: var(--color-on-dark);
   border-top: 1px solid var(--color-border-dark);
-  padding: 60px 0 36px;
+  padding: 44px 0 28px;
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding: 60px 0 36px;
+  }
 }
 
 .site-footer-inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .site-footer-inner {
+    padding: 0 24px;
+  }
 }
 
 .footer-top-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 36px;
+  gap: 32px;
   border-bottom: 1px solid var(--color-border-dark);
-  padding-bottom: 44px;
+  padding-bottom: 36px;
 }
 
 @media (min-width: 768px) {
   .footer-top-grid {
     grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 36px;
+    padding-bottom: 44px;
   }
 }
 
@@ -490,19 +595,29 @@ body.dark .sidebar-track-btn.active {
   border-radius: var(--radius-full);
   background: var(--color-dark-elevated);
   border: 1px solid var(--color-border-dark-strong);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--color-on-dark-muted);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .footer-kicker-badge {
+    font-size: 11px;
+  }
 }
 
 .footer-title {
   font-family: var(--font-display);
-  font-size: clamp(22px, 3vw, 32px);
+  font-size: clamp(20px, 4.5vw, 32px);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #fff;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .footer-desc {
@@ -520,7 +635,7 @@ body.dark .sidebar-track-btn.active {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-on-dark-subtle);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .footer-link-list {
@@ -536,6 +651,7 @@ body.dark .sidebar-track-btn.active {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: color var(--transition-fast);
 }
 
 .footer-link-list a:hover {
@@ -546,7 +662,7 @@ body.dark .sidebar-track-btn.active {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-top: 28px;
+  padding-top: 24px;
   font-size: 12px;
   color: var(--color-on-dark-subtle);
 }
@@ -565,7 +681,7 @@ body.dark .sidebar-track-btn.active {
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
   z-index: 90;
   opacity: 0;
@@ -606,11 +722,12 @@ body.dark .sidebar-track-btn.active {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .mobile-drawer-body {
   padding: 16px;
   overflow-y: auto;
   flex: 1;
+  -webkit-overflow-scrolling: touch;
 }
-
