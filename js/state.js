@@ -1,16 +1,40 @@
 /**
- * State Management for Full-Stack Engineering Academy
+ * State Management for Full-Stack, QA & System Architect Academy
  * Persistent local storage, zero login required, fully offline capable.
  */
 
 (function (window) {
   'use strict';
 
-  const STORAGE_KEY = 'engineering-academy.v5';
-  const LEGACY_STORAGE_KEYS = ['engineering-academy.v4', 'engineering-academy.v2'];
+  const STORAGE_KEY = 'engineering-academy.v6';
+  const LEGACY_STORAGE_KEYS = ['engineering-academy.v5', 'engineering-academy.v4', 'engineering-academy.v2'];
+  const VALID_MODES = ['fullstack', 'qa', 'sa'];
+
+  function normalizeModulesRegistry() {
+    if (!Array.isArray(window.MODULES)) {
+      window.MODULES = [];
+    }
+    const seen = new Set(window.MODULES.map(m => m.id));
+    window.MODULES.forEach(m => {
+      if (!m.mode) m.mode = 'fullstack';
+    });
+
+    const extraSets = [window.QA_MODULES, window.SA_MODULES];
+    extraSets.forEach(list => {
+      if (Array.isArray(list)) {
+        list.forEach(m => {
+          if (!seen.has(m.id)) {
+            seen.add(m.id);
+            window.MODULES.push(m);
+          }
+        });
+      }
+    });
+  }
 
   class AcademyState {
     constructor() {
+      normalizeModulesRegistry();
       this.listeners = new Set();
       this.data = this.loadFromStorage();
     }
@@ -31,13 +55,16 @@
         console.warn('Failed to parse previous state:', err);
       }
 
+      const mode = VALID_MODES.includes(parsed.activeMode) ? parsed.activeMode : 'fullstack';
+
       return {
         completed: new Set(Array.isArray(parsed.completed) ? parsed.completed : []),
         bookmarks: new Set(Array.isArray(parsed.bookmarks) ? parsed.bookmarks : []),
         answers: parsed.answers && typeof parsed.answers === 'object' ? parsed.answers : {},
         lessonSteps: parsed.lessonSteps && typeof parsed.lessonSteps === 'object' ? parsed.lessonSteps : {},
         current: typeof parsed.current === 'string' ? parsed.current : null,
-        theme: parsed.theme === 'dark' ? 'dark' : 'light'
+        theme: parsed.theme === 'dark' ? 'dark' : 'light',
+        activeMode: mode
       };
     }
 
@@ -49,7 +76,8 @@
           answers: this.data.answers,
           lessonSteps: this.data.lessonSteps,
           current: this.data.current,
-          theme: this.data.theme
+          theme: this.data.theme,
+          activeMode: this.data.activeMode
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch (err) {
@@ -71,6 +99,32 @@
     subscribe(listener) {
       this.listeners.add(listener);
       return () => this.listeners.delete(listener);
+    }
+
+    getMode() {
+      return this.data.activeMode || 'fullstack';
+    }
+
+    setMode(mode, silent = false) {
+      if (!VALID_MODES.includes(mode)) return;
+      if (this.data.activeMode === mode) return;
+      this.data.activeMode = mode;
+      if (silent) {
+        try {
+          const payload = {
+            completed: [...this.data.completed],
+            bookmarks: [...this.data.bookmarks],
+            answers: this.data.answers,
+            lessonSteps: this.data.lessonSteps,
+            current: this.data.current,
+            theme: this.data.theme,
+            activeMode: this.data.activeMode
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch {}
+      } else {
+        this.save();
+      }
     }
 
     isCompleted(moduleId) {
@@ -138,8 +192,11 @@
       return this.data.theme;
     }
 
-    getProgressStats(modules) {
-      const list = modules || (window.MODULES || []);
+    getProgressStats(modules, modeFilter = null) {
+      let list = modules || (window.MODULES || []);
+      if (modeFilter) {
+        list = list.filter(m => (m.mode || 'fullstack') === modeFilter);
+      }
       const total = list.length;
       const completed = list.filter(m => this.data.completed.has(m.id)).length;
       const percent = total ? Math.round((completed / total) * 100) : 0;
@@ -162,4 +219,3 @@
 
   window.academyState = new AcademyState();
 })(window);
-

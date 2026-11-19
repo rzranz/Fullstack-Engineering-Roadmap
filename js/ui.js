@@ -1,7 +1,7 @@
 /**
- * UI Rendering Engine for Full-Stack Engineering Academy
+ * UI Rendering Engine for Full-Stack, QA & System Architect Academy
  * Aesthetic: Design Playground Layout + iCraft Luminous Color Theme
- * Distinctive Feature: Realistic Folder-Shaped Cards
+ * Separated Modes: Fullstack | QA Engineer | System Architect (SA)
  */
 
 (function (window) {
@@ -11,14 +11,97 @@
 
   const LESSON_STEPS = [
     { id: 'overview', label: 'Ringkasan', short: 'Tujuan Belajar', icon: '01' },
-    { id: 'concepts', label: 'Konsep Inti', short: 'Teori & Fondasi', icon: '02' },
-    { id: 'architecture', label: 'Komparasi', short: 'Arsitektur & Trade-off', icon: '03' },
+    { id: 'concepts', label: 'Konsep Inti', short: 'Teori & Tabel', icon: '02' },
+    { id: 'architecture', label: 'Komparasi', short: 'Trade-off & Analisa', icon: '03' },
     { id: 'code', label: 'Kode & Visual', short: 'Specimen & Alur', icon: '04' },
     { id: 'practices', label: 'Best Practices', short: 'Standar Industri', icon: '05' },
-    { id: 'cases', label: 'Kasus Nyata', short: 'Aplikasi di Pekerjaan', icon: '06' },
+    { id: 'cases', label: 'Kasus Nyata', short: 'Studi Kasus Produksi', icon: '06' },
     { id: 'exercise', label: 'Latihan', short: 'Hands-on Practice', icon: '07' },
     { id: 'quiz', label: 'Cek Pemahaman', short: 'Evaluasi & Kuis', icon: '08' }
   ];
+
+  const MODE_CONFIG = {
+    fullstack: {
+      id: 'fullstack',
+      label: 'Fullstack',
+      directoryLabel: 'FULLSTACK ROADMAP DIRECTORY',
+      directoryDesc: 'Pilih salah satu dari 29 jalur kurikulum Full-Stack dari fondasi web hingga edge security.',
+      kicker: 'FULL-STACK ENGINEERING ACADEMY / 29 JALUR · 156 MODUL · PRODUCTION GRADE',
+      heading: 'FROM WEB FUNDAMENTALS<br>TO DISTRIBUTED ARCHITECTURE.',
+      quote: '“From Clean Code to Enterprise Scalability & Edge Security”',
+      lead: 'Kurikulum komprehensif terarah untuk mendalami rekayasa perangkat lunak modern: fondasi browser, request lifecycle, framework frontend (Vue/Nuxt/React/Next), arsitektur backend multi-bahasa (Go/Java/C#), edge security (Cloudflare/Turnstile), AI/RAG, hingga payment & reliability engineering.',
+      meta: [
+        { label: 'Fokus Rekayasa', value: 'Web to Enterprise Scale' },
+        { label: 'Cakupan Kurikulum', value: '29 Jalur · 156 Modul' },
+        { label: 'Teknologi Utama', value: 'TypeScript · Go · Java · C# · Cloudflare' },
+        { label: 'Akses Belajar', value: '100% Gratis · Offline Ready' }
+      ],
+      methodologyTitle: 'UNDERSTAND → EXPLORE → BUILD → SHIP',
+      methodologySub: 'Bangun intuisi sistem dari siklus request dasar, uji trade-off arsitektur, buat implementasi kode riil, lalu amankan di production edge.',
+      stages: [
+        { num: 'Stage 01', pill: 'UNDERSTAND', title: 'Fondasi Web', desc: 'Pahami request lifecycle, batas tanggung jawab frontend vs backend, DNS, TLS, dan integritas data persisten.' },
+        { num: 'Stage 02', pill: 'EXPLORE', title: 'Arsitektur & Stack', desc: 'Bandingkan framework frontend & backend, REST contract, SQL indexing, dan pola modular monolith vs microservices.' },
+        { num: 'Stage 03', pill: 'BUILD', title: 'Implementasi Riil', desc: 'Pelajari contoh kode specimen multi-bahasa, tangani skenario kegagalan, dan bangun fitur transaksi andal.' },
+        { num: 'Stage 04', pill: 'SHIP & SECURE', title: 'Keamanan & Edge', desc: 'Lindungi origin dengan Cloudflare WAF, Turnstile, bot protection, webhook idempotency, dan observabilitas.', dark: true }
+      ]
+    },
+    qa: {
+      id: 'qa',
+      label: 'QA Engineer',
+      directoryLabel: 'SENIOR QA BLUEPRINT DIRECTORY',
+      directoryDesc: '7 jalur penguasaan Quality Engineering, Automation (Newman/Playwright), Web Vitals & k6.',
+      kicker: 'SENIOR QA ENGINEERING & AUTOMATION / 7 JALUR · 19 MODUL · QUALITY GATE',
+      heading: 'FROM SHIFT-LEFT TESTING<br>TO PRODUCTION QUALITY GATE.',
+      quote: '“From Formal Test Design to Playwright E2E, Core Web Vitals & k6 Load Profiling”',
+      lead: 'Master Blueprint membangun kompetensi Senior Quality Assurance Engineer dari mindset Shift-Left (1x vs 100x biaya), teknik EP/BVA/State Transition/Decision Table, verifikasi SQL & OWASP, Jira/Postman/Newman/Playwright, bedah kode TTFB/LCP/INP/CLS, k6 Load Testing, hingga CI/CD GitHub Actions.',
+      meta: [
+        { label: 'Filosofi & ROI', value: 'Shift-Left & Testing Trophy' },
+        { label: 'Cakupan Materi', value: '7 Jalur · 19 Modul Mendalam' },
+        { label: 'Tools Industri', value: 'Jira · Newman · Playwright · k6' },
+        { label: 'Web Performance', value: 'TTFB · LCP · INP · CLS Fixes' }
+      ],
+      methodologyTitle: 'DESIGN → VERIFY → AUTOMATE → BENCHMARK',
+      methodologySub: 'Ubah peran dari sekadar pengklik UI menjadi Quality Engineer yang mencegah cacat sejak PRD hingga gerbang CI/CD otomatis.',
+      stages: [
+        { num: 'Stage 01', pill: 'DESIGN', title: 'Desain Uji Formal', desc: 'Terapkan EP, BVA titik tepi, State Transition ilegal, Decision Table, serta pemisahan Severity vs Priority.' },
+        { num: 'Stage 02', pill: 'VERIFY', title: 'Manual, SQL & OWASP', desc: 'Uji input ekstrem, presisi IEEE 754, cek duplikasi/orphan SQL, serta tangkap IDOR dan Mass Assignment.' },
+        { num: 'Stage 03', pill: 'AUTOMATE', title: 'Newman & Playwright', desc: 'Pre-request auto-JWT/Idempotency, POM TypeScript, API seeding, dan Fault Injection HTTP 503 via page.route.' },
+        { num: 'Stage 04', pill: 'BENCHMARK', title: 'Web Vitals, k6 & CI', desc: 'Audit TTFB, LCP, INP (yieldToMain), CLS, baca P95/P99 k6, dan orkestrasi sharding di GitHub Actions.', dark: true }
+      ],
+      quickActionModuleId: 'qam19',
+      quickActionLabel: 'Buka Peta Jalan 8 Minggu'
+    },
+    sa: {
+      id: 'sa',
+      label: 'System Architect',
+      directoryLabel: 'SYSTEM DESIGN BLUEPRINT DIRECTORY',
+      directoryDesc: '6 jalur menyeluruh: 9 Modul Inti, 5 Pilar Handling, 9 Studi Kasus Trade-Off & Simulasi.',
+      kicker: 'SYSTEM DESIGN & ARCHITECTURE / 6 JALUR · 14 MODUL · 9 TRADE-OFF CASES',
+      heading: 'FROM NETWORK PROTOCOLS<br>TO DISTRIBUTED RESILIENCE.',
+      quote: '“From L4/L7 & Storage Internals to Consensus, Outbox CDC & Chaos Handling”',
+      lead: 'Master Blueprint System Design dari lapisan jaringan (TCP/QUIC/Anycast), skalabilitas & Load Balancing, mesin penyimpanan (B-Tree vs LSM-Tree & Quorum), caching, CAP/PACELC & Fencing Tokens, Kafka Outbox CDC, Circuit Breaker & Observability, kerangka 4-langkah + 8 kasus klasik, 5 pilar handling produksi, hingga spesifikasi simulasi kausal.',
+      meta: [
+        { label: 'Kerangka Kerja', value: '4-Step Design & QPS Estimation' },
+        { label: 'Cakupan Kurikulum', value: '9 Modul Inti · 5 Pilar Handling' },
+        { label: 'Bank Studi Kasus', value: '9 Trade-Off Cases + 8 Classic Systems' },
+        { label: 'Simulasi Kausal', value: 'Unhandled vs Handled Spec' }
+      ],
+      methodologyTitle: 'CLARIFY → ARCHITECT → HANDLE → TRADE-OFF',
+      methodologySub: 'Setiap keputusan arsitektur memiliki harga. Hitung kapasitas QPS, rancang high-level design, mitigasi bottleneck, dan jelaskan trade-off-nya.',
+      stages: [
+        { num: 'Stage 01', pill: 'NETWORK & SCALE', title: 'Jaringan & Trafik', desc: 'Kuasai L4/L7, DNS Anycast, HTTP/3 QUIC, gRPC/SSE, Stateless Horizontal Scaling, LB, API Gateway & CDN.' },
+        { num: 'Stage 02', pill: 'DATA & CACHE', title: 'Storage & Caching', desc: 'ACID isolation, B-Tree vs LSM-Tree, Quorum R+W>N, Sharding, Singleflight, Bloom Filter & TTL Jitter.' },
+        { num: 'Stage 03', pill: 'DISTRIBUTED', title: 'Konsensus & Event', desc: 'CAP/PACELC, Raft, Fencing Tokens atasi GC pause, Snowflake ID, Transactional Outbox & Debezium CDC.' },
+        { num: 'Stage 04', pill: 'RESILIENCE & OPS', title: 'Ketahanan & Handling', desc: 'Saga, Circuit Breaker, Bulkhead, 5 Pilar Operational Handling, OpenTelemetry & topologi kausal Flash Sale.', dark: true }
+      ],
+      quickActionModuleId: 'sam14',
+      quickActionLabel: 'Topologi Simulasi Kausal'
+    }
+  };
+
+  function getModeMeta(mode) {
+    return MODE_CONFIG[mode] || MODE_CONFIG.fullstack;
+  }
 
   function getLevelClass(level) {
     const l = (level || '').toLowerCase();
@@ -27,9 +110,38 @@
     return 'intermediate';
   }
 
+  function renderModePillBadge(mode) {
+    const m = mode || 'fullstack';
+    const label = m === 'qa' ? 'QA' : (m === 'sa' ? 'SA' : 'FULLSTACK');
+    return `<span class="mode-pill-badge ${m}">${label}</span>`;
+  }
+
+  function renderTablesHTML(tables) {
+    if (!Array.isArray(tables) || !tables.length) return '';
+    return tables.map(table => `
+      <div class="data-table-wrap">
+        ${table.title ? `<div class="data-table-caption">● ${escapeHTML(table.title)}</div>` : ''}
+        <table class="data-table">
+          <thead>
+            <tr>
+              ${(table.headers || []).map(h => `<th>${escapeHTML(h)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${(table.rows || []).map(row => `
+              <tr>
+                ${row.map(cell => `<td>${escapeHTML(cell)}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `).join('');
+  }
+
   // --- Folder Card Components ---
 
-  function renderModuleCard(module, index) {
+  function renderModuleCard(module, index, showModeBadge = false) {
     const state = window.academyState;
     const isDone = state.isCompleted(module.id);
     const levelClass = getLevelClass(module.level);
@@ -43,18 +155,17 @@
                role="button" 
                data-open-module="${module.id}" 
                aria-label="Buka materi ${escapeHTML(module.title)}">
-        <!-- Top Folder Tab Header -->
         <div class="folder-tab-header">
           <div class="folder-tab">
             <span class="folder-tab-icon">📁</span>
             <span>DIR · M${String(index + 1).padStart(2, '0')}</span>
           </div>
-          <div class="folder-tab-filler">
+          <div class="folder-tab-filler" style="gap:5px;">
+            ${showModeBadge ? renderModePillBadge(module.mode) : ''}
             <span class="level-badge ${levelClass}">${escapeHTML(module.level)}</span>
           </div>
         </div>
 
-        <!-- Folder Main Body / Pocket -->
         <div class="folder-body">
           <h4 class="folder-title">${escapeHTML(module.title)}</h4>
           <p class="folder-summary">${escapeHTML(module.summary)}</p>
@@ -77,29 +188,27 @@
     const counts = state.getTrackStats(track.id);
 
     return `
-      <article class="folder-card" 
+      <article class="folder-card ${counts.total > 0 && counts.completed === counts.total ? 'is-completed' : ''}" 
                tabindex="0" 
                role="button" 
                data-open-track="${escapeHTML(track.id)}" 
                aria-label="Buka jalur ${escapeHTML(track.name)}">
-        <!-- Top Folder Tab Header -->
         <div class="folder-tab-header">
           <div class="folder-tab">
             <span class="folder-tab-icon">${escapeHTML(track.icon || '❖')}</span>
-            <span>TRACK · 0${index + 1}</span>
+            <span>TRACK · ${String(index + 1).padStart(2, '0')}</span>
           </div>
           <div class="folder-tab-filler">
             <span class="level-badge beginner">${counts.total} MODUL</span>
           </div>
         </div>
 
-        <!-- Folder Main Body / Pocket -->
         <div class="folder-body">
           <h4 class="folder-title">${escapeHTML(track.name)}</h4>
           <p class="folder-summary">${escapeHTML(track.desc)}</p>
           <div class="folder-footer">
             <span style="font-size:11px; color:var(--color-muted); font-weight:600;">
-              ${counts.completed}/${counts.total} Selesai
+              ${counts.completed}/${counts.total} Selesai (${counts.percent}%)
             </span>
             <span class="folder-footer-action">Buka Jalur →</span>
           </div>
@@ -110,20 +219,24 @@
 
   // --- Views ---
 
-  function renderHome(container) {
+  function renderHome(container, modeOverride = null) {
     const state = window.academyState;
-    const tracks = window.TRACKS || [];
-    const modules = window.MODULES || [];
-    const stats = state.getProgressStats(modules);
+    const mode = modeOverride || state.getMode();
+    const cfg = getModeMeta(mode);
 
-    // Group tracks by category
-    const categories = [...new Set(tracks.map(t => t.category))];
-    const nextModule = modules.find(m => !state.isCompleted(m.id)) || modules[0];
+    const allTracks = window.TRACKS || [];
+    const allModules = window.MODULES || [];
+
+    const modeTracks = allTracks.filter(t => (t.mode || 'fullstack') === mode);
+    const modeModules = allModules.filter(m => (m.mode || 'fullstack') === mode);
+
+    const categories = [...new Set(modeTracks.map(t => t.category))];
+    const nextModule = modeModules.find(m => !state.isCompleted(m.id)) || modeModules[0];
 
     const clustersHTML = categories.map(category => {
-      const groupTracks = tracks.filter(t => t.category === category);
+      const groupTracks = modeTracks.filter(t => t.category === category);
       const cardsHTML = groupTracks.map(t => {
-        const idx = tracks.findIndex(item => item.id === t.id);
+        const idx = modeTracks.findIndex(item => item.id === t.id);
         return renderTrackCard(t, idx);
       }).join('');
 
@@ -143,123 +256,76 @@
       `;
     }).join('');
 
+    const stagesHTML = cfg.stages.map(s => `
+      <div class="stage-card ${s.dark ? 'dark-highlight' : ''}">
+        <div class="stage-card-head">
+          <span class="stage-card-label">${escapeHTML(s.num)}</span>
+          <span class="stage-card-pill">${escapeHTML(s.pill)}</span>
+        </div>
+        <h4 class="stage-card-title">${escapeHTML(s.title)}</h4>
+        <p class="stage-card-desc">${escapeHTML(s.desc)}</p>
+      </div>
+    `).join('');
+
+    const metaHTML = cfg.meta.map(m => `
+      <div class="meta-strip-col">
+        <span class="meta-strip-label">${escapeHTML(m.label)}</span>
+        <span class="meta-strip-value">${escapeHTML(m.value)}</span>
+      </div>
+    `).join('');
+
+    const thirdButtonHTML = cfg.quickActionModuleId
+      ? `<button class="btn btn-outline" data-open-module="${cfg.quickActionModuleId}">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-purple);"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+           ${escapeHTML(cfg.quickActionLabel)}
+         </button>`
+      : `<button class="btn btn-outline" id="quickSearchBtn" data-action="search">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-cyan);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+           Cari Cepat (⌘K)
+         </button>`;
+
     container.innerHTML = `
-      <!-- Hero Section (Exact Design Playground Layout with iCraft Luminous Glow) -->
+      <!-- Hero Section (Design Playground Layout + iCraft Luminous Glow) -->
       <section class="hero-editorial-section playground-grid-bg">
         <div class="hero-kicker-badge">
           <span class="hero-badge-dot"></span>
-          <span>FULL-STACK ENGINEERING ACADEMY / 29 JALUR · 156 MODUL · PRODUCTION GRADE</span>
+          <span>${escapeHTML(cfg.kicker)}</span>
         </div>
 
-        <h1 class="hero-main-heading">
-          FROM WEB FUNDAMENTALS<br>
-          TO DISTRIBUTED ARCHITECTURE.
-        </h1>
+        <h1 class="hero-main-heading">${cfg.heading}</h1>
 
-        <span class="hero-quote-accent">
-          “From Clean Code to Enterprise Scalability &amp; Edge Security”
-        </span>
+        <span class="hero-quote-accent">${cfg.quote}</span>
 
-        <p class="hero-lead-text">
-          Kurikulum komprehensif terarah untuk mendalami rekayasa perangkat lunak modern:
-          fondasi browser, request lifecycle, framework frontend (Vue/Nuxt/React/Next),
-          arsitektur backend multi-bahasa (Go/Java/C#), edge security (Cloudflare/Turnstile),
-          hingga reliability engineering tingkat industri.
-        </p>
+        <p class="hero-lead-text">${escapeHTML(cfg.lead)}</p>
 
-        <!-- 3 Action Buttons -->
         <div class="hero-action-buttons">
           <button class="btn btn-primary" id="startLearningBtn" data-open-module="${nextModule?.id || 'w01'}">
-            Mulai Belajar Sekarang →
+            Mulai Belajar ${escapeHTML(cfg.label)} →
           </button>
           <button class="btn btn-outline" id="browseTracksBtn">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-blue);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             Jelajahi Kurikulum
           </button>
-          <button class="btn btn-outline" id="quickSearchBtn" data-action="search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-brand-cyan);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Cari Cepat (⌘K)
-          </button>
+          ${thirdButtonHTML}
         </div>
 
-        <!-- 4-Column Metadata Info Strip -->
         <div class="hero-meta-strip">
-          <div class="meta-strip-col">
-            <span class="meta-strip-label">Fokus Rekayasa</span>
-            <span class="meta-strip-value">Web to Enterprise Scale</span>
-          </div>
-          <div class="meta-strip-col">
-            <span class="meta-strip-label">Cakupan Kurikulum</span>
-            <span class="meta-strip-value">29 Jalur · 156 Modul</span>
-          </div>
-          <div class="meta-strip-col">
-            <span class="meta-strip-label">Teknologi Utama</span>
-            <span class="meta-strip-value">TypeScript · Go · Java · C# · Cloudflare</span>
-          </div>
-          <div class="meta-strip-col">
-            <span class="meta-strip-label">Akses Belajar</span>
-            <span class="meta-strip-value">100% Gratis · Offline Ready</span>
-          </div>
+          ${metaHTML}
         </div>
       </section>
 
-      <!-- 4-Stage Methodology Section (Exact Design Playground Pattern) -->
+      <!-- 4-Stage Methodology Section -->
       <section class="methodology-section">
         <div class="methodology-header">
           <div>
-            <div class="methodology-kicker">Metodologi Rekayasa</div>
-            <h2 class="methodology-title">UNDERSTAND → EXPLORE → BUILD → SHIP</h2>
+            <div class="methodology-kicker">Metodologi Pembelajaran</div>
+            <h2 class="methodology-title">${escapeHTML(cfg.methodologyTitle)}</h2>
           </div>
-          <p class="methodology-subcopy">
-            Bangun intuisi sistem dari siklus request dasar, uji trade-off arsitektur,
-            buat implementasi kode riil, lalu amankan di production edge.
-          </p>
+          <p class="methodology-subcopy">${escapeHTML(cfg.methodologySub)}</p>
         </div>
 
         <div class="stages-grid">
-          <div class="stage-card">
-            <div class="stage-card-head">
-              <span class="stage-card-label">Stage 01</span>
-              <span class="stage-card-pill">UNDERSTAND</span>
-            </div>
-            <h4 class="stage-card-title">Fondasi Web</h4>
-            <p class="stage-card-desc">
-              Pahami request lifecycle, batas tanggung jawab frontend vs backend, DNS, TLS, dan integritas data persisten.
-            </p>
-          </div>
-
-          <div class="stage-card">
-            <div class="stage-card-head">
-              <span class="stage-card-label">Stage 02</span>
-              <span class="stage-card-pill">EXPLORE</span>
-            </div>
-            <h4 class="stage-card-title">Arsitektur &amp; Trade-off</h4>
-            <p class="stage-card-desc">
-              Bandingkan monolith vs microservices, REST API contract, SQL indexing, ACID transaction, dan caching strategy.
-            </p>
-          </div>
-
-          <div class="stage-card">
-            <div class="stage-card-head">
-              <span class="stage-card-label">Stage 03</span>
-              <span class="stage-card-pill">BUILD</span>
-            </div>
-            <h4 class="stage-card-title">Implementasi Riil</h4>
-            <p class="stage-card-desc">
-              Pelajari contoh kode specimen, tangani skenario kegagalan, terapkan unit testing, dan bangun best practice industri.
-            </p>
-          </div>
-
-          <div class="stage-card dark-highlight">
-            <div class="stage-card-head">
-              <span class="stage-card-label">Stage 04</span>
-              <span class="stage-card-pill">SHIP &amp; SECURE</span>
-            </div>
-            <h4 class="stage-card-title">Keamanan &amp; Edge</h4>
-            <p class="stage-card-desc">
-              Lindungi origin dengan Cloudflare WAF, Turnstile, bot protection, webhook idempotency, dan observabilitas production.
-            </p>
-          </div>
+          ${stagesHTML}
         </div>
       </section>
 
@@ -276,16 +342,6 @@
         if (dir) dir.scrollIntoView({ behavior: 'smooth' });
       });
     }
-
-    const quickSearch = container.querySelector('#quickSearchBtn');
-    if (quickSearch) {
-      quickSearch.addEventListener('click', () => {
-        const input = document.getElementById('searchModalInput');
-        const modal = document.getElementById('searchModalBackdrop');
-        if (modal) modal.classList.add('open');
-        if (input) setTimeout(() => input.focus(), 50);
-      });
-    }
   }
 
   function renderTrack(container, trackId) {
@@ -295,6 +351,7 @@
     if (!track) return renderHome(container);
 
     const state = window.academyState;
+    const trackMode = track.mode || 'fullstack';
     const trackModules = modules.filter(m => m.track === trackId).sort((a, b) => (a.order || 999) - (b.order || 999));
     const counts = state.getTrackStats(trackId, modules);
 
@@ -303,13 +360,16 @@
     container.innerHTML = `
       <div class="reader-wrapper">
         <div class="reader-breadcrumb">
-          <span class="breadcrumb-back-btn" data-action="home">← Kembali ke Beranda</span>
+          <span class="breadcrumb-back-btn" data-action="mode-home" data-mode="${trackMode}">
+            ← Kembali ke Beranda ${escapeHTML(getModeMeta(trackMode).label)}
+          </span>
           <span style="font-family:var(--font-mono); font-weight:700;">${counts.total} Modul dalam Jalur</span>
         </div>
 
         <div class="lesson-hero-box playground-grid-bg">
           <div class="lesson-eyebrow">
-            <span>●</span> JALUR TEKNOLOGI KURIKULUM
+            ${renderModePillBadge(trackMode)}
+            <span>● JALUR TEKNOLOGI KURIKULUM</span>
           </div>
           <h1 class="lesson-main-title">${escapeHTML(track.name)}</h1>
           <p class="lesson-main-summary">${escapeHTML(track.desc)} ${escapeHTML(track.outcome || '')}</p>
@@ -350,7 +410,7 @@
         ).join('');
 
         const refs = (module.refs || []).map(r => 
-          `<li style="margin-bottom:6px;"><a href="${escapeHTML(r)}" target="_blank" rel="noopener" style="color:var(--color-brand-blue); text-decoration:underline;">${escapeHTML(r)}</a></li>`
+          `<li style="margin-bottom:6px;"><a href="${escapeHTML(r)}" target="_blank" rel="noopener" style="color:var(--color-brand-blue); text-decoration:underline; word-break:break-all;">${escapeHTML(r)}</a></li>`
         ).join('');
 
         return `
@@ -383,22 +443,25 @@
       case 'concepts': {
         const conceptCards = (module.concepts || []).map(([title, desc], i) => `
           <div class="concept-item-card">
-            <h4><span class="concept-bullet-dot"></span> 0${i + 1}. ${escapeHTML(title)}</h4>
+            <h4><span class="concept-bullet-dot"></span> ${String(i + 1).padStart(2, '0')}. ${escapeHTML(title)}</h4>
             <p>${escapeHTML(desc)}</p>
           </div>
         `).join('');
 
+        const tablesHTML = renderTablesHTML(module.tables);
+
         return `
           <div class="stage-section-head">
             <span class="stage-number">02</span>
-            <h3 class="stage-heading">Konsep Inti &amp; Landasan Teori</h3>
+            <h3 class="stage-heading">Konsep Inti &amp; Matriks Referensi</h3>
           </div>
           <p style="font-size:13px; color:var(--color-muted); margin-bottom:16px;">
-            Pahami prinsip-prinsip dasar sebelum masuk ke kode program dan implementasi:
+            Pahami prinsip-prinsip dasar beserta parameter atau ambang batas standarnya secara menyeluruh:
           </p>
           <div class="concept-grid">
             ${conceptCards || '<p>Tidak ada konsep tambahan untuk modul ini.</p>'}
           </div>
+          ${tablesHTML}
         `;
       }
 
@@ -406,7 +469,7 @@
         return `
           <div class="stage-section-head">
             <span class="stage-number">03</span>
-            <h3 class="stage-heading">Arsitektur &amp; Komparasi Pendekatan</h3>
+            <h3 class="stage-heading">Arsitektur &amp; Komparasi Trade-Off</h3>
           </div>
           <div class="callout-block" style="background:var(--color-canvas); border-color:var(--color-border-ice);">
             <div class="callout-head">Trade-off &amp; Hubungan Antar Ekosistem:</div>
@@ -422,6 +485,19 @@
         const codeContent = module.code?.content || '// Tidak ada contoh kode.';
         const visual = renderVisualFlow(module);
 
+        const extraCodesHTML = (module.extraCodes || []).map((extra, idx) => `
+          <div class="code-specimen-box ${extra.variant === 'bad' ? 'variant-bad' : ''}">
+            ${extra.title ? `<div class="code-specimen-title-bar">${extra.variant === 'bad' ? '⚠ ' : '✦ '}${escapeHTML(extra.title)}</div>` : ''}
+            <div class="code-specimen-header">
+              <span class="code-lang-tag">● ${escapeHTML(extra.language || 'code')} SPECIMEN</span>
+              <button class="copy-code-btn" data-copy-extra="${module.id}:${idx}">
+                Salin Kode
+              </button>
+            </div>
+            <pre class="code-specimen-pre"><code>${escapeHTML(extra.content)}</code></pre>
+          </div>
+        `).join('');
+
         return `
           <div class="stage-section-head">
             <span class="stage-number">04</span>
@@ -429,6 +505,7 @@
           </div>
           ${visual}
           <div class="code-specimen-box">
+            ${module.code?.extraTitle ? `<div class="code-specimen-title-bar">✦ ${escapeHTML(module.code.extraTitle)}</div>` : ''}
             <div class="code-specimen-header">
               <span class="code-lang-tag">● ${escapeHTML(lang)} SPECIMEN</span>
               <button class="copy-code-btn" data-copy="${module.id}">
@@ -437,13 +514,14 @@
             </div>
             <pre class="code-specimen-pre"><code>${escapeHTML(codeContent)}</code></pre>
           </div>
+          ${extraCodesHTML}
         `;
       }
 
       case 'practices': {
         const practices = (module.practices || []).map((p, i) => `
           <li style="margin-bottom:10px; display:flex; align-items:flex-start; gap:10px;">
-            <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:var(--color-brand-blue); background:var(--color-brand-blue-soft); padding:1px 6px; border-radius:3px;">
+            <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:var(--color-brand-blue); background:var(--color-brand-blue-soft); padding:1px 6px; border-radius:3px; flex-shrink:0;">
               #0${i + 1}
             </span>
             <span style="font-size:13px; line-height:1.6; color:var(--color-ink);">${escapeHTML(p)}</span>
@@ -456,10 +534,10 @@
             <h3 class="stage-heading">Best Practices &amp; Standar Industri</h3>
           </div>
           <p style="font-size:13px; color:var(--color-muted); margin-bottom:16px;">
-            Kebiasaan dan pola yang membedakan kode amatir dari rekayasa perangkat lunak profesional:
+            Kebiasaan dan pola yang membedakan implementasi amatir dari rekayasa perangkat lunak tingkat senior:
           </p>
           <ul style="list-style:none; padding:0;">
-            ${practices || '<li>Terapkan clean code, error handling yang aman, dan penulisan unit test.</li>'}
+            ${practices || '<li>Terapkan clean code, error handling yang aman, dan penulisan pengujian otomatis.</li>'}
           </ul>
         `;
       }
@@ -471,7 +549,7 @@
             <h3 class="stage-heading">Studi Kasus Dunia Nyata</h3>
           </div>
           <div class="callout-block case-study">
-            <div class="callout-head">Skenario Produksi:</div>
+            <div class="callout-head">Skenario Produksi &amp; Trade-Off:</div>
             <p class="callout-body">
               ${escapeHTML(module.case || 'Studi kasus ini menggambarkan bagaimana teknologi diterapkan dalam memecahkan masalah skala besar, integritas data, atau proteksi sistem di dunia kerja riil.')}
             </p>
@@ -555,21 +633,19 @@
     if (!module) return renderHome(container);
 
     const state = window.academyState;
+    const modMode = module.mode || 'fullstack';
     const isDone = state.isCompleted(moduleId);
     const isSaved = state.isBookmarked(moduleId);
 
-    // Track modules context
     const trackModules = modules.filter(m => m.track === module.track).sort((a, b) => (a.order || 999) - (b.order || 999));
     const trackIdx = trackModules.findIndex(m => m.id === moduleId);
 
-    // Step Index
     const currentStepIndex = requestedStep !== null 
       ? requestedStep 
       : state.getLessonStep(moduleId);
     const safeStepIndex = Math.min(Math.max(currentStepIndex, 0), LESSON_STEPS.length - 1);
     state.setLessonStep(moduleId, safeStepIndex);
 
-    // Render Stepper Tabs
     const stepperTabsHTML = LESSON_STEPS.map((step, idx) => {
       const isActive = idx === safeStepIndex;
       const isVisited = idx < safeStepIndex;
@@ -585,7 +661,6 @@
 
     container.innerHTML = `
       <div class="reader-wrapper">
-        <!-- Top Breadcrumb -->
         <div class="reader-breadcrumb">
           <span class="breadcrumb-back-btn" data-action="track" data-track-id="${escapeHTML(module.track)}">
             ← Kembali ke Jalur ${escapeHTML(module.track)}
@@ -595,10 +670,10 @@
           </span>
         </div>
 
-        <!-- Lesson Hero Box -->
         <div class="lesson-hero-box playground-grid-bg">
           <div class="lesson-eyebrow">
-            <span>●</span> ${escapeHTML(module.track)} · TINGKAT ${escapeHTML(module.level).toUpperCase()}
+            ${renderModePillBadge(modMode)}
+            <span>● ${escapeHTML(module.track)} · TINGKAT ${escapeHTML(module.level).toUpperCase()}</span>
           </div>
           <h1 class="lesson-main-title">${escapeHTML(module.title)}</h1>
           <p class="lesson-main-summary">${escapeHTML(module.summary)}</p>
@@ -622,18 +697,15 @@
           </div>
         </div>
 
-        <!-- Sticky Stepper Tab Bar -->
         <div class="lesson-stepper-container">
           <div class="lesson-stepper-track">
             ${stepperTabsHTML}
           </div>
         </div>
 
-        <!-- Lesson Stage Content -->
         <div class="lesson-stage-card">
           ${renderLessonStepContent(module, safeStepIndex)}
 
-          <!-- Stepper Footer Action Bar -->
           <div class="stepper-footer-bar">
             <button class="btn btn-outline" id="prevStepBtn" ${safeStepIndex === 0 ? 'disabled' : ''}>
               ← Langkah Sebelumnya
@@ -653,7 +725,6 @@
       </div>
     `;
 
-    // Event Wire-up
     setTimeout(() => {
       const activeTab = container.querySelector('.step-tab-btn.active');
       if (activeTab && typeof activeTab.scrollIntoView === 'function') {
@@ -711,7 +782,6 @@
       });
     }
 
-    // Quiz Check
     const quizSubmitBtn = container.querySelector('#submitQuizBtn');
     if (quizSubmitBtn && module.quiz) {
       quizSubmitBtn.addEventListener('click', () => {
@@ -735,19 +805,22 @@
     }
   }
 
-  function renderBookmarksPage(container) {
+  function renderBookmarksPage(container, filterMode = 'all') {
     const state = window.academyState;
     const modules = window.MODULES || [];
-    const bookmarkedModules = modules.filter(m => state.isBookmarked(m.id));
+    let bookmarkedModules = modules.filter(m => state.isBookmarked(m.id));
+    if (filterMode !== 'all') {
+      bookmarkedModules = bookmarkedModules.filter(m => (m.mode || 'fullstack') === filterMode);
+    }
 
     const cardsHTML = bookmarkedModules.length
-      ? bookmarkedModules.map((m, i) => renderModuleCard(m, i)).join('')
+      ? bookmarkedModules.map((m, i) => renderModuleCard(m, i, true)).join('')
       : `
         <div style="grid-column: 1 / -1; background:var(--color-elevated); border:1px solid var(--color-border-ice); border-radius:var(--radius-md); padding:40px; text-align:center; box-shadow:var(--shadow-sm);">
           <div style="font-size:32px; margin-bottom:12px; color:var(--color-brand-cyan);">☆</div>
           <h4 style="font-family:var(--font-display); font-size:18px; font-weight:800; margin-bottom:8px; color:var(--color-ink);">Belum Ada Berkas Tersimpan</h4>
           <p style="font-size:13px; color:var(--color-muted); max-width:420px; margin:0 auto 20px;">
-            Saat membaca modul, klik tombol "Simpan Materi" untuk menyimpan berkas penting agar mudah diakses kembali.
+            Saat membaca modul di mode Fullstack, QA, atau SA, klik tombol "Simpan Materi" untuk menyimpan berkas penting agar mudah diakses kembali.
           </p>
           <button class="btn btn-primary" data-action="home">Kembali ke Beranda</button>
         </div>
@@ -762,32 +835,47 @@
 
         <div class="lesson-hero-box playground-grid-bg">
           <div class="lesson-eyebrow">
-            <span>●</span> ARSIP BERKAS PILIHAN
+            <span>●</span> ARSIP BERKAS PILIHAN LINTAS MODE
           </div>
           <h1 class="lesson-main-title">Koleksi Belajarmu</h1>
           <p class="lesson-main-summary">
-            Daftar modul yang kamu simpan untuk ditinjau ulang, didalami, atau dijadikan acuan kode riil dalam project pribadimu.
+            Daftar modul yang kamu simpan dari seluruh jalur Fullstack, QA Engineer, dan System Architect.
           </p>
         </div>
 
-        <div class="section-cluster" style="margin-top:10px;">
+        <div class="mode-filter-row" id="bookmarkFilterRow">
+          <button class="mode-filter-btn ${filterMode === 'all' ? 'active' : ''}" data-bm-filter="all">Semua Mode</button>
+          <button class="mode-filter-btn ${filterMode === 'fullstack' ? 'active' : ''}" data-bm-filter="fullstack">Fullstack</button>
+          <button class="mode-filter-btn ${filterMode === 'qa' ? 'active' : ''}" data-bm-filter="qa">QA Engineer</button>
+          <button class="mode-filter-btn ${filterMode === 'sa' ? 'active' : ''}" data-bm-filter="sa">System Architect</button>
+        </div>
+
+        <div class="section-cluster" style="margin-top:6px;">
           <div class="bento-grid">
             ${cardsHTML}
           </div>
         </div>
       </div>
     `;
+
+    container.querySelectorAll('[data-bm-filter]').forEach(btn => {
+      btn.addEventListener('click', () => renderBookmarksPage(container, btn.dataset.bmFilter));
+    });
   }
 
-  function renderSearchPage(container, query) {
+  function renderSearchPage(container, query, filterMode = 'all') {
     const { searchModules } = window.academySearch;
-    const results = searchModules(query);
+    const modeArg = filterMode === 'all' ? null : filterMode;
+    const results = searchModules(query, null, null, modeArg);
 
     const resultsHTML = results.length
       ? results.map(r => `
           <div class="search-result-item" tabindex="0" role="button" data-open-module="${r.module.id}">
             <div class="search-result-header">
-              <span class="search-match-chip">${escapeHTML(r.matchType)}</span>
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                ${renderModePillBadge(r.module.mode)}
+                <span class="search-match-chip">${escapeHTML(r.matchType)}</span>
+              </div>
               <span style="font-size:11px; color:var(--color-muted); font-weight:600;">${escapeHTML(r.module.track)} · ${escapeHTML(r.module.level)}</span>
             </div>
             <h4 class="search-item-title">${escapeHTML(r.module.title)}</h4>
@@ -801,7 +889,7 @@
       : `
         <div style="background:var(--color-elevated); border:1px solid var(--color-border-ice); border-radius:var(--radius-md); padding:40px; text-align:center; box-shadow:var(--shadow-sm);">
           <h4 style="font-family:var(--font-display); font-size:16px; font-weight:800; margin-bottom:8px; color:var(--color-ink);">Tidak ditemukan hasil untuk "${escapeHTML(query)}"</h4>
-          <p style="font-size:13px; color:var(--color-muted);">Coba gunakan istilah pencarian lain seperti 'REST', 'JWT', 'Vue', 'Spring', atau 'Cloudflare'.</p>
+          <p style="font-size:13px; color:var(--color-muted);">Coba gunakan istilah seperti 'Playwright', 'LCP', 'k6', 'Fencing', 'Outbox', 'REST', atau 'JWT'.</p>
         </div>
       `;
 
@@ -814,29 +902,49 @@
 
         <div class="lesson-hero-box playground-grid-bg">
           <div class="lesson-eyebrow">
-            <span>●</span> PENCARIAN GLOBAL
+            <span>●</span> PENCARIAN GLOBAL LINTAS KURIKULUM
           </div>
           <h1 class="lesson-main-title">Hasil Pencarian: "${escapeHTML(query)}"</h1>
           <p class="lesson-main-summary">
-            Pencarian menelusuri judul, konsep inti, komparasi arsitektur, kode, best practices, dan studi kasus dari seluruh 156 modul.
+            Menelusuri judul, konsep, tabel referensi, contoh kode, best practices, dan studi kasus di seluruh mode Fullstack, QA Engineer, dan System Architect.
           </p>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+        <div class="mode-filter-row">
+          <button class="mode-filter-btn ${filterMode === 'all' ? 'active' : ''}" data-search-filter="all">Semua Mode</button>
+          <button class="mode-filter-btn ${filterMode === 'fullstack' ? 'active' : ''}" data-search-filter="fullstack">Fullstack</button>
+          <button class="mode-filter-btn ${filterMode === 'qa' ? 'active' : ''}" data-search-filter="qa">QA Engineer</button>
+          <button class="mode-filter-btn ${filterMode === 'sa' ? 'active' : ''}" data-search-filter="sa">System Architect</button>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:6px;">
           ${resultsHTML}
         </div>
       </div>
     `;
+
+    container.querySelectorAll('[data-search-filter]').forEach(btn => {
+      btn.addEventListener('click', () => renderSearchPage(container, query, btn.dataset.searchFilter));
+    });
   }
 
-  function renderSidebar(sidebarContainer) {
+  function renderSidebar(sidebarContainer, modeOverride = null) {
     if (!sidebarContainer) return;
     const tracks = window.TRACKS || [];
     const state = window.academyState;
-    const categories = [...new Set(tracks.map(t => t.category))];
+    const mode = modeOverride || state.getMode();
+    const cfg = getModeMeta(mode);
+
+    const dirLabelEl = document.getElementById('sidebarDirectoryLabel');
+    const dirDescEl = document.getElementById('sidebarDirectoryDesc');
+    if (dirLabelEl) dirLabelEl.textContent = `● ${cfg.directoryLabel}`;
+    if (dirDescEl) dirDescEl.textContent = cfg.directoryDesc;
+
+    const modeTracks = tracks.filter(t => (t.mode || 'fullstack') === mode);
+    const categories = [...new Set(modeTracks.map(t => t.category))];
 
     const html = categories.map(category => {
-      const groupTracks = tracks.filter(t => t.category === category);
+      const groupTracks = modeTracks.filter(t => t.category === category);
       const itemsHTML = groupTracks.map(track => {
         const counts = state.getTrackStats(track.id);
         return `
@@ -872,6 +980,8 @@
     renderModule,
     renderBookmarksPage,
     renderSearchPage,
-    renderSidebar
+    renderSidebar,
+    renderModePillBadge,
+    getModeMeta
   };
 })(window);

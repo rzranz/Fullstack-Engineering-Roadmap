@@ -1,4 +1,4 @@
-// Tracks Data (Fullstack Engineering Academy)
+// Tracks Data (Fullstack, QA, and System Architect Modes)
 window.TRACKS = [
   {
     "id": "Web Fundamentals",
@@ -6,7 +6,8 @@ window.TRACKS = [
     "category": "Fondasi Web",
     "desc": "Pahami internet, browser, request lifecycle, terminal, dan cara kerja aplikasi web.",
     "icon": "◎",
-    "outcome": "Mampu menelusuri request dari browser ke server dan bekerja dengan tool developer."
+    "outcome": "Mampu menelusuri request dari browser ke server dan bekerja dengan tool developer.",
+    "mode": "fullstack"
   },
   {
     "id": "HTML",
@@ -14,7 +15,8 @@ window.TRACKS = [
     "category": "Fondasi Web",
     "desc": "Bangun struktur dokumen web yang semantik, valid, dan aksesibel.",
     "icon": "H",
-    "outcome": "Mampu membuat halaman, form, navigasi, dan struktur konten yang benar."
+    "outcome": "Mampu membuat halaman, form, navigasi, dan struktur konten yang benar.",
+    "mode": "fullstack"
   },
   {
     "id": "CSS",
@@ -22,7 +24,8 @@ window.TRACKS = [
     "category": "Fondasi Web",
     "desc": "Kuasai cascade, box model, layout, responsive design, dan design system.",
     "icon": "▤",
-    "outcome": "Mampu membuat UI konsisten, responsif, dan mudah dirawat."
+    "outcome": "Mampu membuat UI konsisten, responsif, dan mudah dirawat.",
+    "mode": "fullstack"
   },
   {
     "id": "JavaScript",
@@ -30,7 +33,8 @@ window.TRACKS = [
     "category": "Fondasi Web",
     "desc": "Pelajari bahasa browser: data, function, DOM, event, asynchronous flow, dan module.",
     "icon": "JS",
-    "outcome": "Mampu membangun interaksi web dan memahami runtime JavaScript."
+    "outcome": "Mampu membangun interaksi web dan memahami runtime JavaScript.",
+    "mode": "fullstack"
   },
   {
     "id": "TypeScript & Frontend Tooling",
@@ -38,7 +42,8 @@ window.TRACKS = [
     "category": "Fondasi Web",
     "desc": "Tambahkan type safety, tooling, bundling, linting, dan runtime schema validation.",
     "icon": "TS",
-    "outcome": "Mampu membangun frontend JavaScript yang typed dan konsisten."
+    "outcome": "Mampu membangun frontend JavaScript yang typed dan konsisten.",
+    "mode": "fullstack"
   },
   {
     "id": "Vue 3",
@@ -46,7 +51,8 @@ window.TRACKS = [
     "category": "Frontend Framework",
     "desc": "Pelajari component, Composition API, reactivity, router, state, forms, dan testing.",
     "icon": "V",
-    "outcome": "Mampu membangun aplikasi Vue yang modular dan teruji."
+    "outcome": "Mampu membangun aplikasi Vue yang modular dan teruji.",
+    "mode": "fullstack"
   },
   {
     "id": "Nuxt",
@@ -54,7 +60,8 @@ window.TRACKS = [
     "category": "Frontend Framework",
     "desc": "Gunakan Vue melalui Nuxt: file routing, rendering, data fetching, server routes, dan deployment.",
     "icon": "N",
-    "outcome": "Mampu membangun aplikasi Nuxt yang aman dan production-minded."
+    "outcome": "Mampu membangun aplikasi Nuxt yang aman dan production-minded.",
+    "mode": "fullstack"
   },
   {
     "id": "React",
@@ -62,7 +69,8 @@ window.TRACKS = [
     "category": "Frontend Framework",
     "desc": "Pahami JSX, components, props, state, hooks, effects, forms, dan architecture.",
     "icon": "R",
-    "outcome": "Mampu membangun UI React yang terstruktur dan efisien."
+    "outcome": "Mampu membangun UI React yang terstruktur dan efisien.",
+    "mode": "fullstack"
   },
   {
     "id": "Next.js",
@@ -70,7 +78,8 @@ window.TRACKS = [
     "category": "Frontend Framework",
     "desc": "Pelajari App Router, server/client components, data fetching, caching, mutations, dan deployment.",
     "icon": "NX",
-    "outcome": "Mampu membangun aplikasi Next.js dengan trust boundary yang jelas."
+    "outcome": "Mampu membangun aplikasi Next.js dengan trust boundary yang jelas.",
+    "mode": "fullstack"
   },
   {
     "id": "API Design & REST",
@@ -78,7 +87,8 @@ window.TRACKS = [
     "category": "Backend Foundations",
     "desc": "Rancang HTTP API yang konsisten, RESTful, terdokumentasi, dan aman.",
     "icon": "API",
-    "outcome": "Mampu merancang API contract yang digunakan web, mobile, dan integrasi partner."
+    "outcome": "Mampu merancang API contract yang digunakan web, mobile, dan integrasi partner.",
+    "mode": "fullstack"
   },
   {
     "id": "Web Security & Authentication",
@@ -86,7 +96,8 @@ window.TRACKS = [
     "category": "Security & Platform",
     "desc": "Pahami authentication, authorization, sessions, CORS, CSRF, OWASP, dan secure coding.",
     "icon": "SEC",
-    "outcome": "Mampu mengamankan browser-to-backend flow dan data pengguna."
+    "outcome": "Mampu mengamankan browser-to-backend flow dan data pengguna.",
+    "mode": "fullstack"
   },
   {
     "id": "SQL & Database",
@@ -94,7 +105,8 @@ window.TRACKS = [
     "category": "Backend Foundations",
     "desc": "Pelajari relational modeling, SQL, query plan, indexing, transaction, dan locking.",
     "icon": "DB",
-    "outcome": "Mampu merancang schema dan menjaga data consistency."
+    "outcome": "Mampu merancang schema dan menjaga data consistency.",
+    "mode": "fullstack"
   },
   {
     "id": "Go",
@@ -102,7 +114,8 @@ window.TRACKS = [
     "category": "Backend Languages",
     "desc": "Dalami Go: type system, pointers, interfaces, errors, context, HTTP, database, concurrency, dan testing.",
     "icon": "GO",
-    "outcome": "Mampu membuat backend Go idiomatis dan dapat dioperasikan."
+    "outcome": "Mampu membuat backend Go idiomatis dan dapat dioperasikan.",
+    "mode": "fullstack"
   },
   {
     "id": "Java",
@@ -110,7 +123,8 @@ window.TRACKS = [
     "category": "Backend Languages",
     "desc": "Kuasai Java modern: OOP, types, generics, collections, exceptions, JVM, dan memory.",
     "icon": "J",
-    "outcome": "Mampu membaca dan menulis Java sebelum menggunakan Spring."
+    "outcome": "Mampu membaca dan menulis Java sebelum menggunakan Spring.",
+    "mode": "fullstack"
   },
   {
     "id": "Spring Boot",
@@ -118,7 +132,8 @@ window.TRACKS = [
     "category": "Backend Frameworks",
     "desc": "Bangun backend Java dengan Spring Core, MVC, JPA, transactions, security, dan testing.",
     "icon": "SB",
-    "outcome": "Mampu membangun modular monolith Spring Boot yang siap dikembangkan."
+    "outcome": "Mampu membangun modular monolith Spring Boot yang siap dikembangkan.",
+    "mode": "fullstack"
   },
   {
     "id": "C#",
@@ -126,7 +141,8 @@ window.TRACKS = [
     "category": "Backend Languages",
     "desc": "Pelajari C#: types, OOP, records, generics, LINQ, async/await, dan CLR.",
     "icon": "C#",
-    "outcome": "Mampu memahami bahasa C# dan runtime .NET."
+    "outcome": "Mampu memahami bahasa C# dan runtime .NET.",
+    "mode": "fullstack"
   },
   {
     "id": "ASP.NET Core",
@@ -134,7 +150,8 @@ window.TRACKS = [
     "category": "Backend Frameworks",
     "desc": "Bangun API .NET dengan middleware, DI, controllers, EF Core, security, dan observability.",
     "icon": ".NET",
-    "outcome": "Mampu membangun backend ASP.NET Core yang maintainable."
+    "outcome": "Mampu membangun backend ASP.NET Core yang maintainable.",
+    "mode": "fullstack"
   },
   {
     "id": "Software Architecture & System Design",
@@ -142,7 +159,8 @@ window.TRACKS = [
     "category": "Architecture & Professional Engineering",
     "desc": "Rancang sistem dengan clean code, SOLID, architecture styles, patterns, reliability, dan trade-off.",
     "icon": "SYS",
-    "outcome": "Mampu menjelaskan keputusan arsitektur berdasarkan kebutuhan, risiko, tim, dan skala."
+    "outcome": "Mampu menjelaskan keputusan arsitektur berdasarkan kebutuhan, risiko, tim, dan skala.",
+    "mode": "fullstack"
   },
   {
     "id": "Git & Team Collaboration",
@@ -150,7 +168,8 @@ window.TRACKS = [
     "category": "Professional Engineering",
     "icon": "GIT",
     "desc": "Workflow version control, branching, pull request, code review, dan release untuk kerja tim.",
-    "outcome": "Mampu mengirim perubahan yang kecil, dapat direview, dan aman untuk digabungkan."
+    "outcome": "Mampu mengirim perubahan yang kecil, dapat direview, dan aman untuk digabungkan.",
+    "mode": "fullstack"
   },
   {
     "id": "Testing & Quality Engineering",
@@ -158,7 +177,8 @@ window.TRACKS = [
     "category": "Professional Engineering",
     "icon": "QA",
     "desc": "Strategi unit, integration, contract, E2E, performance, dan quality gates lintas stack.",
-    "outcome": "Mampu membuktikan behavior sistem melalui test yang stabil dan relevan."
+    "outcome": "Mampu membuktikan behavior sistem melalui test yang stabil dan relevan.",
+    "mode": "fullstack"
   },
   {
     "id": "DevOps & Delivery",
@@ -166,7 +186,8 @@ window.TRACKS = [
     "category": "Professional Engineering",
     "icon": "OPS",
     "desc": "Linux, Docker, CI/CD, deployment, configuration, monitoring, backup, dan incident response.",
-    "outcome": "Mampu membawa aplikasi dari laptop ke staging/production dan mengoperasikannya."
+    "outcome": "Mampu membawa aplikasi dari laptop ke staging/production dan mengoperasikannya.",
+    "mode": "fullstack"
   },
   {
     "id": "Cloudflare & Edge Security",
@@ -174,7 +195,8 @@ window.TRACKS = [
     "category": "Security & Platform",
     "icon": "CF",
     "desc": "Pahami DNS proxy, CDN, WAF, bot prevention, Turnstile, rate limiting, dan origin protection.",
-    "outcome": "Mampu menerapkan perlindungan edge secara bertahap tanpa merusak traffic valid."
+    "outcome": "Mampu menerapkan perlindungan edge secara bertahap tanpa merusak traffic valid.",
+    "mode": "fullstack"
   },
   {
     "id": "Professional Full-stack Workflow",
@@ -182,7 +204,8 @@ window.TRACKS = [
     "category": "Professional Engineering",
     "icon": "PRO",
     "desc": "Cara bekerja end-to-end: requirement, design, estimasi, coding, review, release, dan maintenance.",
-    "outcome": "Mampu memiliki feature secara end-to-end dan berkomunikasi efektif di tim."
+    "outcome": "Mampu memiliki feature secara end-to-end dan berkomunikasi efektif di tim.",
+    "mode": "fullstack"
   },
   {
     "id": "Cloudflare Bot Prevention",
@@ -190,7 +213,8 @@ window.TRACKS = [
     "category": "Security & Platform",
     "desc": "Threat modeling bot, bot signals, Bot Fight Mode, WAF, Turnstile, rate limiting, origin protection, dan incident response.",
     "icon": "BOT",
-    "outcome": "Mampu merancang mitigasi bot berdasarkan risiko tanpa memblokir traffic sah."
+    "outcome": "Mampu merancang mitigasi bot berdasarkan risiko tanpa memblokir traffic sah.",
+    "mode": "fullstack"
   },
   {
     "id": "AI & RAG Engineering",
@@ -198,7 +222,8 @@ window.TRACKS = [
     "category": "AI & Data Engineering",
     "desc": "AI/ML fundamentals, embeddings, document ingestion, vector search, RAG pipeline, evaluation, dan local-first AI.",
     "icon": "AI",
-    "outcome": "Mampu membangun dan mengevaluasi semantic search/RAG dengan kontrol biaya dan data."
+    "outcome": "Mampu membangun dan mengevaluasi semantic search/RAG dengan kontrol biaya dan data.",
+    "mode": "fullstack"
   },
   {
     "id": "Android & Mobile Reengineering",
@@ -206,7 +231,8 @@ window.TRACKS = [
     "category": "Application & Reengineering",
     "desc": "Android Java/Kotlin, lifecycle, API integration, secure storage, dan strategi migrasi aplikasi lama.",
     "icon": "AND",
-    "outcome": "Mampu memahami dan memodernisasi mobile client yang terhubung ke backend."
+    "outcome": "Mampu memahami dan memodernisasi mobile client yang terhubung ke backend.",
+    "mode": "fullstack"
   },
   {
     "id": "Realtime Web & Game Systems",
@@ -214,7 +240,8 @@ window.TRACKS = [
     "category": "Application & Reengineering",
     "desc": "Polling, SSE, WebSocket, Phaser, multiplayer state, authoritative server, dan reconnect.",
     "icon": "RT",
-    "outcome": "Mampu memilih dan membangun komunikasi realtime sesuai kebutuhan produk."
+    "outcome": "Mampu memilih dan membangun komunikasi realtime sesuai kebutuhan produk.",
+    "mode": "fullstack"
   },
   {
     "id": "Payment Integration & Webhooks",
@@ -222,7 +249,8 @@ window.TRACKS = [
     "category": "Backend & Integration",
     "desc": "Payment lifecycle, provider adapter, webhook signature, idempotency, refund, dan reconciliation.",
     "icon": "PAY",
-    "outcome": "Mampu mengintegrasikan payment provider dengan aman dan dapat diaudit."
+    "outcome": "Mampu mengintegrasikan payment provider dengan aman dan dapat diaudit.",
+    "mode": "fullstack"
   },
   {
     "id": "Project Labs & Reengineering",
@@ -230,6 +258,124 @@ window.TRACKS = [
     "category": "Project Implementation",
     "desc": "Studi kasus implementasi FlowLedger, ClaimFlow, cinema booking, dan SmartFind yang menggabungkan stack dan best practices.",
     "icon": "LAB",
-    "outcome": "Mampu menerapkan ilmu lintas jalur ke proyek nyata dan menjelaskan trade-off-nya."
+    "outcome": "Mampu menerapkan ilmu lintas jalur ke proyek nyata dan menjelaskan trade-off-nya.",
+    "mode": "fullstack"
+  },
+  {
+    "id": "QA Mindset & Formal Test Design",
+    "name": "QA Mindset & Formal Test Design",
+    "mode": "qa",
+    "category": "1. Fondasi & Desain Pengujian",
+    "desc": "Shift-Left Testing (1x vs 100x biaya), Testing Trophy ROI, Equivalence Partitioning, Boundary Value Analysis, State Transition, Decision Table, serta Severity vs Priority.",
+    "icon": "QA1",
+    "outcome": "Mampu merancang test plan formal berstandar Senior QA sejak tahap pembacaan PRD sebelum kode ditulis."
+  },
+  {
+    "id": "Manual QA, SQL Integrity & OWASP Checks",
+    "name": "Manual QA, SQL Integrity & OWASP Checks",
+    "mode": "qa",
+    "category": "1. Fondasi & Desain Pengujian",
+    "desc": "Detail edge-case manual (10.000 char, emoji/RTL, IEEE 754 finansial, UTC/kabisat, konkurensi), SQL audit ledger & orphan records, serta OWASP IDOR & Mass Assignment.",
+    "icon": "SQL",
+    "outcome": "Mampu memverifikasi integritas data langsung di database dan menemukan celah otorisasi sebelum rilis."
+  },
+  {
+    "id": "Jira Traceability & Bug Forensics",
+    "name": "Jira Traceability & Bug Forensics",
+    "mode": "qa",
+    "category": "2. Tools Industri & Manajemen Mutu",
+    "desc": "Relasi traceability User Story, penulisan skenario Gherkin atomik, Template Bug Report produksi lengkap (.har/cURL), dan filter JQL harian untuk Release Gate.",
+    "icon": "JRA",
+    "outcome": "Mampu menulis bug report forensik yang dapat direproduksi cepat dan mengontrol release blocker via JQL."
+  },
+  {
+    "id": "Postman & Newman API Automation",
+    "name": "Postman & Newman API Automation",
+    "mode": "qa",
+    "category": "2. Tools Industri & Manajemen Mutu",
+    "desc": "Arsitektur variabel Environment vs Collection, Pre-request Script auto-JWT & Idempotency-Key GUID, assertions pm.test lengkap, dan eksekusi CLI via Newman.",
+    "icon": "API",
+    "outcome": "Mampu membangun suite regresi API otomatis yang deterministik dan mengekspor laporan JUnit XML."
+  },
+  {
+    "id": "Playwright TypeScript E2E Suite",
+    "name": "Playwright TypeScript E2E Suite",
+    "mode": "qa",
+    "category": "3. Test Automation & Anti-Flaky",
+    "desc": "Struktur proyek POM TypeScript, hierarki selektor aksesibilitas, API Seeding, Fault Injection (page.route 503), Web Vitals Quality Gate, dan playwright.config.ts.",
+    "icon": "E2E",
+    "outcome": "Mampu membangun framework E2E anti-flaky dengan rekaman trace forensik dan validasi degradasi jaringan."
+  },
+  {
+    "id": "Web Performance Engineering (Core Web Vitals)",
+    "name": "Web Performance Engineering (Core Web Vitals)",
+    "mode": "qa",
+    "category": "4. Web Performance & Load Profiling",
+    "desc": "Ambang batas 75th percentile TTFB, LCP, INP, dan CLS, diagnosis Chrome DevTools, serta studi kasus perbaikan kode nyata frontend (preload AVIF, yieldToMain, layout containment).",
+    "icon": "CWV",
+    "outcome": "Mampu mendiagnosis bottleneck performa di DevTools dan mengaudit perbaikan kode LCP, INP, dan CLS."
+  },
+  {
+    "id": "k6 Load Testing, CI/CD & 8-Week Roadmap",
+    "name": "k6 Load Testing, CI/CD & 8-Week Roadmap",
+    "mode": "qa",
+    "category": "4. Web Performance & Load Profiling",
+    "desc": "Load/Stress/Spike testing dengan skrip k6 (P95/P99 TTFB thresholds), pipeline paralel GitHub Actions (Newman + Playwright Sharding), serta peta jalan belajar 8 minggu.",
+    "icon": "K6",
+    "outcome": "Mampu menguji titik patah backend, mengotomasi Quality Gate pada Pull Request, dan mengeksekusi roadmap 8 minggu."
+  },
+  {
+    "id": "Fondasi Jaringan, Protokol & Trafik",
+    "name": "Fondasi Jaringan, Protokol & Trafik",
+    "mode": "sa",
+    "category": "1. Jaringan, Protokol & Traffic Scale",
+    "desc": "Modul 1–2: Model L4/L7, hierarki DNS & Anycast/GeoDNS, evolusi HTTP/1.1 → HTTP/3 QUIC, REST/GraphQL/gRPC/SSE/WebSocket, TLS/mTLS, Scaling, LB, API Gateway, CDN & Studi Kasus 1–2.",
+    "icon": "NET",
+    "outcome": "Mampu memilih protokol jaringan, strategi load balancing, dan lapisan edge proxy secara presisi sesuai trade-off."
+  },
+  {
+    "id": "Penyimpanan Data, DB Internals & Caching",
+    "name": "Penyimpanan Data, DB Internals & Caching",
+    "mode": "sa",
+    "category": "2. Penyimpanan Data & Akselerasi",
+    "desc": "Modul 3–4: ACID & Isolation Levels, B-Tree vs LSM-Tree, Indexing, NoSQL Spesialis, Replication Quorum (R+W>N), Sharding, Cache Patterns & Stampede/Penetration/Avalanche + Studi Kasus 3–4.",
+    "icon": "DB",
+    "outcome": "Mampu merancang skema penyimpanan berkinerja tinggi, memilih storage engine tepat, dan mencegah kegagalan cache."
+  },
+  {
+    "id": "Sistem Terdistribusi, Konsensus & Event-Driven",
+    "name": "Sistem Terdistribusi, Konsensus & Event-Driven",
+    "mode": "sa",
+    "category": "3. Sistem Terdistribusi & Event Streaming",
+    "desc": "Modul 5–6: CAP & PACELC, Spektrum Konsistensi, Raft/Paxos, Fencing Tokens, Logical Clocks, Snowflake ID, Kafka vs Queue, Transactional Outbox & CDC, Flink/Kappa + Studi Kasus 5–6.",
+    "icon": "DST",
+    "outcome": "Mampu mengatasi race condition lintas-mesin, masalah dual-write, dan merancang pipeline event-driven andal."
+  },
+  {
+    "id": "Microservices, Ketahanan, Keamanan & Observabilitas",
+    "name": "Microservices, Ketahanan, Keamanan & Observabilitas",
+    "mode": "sa",
+    "category": "4. Arsitektur Layanan, Security & Ops",
+    "desc": "Modul 7–8: Modular Monolith vs Microservices, Service Mesh, Saga/CQRS/Event Sourcing, Circuit Breaker/Bulkhead/Rate Limit, OAuth2/OIDC, OpenTelemetry RED/USE, Canary & DR + Studi Kasus 7–8.",
+    "icon": "RES",
+    "outcome": "Mampu mengisolasi kegagalan berantai, mengaudit latensi lintas-layanan, dan merancang rilis zero-downtime."
+  },
+  {
+    "id": "Kerangka Desain 4-Langkah & Studi Kasus Klasik",
+    "name": "Kerangka Desain 4-Langkah & Studi Kasus Klasik",
+    "mode": "sa",
+    "category": "5. Design Framework & Case Blueprints",
+    "desc": "Modul 9: Kerangka desain 4-langkah, estimasi Back-of-the-Envelope (Average & Peak QPS), Peta 8 Studi Kasus Klasik (TinyURL, Twitter, WhatsApp, Uber, YouTube, Flash Sale, Wallet, GDrive) + Studi Kasus 9.",
+    "icon": "ARC",
+    "outcome": "Mampu membedah desain sistem skala jutaan pengguna secara sistematis dengan perhitungan kapasitas terukur."
+  },
+  {
+    "id": "Operasional Handling & Simulasi Kausal",
+    "name": "Operasional Handling & Simulasi Kausal",
+    "mode": "sa",
+    "category": "6. Pilar Operasional & Simulasi Topologi",
+    "desc": "5 Pilar Operasional Handling (Overload, Failure, Concurrency, Cache/Storage, Incident) serta Spesifikasi Simulasi Kausalitas Visual & Topologi Flash Sale (Unhandled vs Handled).",
+    "icon": "OPS",
+    "outcome": "Mampu menerapkan standar handling insiden produksi dan memvisualisasikan perilaku kausal arsitektur."
   }
 ];

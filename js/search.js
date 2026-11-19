@@ -1,5 +1,5 @@
 /**
- * Search Engine for Full-Stack Engineering Academy
+ * Search Engine for Full-Stack, QA & System Architect Academy
  * Multi-field weighted scoring with contextual snippet extraction.
  */
 
@@ -14,17 +14,21 @@
 
   function moduleSearchFields(module, tracks) {
     const track = (tracks || window.TRACKS || []).find(item => item.id === module.track);
+    const extraCodeText = (module.extraCodes || []).map(c => `${c.title || ''} ${c.content || ''}`).join(' ');
+    const tableText = (module.tables || []).map(t => `${t.title || ''} ${(t.headers || []).join(' ')} ${(t.rows || []).flat().join(' ')}`).join(' ');
+
     return [
       { label: 'Judul materi', weight: 14, text: module.title || '' },
       { label: 'Jalur teknologi', weight: 9, text: `${module.track || ''} ${track?.desc || ''} ${track?.outcome || ''}` },
       { label: 'Ringkasan & tujuan', weight: 7, text: module.summary || '' },
       { label: 'Konsep inti', weight: 7, text: (module.concepts || []).flat().join(' ') },
-      { label: 'Contoh kode', weight: 8, text: `${module.code?.language || ''} ${module.code?.content || ''}` },
+      { label: 'Contoh kode', weight: 8, text: `${module.code?.language || ''} ${module.code?.content || ''} ${extraCodeText}` },
+      { label: 'Tabel referensi', weight: 6, text: tableText },
       { label: 'Arsitektur & komparasi', weight: 5, text: module.compare || '' },
       { label: 'Best practices', weight: 5, text: (module.practices || []).join(' ') },
       { label: 'Studi kasus', weight: 5, text: module.case || '' },
       { label: 'Latihan mandiri', weight: 4, text: module.exercise?.scenario || module.exercise?.task || (typeof module.exercise === 'string' ? module.exercise : '') },
-      { label: 'Cek pemahaman', weight: 3, text: `${module.quiz?.question || ''} ${(module.quiz?.options || []).join(' ')}` }
+      { label: 'Cek pemahaman', weight: 3, text: `${module.quiz?.question || ''} ${(module.quiz?.options || []).join(' ')} ${module.quiz?.explanation || ''}` }
     ];
   }
 
@@ -52,11 +56,15 @@
     return `${start > 0 ? '…' : ''}${clean.slice(start, end)}${end < clean.length ? '…' : ''}`;
   }
 
-  function searchModules(query, modules, tracks) {
+  function searchModules(query, modules, tracks, modeFilter = null) {
     const term = (query || '').trim().toLowerCase();
     if (!term) return [];
 
-    const list = modules || window.MODULES || [];
+    let list = modules || window.MODULES || [];
+    if (modeFilter) {
+      list = list.filter(m => (m.mode || 'fullstack') === modeFilter);
+    }
+
     const tokens = [...new Set(term.split(/\s+/).filter(Boolean))];
 
     return list.map(module => {
@@ -101,4 +109,3 @@
     escapeHTML
   };
 })(window);
-

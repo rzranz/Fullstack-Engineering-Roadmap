@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f2f2f2">
-  <meta name="description" content="Full-Stack Engineering Academy: Kurikulum pembelajaran komprehensif dari web fundamentals, framework modern, arsitektur sistem, Cloudflare edge security, AI/RAG, payment integration, hingga professional workflow.">
-  <title>Full-Stack Engineering Academy — Modern Roadmap &amp; Learning Studio</title>
+  <meta name="theme-color" content="#f0f6ff">
+  <meta name="description" content="Full-Stack, Senior QA Engineering, dan System Design (SA) Academy: Kurikulum komprehensif dengan mode pembelajaran terpisah untuk Fullstack, QA Automation & Performance, serta System Architecture.">
+  <title>Engineering Academy — Fullstack, Senior QA &amp; System Architect</title>
 
   <!-- Google Fonts: Montserrat, Plus Jakarta Sans, Instrument Serif, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Design Playground Style Sheets -->
+  <!-- Stylesheets (iCraft Color Theme & Design Playground Layout) -->
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
@@ -21,31 +21,38 @@
   <!-- Accessibility Skip Link -->
   <a class="skip-link" href="#mainStage">Lewati ke Konten Utama</a>
 
-  <!-- Top Sticky Navigation (Design Playground Aesthetic) -->
+  <!-- Top Sticky Navigation (iCraft Glassmorphism) -->
   <header class="site-header">
     <div class="site-header-inner">
       <!-- Brand Logo -->
-      <a href="#/" class="brand-link" aria-label="Full-Stack Engineering Academy">
+      <a href="#/" class="brand-link" aria-label="Engineering Academy">
         <span class="brand-badge" aria-hidden="true">
-          FE
+          EA
           <span class="brand-dot"></span>
         </span>
         <div class="brand-meta">
           <span class="brand-title">Engineering Academy</span>
-          <span class="brand-subtitle">From Fundamentals to Architecture</span>
+          <span class="brand-subtitle" id="brandSubtitleText">From Fundamentals to Architecture</span>
         </div>
       </a>
 
-      <!-- Primary Desktop Navigation -->
-      <nav class="header-nav" aria-label="Navigasi Utama">
+      <!-- Desktop Separated Mode Switcher (Fullstack | QA | SA) -->
+      <div class="mode-switcher" role="tablist" aria-label="Pilih Mode Pembelajaran">
+        <button class="mode-tab active" role="tab" aria-selected="true" data-mode="fullstack">
+          <span class="mode-tab-dot"></span> Fullstack
+        </button>
+        <button class="mode-tab" role="tab" aria-selected="false" data-mode="qa">
+          <span class="mode-tab-dot"></span> QA Engineer
+        </button>
+        <button class="mode-tab" role="tab" aria-selected="false" data-mode="sa">
+          <span class="mode-tab-dot"></span> System Architect
+        </button>
+      </div>
+
+      <!-- Quick Links (Large Desktop) -->
+      <nav class="header-nav" aria-label="Navigasi Cepat">
         <button class="header-nav-btn active" data-action="home">
           <span>Beranda</span>
-        </button>
-        <button class="header-nav-btn" data-action="tracks">
-          <span>Semua Jalur</span>
-        </button>
-        <button class="header-nav-btn" data-action="search">
-          <span>Cari Materi</span>
         </button>
         <button class="header-nav-btn" data-action="bookmarks">
           <span>Tersimpan</span>
@@ -55,9 +62,9 @@
       <!-- Action Tools -->
       <div class="header-actions">
         <!-- Live Progress Pill -->
-        <a href="#/bookmarks" class="header-progress-chip" aria-label="Progres Pembelajaran">
+        <a href="#/bookmarks" class="header-progress-chip" aria-label="Progres Mode Aktif">
           <span class="progress-dot"></span>
-          <span class="tabular-nums" id="headerProgressText">0/156 Selesai</span>
+          <span class="tabular-nums" id="headerProgressText">FS: 0/156</span>
         </a>
 
         <!-- Search Trigger Button -->
@@ -80,20 +87,33 @@
     </div>
   </header>
 
+  <!-- Mobile & Tablet Sticky Mode Switcher Strip (< 960px) -->
+  <div class="mobile-mode-bar" role="tablist" aria-label="Pilih Mode Pembelajaran Mobile">
+    <button class="mode-tab active" role="tab" aria-selected="true" data-mode="fullstack">
+      <span class="mode-tab-dot"></span> Fullstack
+    </button>
+    <button class="mode-tab" role="tab" aria-selected="false" data-mode="qa">
+      <span class="mode-tab-dot"></span> QA Engineer
+    </button>
+    <button class="mode-tab" role="tab" aria-selected="false" data-mode="sa">
+      <span class="mode-tab-dot"></span> System Architect
+    </button>
+  </div>
+
   <!-- App Shell with Sidebar Catalog & Main Content Stage -->
   <div class="app-container with-sidebar">
     <!-- Desktop Left Sidebar Navigator -->
     <aside class="catalog-sidebar" aria-label="Katalog Jalur Teknologi">
       <div class="sidebar-card playground-grid-bg" style="margin-bottom:14px; padding:14px;">
-        <div style="font-family:var(--font-display); font-size:11px; font-weight:800; color:var(--color-brand-magenta); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">
-          ● ROADMAP DIRECTORY
+        <div id="sidebarDirectoryLabel" style="font-family:var(--font-display); font-size:10.5px; font-weight:800; color:var(--color-brand-blue); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">
+          ● FULLSTACK ROADMAP DIRECTORY
         </div>
-        <p style="font-size:12px; color:var(--color-muted); line-height:1.45; margin:0;">
-          Pilih salah satu dari 29 jalur kurikulum untuk mendalami materi terarah.
+        <p id="sidebarDirectoryDesc" style="font-size:12px; color:var(--color-muted); line-height:1.45; margin:0;">
+          Pilih salah satu dari 29 jalur kurikulum Full-Stack dari fondasi web hingga edge security.
         </p>
       </div>
       <div id="catalogSidebar">
-        <!-- Injected via JavaScript -->
+        <!-- Injected via JavaScript based on active mode -->
       </div>
     </aside>
 
@@ -103,32 +123,32 @@
     </main>
   </div>
 
-  <!-- High-End Architectural Footer (Design Playground Style) -->
+  <!-- Deep Obsidian Architectural Footer -->
   <footer class="site-footer">
     <div class="site-footer-inner">
       <div class="footer-top-grid">
         <div>
           <div class="footer-kicker-badge">
-            <span style="width:7px; height:7px; border-radius:50%; background:var(--color-brand-magenta);"></span>
-            <span>UNDERSTAND · EXPLORE · BUILD · SHIP</span>
+            <span style="width:7px; height:7px; border-radius:50%; background:#38bdf8;"></span>
+            <span>FULLSTACK · QA ENGINEER · SYSTEM ARCHITECT</span>
           </div>
-          <h2 class="footer-title">FULL-STACK ENGINEERING ACADEMY</h2>
+          <h2 class="footer-title">ENGINEERING ACADEMY</h2>
           <p class="footer-desc">
-            Platform pembelajaran rekayasa perangkat lunak modern untuk belajar mandiri maupun publik.
-            Membimbing dari pemahaman cara kerja web, frontend, backend multi-bahasa (Go, Java, C#), 
-            arsitektur sistem, hingga keamanan edge dan otomasi cloud.
+            Platform pembelajaran terpadu dengan 3 jalur mode terpisah untuk belajar mandiri maupun publik:
+            Fullstack Development (156 Modul), Senior QA &amp; Web Performance (19 Modul), serta
+            System Design &amp; Architecture Handling (14 Modul + 9 Trade-off Cases).
           </p>
         </div>
 
         <div>
-          <h4 class="footer-col-title">Kurikulum Utama</h4>
+          <h4 class="footer-col-title">Mode Pembelajaran</h4>
           <ul class="footer-link-list">
-            <li><a href="#/track/Web%20Fundamentals">Fondasi Web &amp; HTTP Lifecycle</a></li>
-            <li><a href="#/track/TypeScript%20%26%20Frontend%20Tooling">TypeScript &amp; Frontend Tooling</a></li>
-            <li><a href="#/track/Software%20Architecture%20%26%20System%20Design">Arsitektur &amp; System Design</a></li>
-            <li><a href="#/track/Cloudflare%20Bot%20Prevention">Cloudflare &amp; Bot Prevention</a></li>
-            <li><a href="#/track/AI%20%26%20RAG%20Engineering">AI &amp; RAG Engineering</a></li>
-            <li><a href="#/track/Payment%20Integration%20%26%20Webhooks">Payment &amp; Webhooks</a></li>
+            <li><a href="#/">Mode Fullstack (29 Jalur · 156 Modul)</a></li>
+            <li><a href="#/qa">Mode Senior QA &amp; Automation (7 Jalur · 19 Modul)</a></li>
+            <li><a href="#/sa">Mode System Architect (6 Jalur · 14 Modul)</a></li>
+            <li><a href="#/module/qam19">Peta Jalan 8 Minggu Senior QA</a></li>
+            <li><a href="#/module/sam13">5 Pilar Operasional Handling SA</a></li>
+            <li><a href="#/module/sam14">Simulasi Kausal Flash Sale</a></li>
           </ul>
         </div>
 
@@ -137,19 +157,19 @@
           <ul class="footer-link-list">
             <li><span>✦ 100% Gratis &amp; Terbuka</span></li>
             <li><span>✦ Tanpa Login / Bebas Akses</span></li>
-            <li><span>✦ Tersimpan di Local Browser</span></li>
-            <li><span>✦ Clean Code &amp; Modular Architecture</span></li>
-            <li><a href="#/bookmarks">Koleksi Tersimpan</a></li>
+            <li><span>✦ Progres Tersimpan di Browser</span></li>
+            <li><span>✦ Responsif Desktop, Tablet &amp; Mobile</span></li>
+            <li><a href="#/bookmarks">Koleksi Berkas Tersimpan</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
         <div>
-          © 2026 <strong>Full-Stack Engineering Academy</strong>. Dibuat untuk belajar mandiri dan umum.
+          © 2026 <strong>Engineering Academy</strong>. Fullstack · QA Engineering · System Design.
         </div>
         <div style="font-family:var(--font-mono); font-size:11px;">
-          Clean Code · Swiss Minimalist Layout · Offline Ready
+          Design Playground Layout · iCraft Palette · Offline Ready
         </div>
       </div>
     </div>
@@ -161,14 +181,20 @@
     <div class="mobile-drawer-head">
       <div class="brand-meta">
         <span class="brand-title">Katalog Materi</span>
-        <span class="brand-subtitle">29 Jalur Pembelajaran</span>
+        <span class="brand-subtitle" id="mobileDrawerCount" style="display:block;">29 Jalur (Fullstack)</span>
       </div>
       <button class="icon-action-btn" id="closeMobileMenuBtn" aria-label="Tutup Menu">
         ✕
       </button>
     </div>
-    <div class="mobile-drawer-body" id="mobileCatalogSidebar">
-      <!-- Injected via JavaScript -->
+    <div class="mobile-drawer-body">
+      <div class="mobile-drawer-quick">
+        <button class="btn btn-outline btn-sm" data-action="home">Beranda Mode</button>
+        <button class="btn btn-outline btn-sm" data-action="bookmarks">Tersimpan</button>
+      </div>
+      <div id="mobileCatalogSidebar">
+        <!-- Injected via JavaScript -->
+      </div>
     </div>
   </aside>
 
@@ -176,16 +202,16 @@
   <div class="search-modal-backdrop" id="searchModalBackdrop" role="dialog" aria-modal="true" aria-label="Pencarian Materi">
     <div class="search-modal-dialog">
       <div class="search-modal-header">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--color-brand-magenta); flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" class="search-input-field" id="searchModalInput" placeholder="Cari materi, kode, atau konsep... (mis: CORS, JWT, Go, Docker)" autocomplete="off">
-        <button class="kbd-badge" id="searchModalClose" style="cursor:pointer;">ESC</button>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--color-brand-blue); flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" class="search-input-field" id="searchModalInput" placeholder="Cari materi di Fullstack, QA, atau SA... (mis: Playwright, LCP, k6, Outbox)" autocomplete="off">
+        <button class="kbd-badge" id="searchModalClose" style="cursor:pointer; display:inline-block;">ESC</button>
       </div>
       <div class="search-modal-results" id="searchModalResults">
         <!-- Injected via Search Engine -->
       </div>
       <div class="search-modal-footer">
         <span>Tekan <strong style="color:var(--color-ink);">Enter</strong> untuk lihat semua · <strong style="color:var(--color-ink);">Esc</strong> untuk tutup</span>
-        <span style="font-family:var(--font-mono);">156 Modul Terindeks</span>
+        <span style="font-family:var(--font-mono);" id="searchModalTotalCount">189 Modul Terindeks</span>
       </div>
     </div>
   </div>
@@ -193,6 +219,8 @@
   <!-- Application Modular Scripts -->
   <script src="js/data/tracks.js"></script>
   <script src="js/data/modules.js"></script>
+  <script src="js/data/modules-qa.js"></script>
+  <script src="js/data/modules-sa.js"></script>
   <script src="js/state.js"></script>
   <script src="js/search.js"></script>
   <script src="js/visuals.js"></script>
@@ -200,4 +228,3 @@
   <script src="js/app.js"></script>
 </body>
 </html>
-
