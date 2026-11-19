@@ -9,6 +9,23 @@
 
   const { escapeHTML } = window.academySearch;
 
+  let activeSimInstance = null;
+
+  function cleanupActiveSim() {
+    if (activeSimInstance && typeof activeSimInstance.destroy === 'function') {
+      activeSimInstance.destroy();
+    }
+    activeSimInstance = null;
+  }
+
+  const MODULE_SIM_MAP = {
+    sam06: 'cache_stampede',
+    sam08: 'dual_write_outbox',
+    sam09: 'circuit_breaker',
+    sam12: 'flash_sale',
+    sam14: 'flash_sale'
+  };
+
   const LESSON_STEPS = [
     { id: 'overview', label: 'Ringkasan', short: 'Tujuan Belajar', icon: '01' },
     { id: 'concepts', label: 'Konsep Inti', short: 'Teori & Tabel', icon: '02' },
@@ -220,6 +237,7 @@
   // --- Views ---
 
   function renderHome(container, modeOverride = null) {
+    cleanupActiveSim();
     const state = window.academyState;
     const mode = modeOverride || state.getMode();
     const cfg = getModeMeta(mode);
@@ -329,6 +347,9 @@
         </div>
       </section>
 
+      <!-- Interactive Isometric 3D Causal System Design Studio (SA Mode) -->
+      ${mode === 'sa' ? '<div id="saIso3DSimMount"></div>' : ''}
+
       <!-- Learning Path Clusters (Folder-Shaped Cards) -->
       <div id="tracksDirectory">
         ${clustersHTML}
@@ -342,9 +363,17 @@
         if (dir) dir.scrollIntoView({ behavior: 'smooth' });
       });
     }
+
+    if (mode === 'sa' && typeof window.Iso3DSimulator === 'function') {
+      const simMount = container.querySelector('#saIso3DSimMount');
+      if (simMount) {
+        activeSimInstance = new window.Iso3DSimulator(simMount, 'flash_sale');
+      }
+    }
   }
 
   function renderTrack(container, trackId) {
+    cleanupActiveSim();
     const tracks = window.TRACKS || [];
     const modules = window.MODULES || [];
     const track = tracks.find(t => t.id === trackId);
@@ -498,12 +527,17 @@
           </div>
         `).join('');
 
+        const simMountHTML = MODULE_SIM_MAP[module.id]
+          ? '<div id="moduleIso3DSimMount" style="margin:20px 0;"></div>'
+          : '';
+
         return `
           <div class="stage-section-head">
             <span class="stage-number">04</span>
             <h3 class="stage-heading">Specimen Kode &amp; Visualisasi Alur</h3>
           </div>
           ${visual}
+          ${simMountHTML}
           <div class="code-specimen-box">
             ${module.code?.extraTitle ? `<div class="code-specimen-title-bar">✦ ${escapeHTML(module.code.extraTitle)}</div>` : ''}
             <div class="code-specimen-header">
@@ -628,6 +662,7 @@
   }
 
   function renderModule(container, moduleId, requestedStep = null) {
+    cleanupActiveSim();
     const modules = window.MODULES || [];
     const module = modules.find(m => m.id === moduleId);
     if (!module) return renderHome(container);
@@ -803,9 +838,15 @@
         `;
       });
     }
+
+    const modSimMount = container.querySelector('#moduleIso3DSimMount');
+    if (modSimMount && MODULE_SIM_MAP[module.id] && typeof window.Iso3DSimulator === 'function') {
+      activeSimInstance = new window.Iso3DSimulator(modSimMount, MODULE_SIM_MAP[module.id]);
+    }
   }
 
   function renderBookmarksPage(container, filterMode = 'all') {
+    cleanupActiveSim();
     const state = window.academyState;
     const modules = window.MODULES || [];
     let bookmarkedModules = modules.filter(m => state.isBookmarked(m.id));
@@ -864,6 +905,7 @@
   }
 
   function renderSearchPage(container, query, filterMode = 'all') {
+    cleanupActiveSim();
     const { searchModules } = window.academySearch;
     const modeArg = filterMode === 'all' ? null : filterMode;
     const results = searchModules(query, null, null, modeArg);
