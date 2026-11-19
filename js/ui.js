@@ -18,13 +18,61 @@
     activeSimInstance = null;
   }
 
-  const MODULE_SIM_MAP = {
+  const EXACT_SIM_MAP = {
+    // All 14 System Architect (SA) Modules — 100% Coverage
+    sam01: 'network_http3',
+    sam02: 'realtime_fleet',
+    sam03: 'sticky_lb_stateless',
+    sam04: 'storage_btree_lsm',
+    sam05: 'sharding_quorum',
     sam06: 'cache_stampede',
+    sam07: 'fencing_locks',
     sam08: 'dual_write_outbox',
     sam09: 'circuit_breaker',
+    sam10: 'observability_otel',
+    sam11: 'sharding_quorum',
     sam12: 'flash_sale',
-    sam14: 'flash_sale'
+    sam13: 'circuit_breaker',
+    sam14: 'flash_sale',
+    // Fullstack Behind-the-Scenes System Design & Architecture Modules
+    w01: 'network_http3',
+    s32: 'sticky_lb_stateless',
+    s33: 'sticky_lb_stateless',
+    s34: 'flash_sale',
+    s35: 'sharding_quorum',
+    s36: 'circuit_breaker',
+    s37: 'circuit_breaker',
+    s38: 'observability_otel',
+    s39: 'cache_stampede',
+    s40: 'dual_write_outbox',
+    s41: 'flash_sale',
+    arch02: 'sticky_lb_stateless',
+    arch03: 'circuit_breaker',
+    db03: 'storage_btree_lsm',
+    sql63: 'storage_btree_lsm',
+    sql64: 'sharding_quorum',
+    rt01: 'realtime_fleet',
+    rt02: 'realtime_fleet',
+    rt03: 'realtime_fleet',
+    pay01: 'dual_write_outbox',
+    pay02: 'fencing_locks',
+    pay03: 'dual_write_outbox',
+    lab01: 'fencing_locks',
+    lab02: 'dual_write_outbox',
+    lab03: 'flash_sale',
+    lab04: 'cache_stampede',
+    qam17: 'flash_sale'
   };
+
+  function getScenarioForModule(module) {
+    if (!module) return null;
+    if (EXACT_SIM_MAP[module.id]) return EXACT_SIM_MAP[module.id];
+    const track = (module.track || '').toLowerCase();
+    if (track.includes('cloudflare')) return 'observability_otel';
+    if (track.includes('system design') || track.includes('architecture')) return 'flash_sale';
+    if (track.includes('api design') || track.includes('security')) return 'network_http3';
+    return null;
+  }
 
   const LESSON_STEPS = [
     { id: 'overview', label: 'Ringkasan', short: 'Tujuan Belajar', icon: '01' },
@@ -527,7 +575,7 @@
           </div>
         `).join('');
 
-        const simMountHTML = MODULE_SIM_MAP[module.id]
+        const simMountHTML = getScenarioForModule(module)
           ? '<div id="moduleIso3DSimMount" style="margin:20px 0;"></div>'
           : '';
 
@@ -722,6 +770,7 @@
               </span>
             </div>
             <div class="lesson-tool-buttons">
+              ${getScenarioForModule(module) ? `<button class="btn btn-outline btn-sm" id="jumpSim3DBtn" title="Lihat Simulasi 3D Isometric Belakang Layar">🧊 Visual 3D</button>` : ''}
               <button class="btn btn-outline btn-sm" id="toggleBookmarkBtn">
                 ${isSaved ? '★ Tersimpan' : '☆ Simpan Materi'}
               </button>
@@ -839,9 +888,17 @@
       });
     }
 
+    const jumpSimBtn = container.querySelector('#jumpSim3DBtn');
+    if (jumpSimBtn) {
+      jumpSimBtn.addEventListener('click', () => {
+        renderModule(container, moduleId, 3);
+      });
+    }
+
     const modSimMount = container.querySelector('#moduleIso3DSimMount');
-    if (modSimMount && MODULE_SIM_MAP[module.id] && typeof window.Iso3DSimulator === 'function') {
-      activeSimInstance = new window.Iso3DSimulator(modSimMount, MODULE_SIM_MAP[module.id]);
+    const simScenario = getScenarioForModule(module);
+    if (modSimMount && simScenario && typeof window.Iso3DSimulator === 'function') {
+      activeSimInstance = new window.Iso3DSimulator(modSimMount, simScenario);
     }
   }
 
