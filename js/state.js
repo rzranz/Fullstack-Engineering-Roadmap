@@ -62,24 +62,31 @@
         bookmarks: new Set(Array.isArray(parsed.bookmarks) ? parsed.bookmarks : []),
         answers: parsed.answers && typeof parsed.answers === 'object' ? parsed.answers : {},
         lessonSteps: parsed.lessonSteps && typeof parsed.lessonSteps === 'object' ? parsed.lessonSteps : {},
+        implChecks: parsed.implChecks && typeof parsed.implChecks === 'object' ? parsed.implChecks : {},
+        labPassed: parsed.labPassed && typeof parsed.labPassed === 'object' ? parsed.labPassed : {},
         current: typeof parsed.current === 'string' ? parsed.current : null,
         theme: parsed.theme === 'dark' ? 'dark' : 'light',
         activeMode: mode
       };
     }
 
+    buildPayload() {
+      return {
+        completed: [...this.data.completed],
+        bookmarks: [...this.data.bookmarks],
+        answers: this.data.answers,
+        lessonSteps: this.data.lessonSteps,
+        implChecks: this.data.implChecks,
+        labPassed: this.data.labPassed,
+        current: this.data.current,
+        theme: this.data.theme,
+        activeMode: this.data.activeMode
+      };
+    }
+
     save() {
       try {
-        const payload = {
-          completed: [...this.data.completed],
-          bookmarks: [...this.data.bookmarks],
-          answers: this.data.answers,
-          lessonSteps: this.data.lessonSteps,
-          current: this.data.current,
-          theme: this.data.theme,
-          activeMode: this.data.activeMode
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.buildPayload()));
       } catch (err) {
         console.warn('LocalStorage save failed:', err);
       }
@@ -111,20 +118,34 @@
       this.data.activeMode = mode;
       if (silent) {
         try {
-          const payload = {
-            completed: [...this.data.completed],
-            bookmarks: [...this.data.bookmarks],
-            answers: this.data.answers,
-            lessonSteps: this.data.lessonSteps,
-            current: this.data.current,
-            theme: this.data.theme,
-            activeMode: this.data.activeMode
-          };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.buildPayload()));
         } catch {}
       } else {
         this.save();
       }
+    }
+
+    getImplChecks(moduleId) {
+      return new Set(Array.isArray(this.data.implChecks[moduleId]) ? this.data.implChecks[moduleId] : []);
+    }
+
+    toggleImplCheck(moduleId, stepKey) {
+      const current = new Set(Array.isArray(this.data.implChecks[moduleId]) ? this.data.implChecks[moduleId] : []);
+      if (current.has(stepKey)) current.delete(stepKey);
+      else current.add(stepKey);
+      this.data.implChecks[moduleId] = [...current];
+      this.save();
+      return current.has(stepKey);
+    }
+
+    getLabPassed(moduleId) {
+      return this.data.labPassed[moduleId] || {};
+    }
+
+    setLabPassed(moduleId, tier, passed = true) {
+      if (!this.data.labPassed[moduleId]) this.data.labPassed[moduleId] = {};
+      this.data.labPassed[moduleId][tier] = Boolean(passed);
+      this.save();
     }
 
     isCompleted(moduleId) {

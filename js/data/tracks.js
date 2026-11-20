@@ -1,4 +1,4 @@
-// Tracks Data (Fullstack, QA, and System Architect Modes)
+// Tracks Data (Fullstack, 4-Phase QA, and System Architect Modes)
 window.TRACKS = [
   {
     "id": "Web Fundamentals",
@@ -262,67 +262,58 @@ window.TRACKS = [
     "mode": "fullstack"
   },
   {
-    "id": "QA Mindset & Formal Test Design",
-    "name": "QA Mindset & Formal Test Design",
+    "id": "QA Fase 1: Fundamental & Desain Uji",
+    "name": "Fase 1: Fundamental QA, SDLC/STLC & Test Design",
     "mode": "qa",
-    "category": "1. Fondasi & Desain Pengujian",
-    "desc": "Shift-Left Testing (1x vs 100x biaya), Testing Trophy ROI, Equivalence Partitioning, Boundary Value Analysis, State Transition, Decision Table, serta Severity vs Priority.",
-    "icon": "QA1",
-    "outcome": "Mampu merancang test plan formal berstandar Senior QA sejak tahap pembacaan PRD sebelum kode ditulis."
+    "category": "Fase 1: Fundamental QA (Minggu 1–2)",
+    "desc": "SDLC vs STLC, Testing Pyramid vs Trophy, Shift-Left (1x vs 100x), Tipe Testing (Smoke/Sanity/Regression/UAT), EP, BVA, State Transition, Decision Table & Severity/Priority.",
+    "icon": "F1",
+    "outcome": "Mampu berpikir critical analysis, menulis Test Plan & Test Case TC-AUTH-001, dan merancang skenario uji formal tanpa bergantung pada tools automasi."
   },
   {
-    "id": "Manual QA, SQL Integrity & OWASP Checks",
-    "name": "Manual QA, SQL Integrity & OWASP Checks",
+    "id": "QA Fase 2A: DevTools, Postman API & Jira",
+    "name": "Fase 2A: Chrome DevTools, Postman API & Jira Forensics",
     "mode": "qa",
-    "category": "1. Fondasi & Desain Pengujian",
-    "desc": "Detail edge-case manual (10.000 char, emoji/RTL, IEEE 754 finansial, UTC/kabisat, konkurensi), SQL audit ledger & orphan records, serta OWASP IDOR & Mass Assignment.",
-    "icon": "SQL",
-    "outcome": "Mampu memverifikasi integritas data langsung di database dan menemukan celah otorisasi sebelum rilis."
+    "category": "Fase 2: Web, API & Database (Minggu 3–4)",
+    "desc": "Inspeksi Network/Console/Application DevTools, HTTP Verbs & Status Codes, Happy/Negative Path, Post-response Assertions, Auto-JWT, Newman CLI, Jira Gherkin & Bug Report.",
+    "icon": "F2A",
+    "outcome": "Mampu menginvestigasi bug layer jaringan, membangun koleksi Postman otomatis via Newman, dan menulis bug report forensik (.har/cURL)."
   },
   {
-    "id": "Jira Traceability & Bug Forensics",
-    "name": "Jira Traceability & Bug Forensics",
+    "id": "QA Fase 2B: Manual Edge, SQL & OWASP",
+    "name": "Fase 2B: Manual Edge, SQL Integrity & OWASP Security",
     "mode": "qa",
-    "category": "2. Tools Industri & Manajemen Mutu",
-    "desc": "Relasi traceability User Story, penulisan skenario Gherkin atomik, Template Bug Report produksi lengkap (.har/cURL), dan filter JQL harian untuk Release Gate.",
-    "icon": "JRA",
-    "outcome": "Mampu menulis bug report forensik yang dapat direproduksi cepat dan mengontrol release blocker via JQL."
+    "category": "Fase 2: Web, API & Database (Minggu 3–4)",
+    "desc": "Edge input (10k char, emoji, RTL), IEEE 754 finansial, UTC/kabisat, validasi SQL (SELECT/JOIN/GROUP BY, orphan & ledger balance), serta uji OWASP IDOR & Mass Assignment.",
+    "icon": "F2B",
+    "outcome": "Mampu memvalidasi persistensi data langsung di database SQL dan menutup celah otorisasi API sebelum rilis."
   },
   {
-    "id": "Postman & Newman API Automation",
-    "name": "Postman & Newman API Automation",
+    "id": "QA Fase 3: Playwright E2E Automation",
+    "name": "Fase 3: TypeScript & Playwright E2E Framework",
     "mode": "qa",
-    "category": "2. Tools Industri & Manajemen Mutu",
-    "desc": "Arsitektur variabel Environment vs Collection, Pre-request Script auto-JWT & Idempotency-Key GUID, assertions pm.test lengkap, dan eksekusi CLI via Newman.",
-    "icon": "API",
-    "outcome": "Mampu membangun suite regresi API otomatis yang deterministik dan mengekspor laporan JUnit XML."
+    "category": "Fase 3: E2E Automation (Minggu 5–8)",
+    "desc": "Fondasi TypeScript async/await, Locator Strategy (getByRole/getByLabel/getByTestId), LoginPage & CheckoutPage POM, API Seeding, Fault Injection (page.route) & Trace Config.",
+    "icon": "F3",
+    "outcome": "Mampu membangun framework regresi E2E anti-flaky berbasis Page Object Model dan menguji situs praktik (SauceDemo & Herokuapp)."
   },
   {
-    "id": "Playwright TypeScript E2E Suite",
-    "name": "Playwright TypeScript E2E Suite",
+    "id": "QA Fase 4A: Web Performance (Core Web Vitals)",
+    "name": "Fase 4A: Web Performance Engineering (TTFB, LCP, INP, CLS)",
     "mode": "qa",
-    "category": "3. Test Automation & Anti-Flaky",
-    "desc": "Struktur proyek POM TypeScript, hierarki selektor aksesibilitas, API Seeding, Fault Injection (page.route 503), Web Vitals Quality Gate, dan playwright.config.ts.",
-    "icon": "E2E",
-    "outcome": "Mampu membangun framework E2E anti-flaky dengan rekaman trace forensik dan validasi degradasi jaringan."
+    "category": "Fase 4: Performance & CI/CD (Minggu 9–10)",
+    "desc": "Ambang batas 75th percentile Core Web Vitals, diagnosis Chrome DevTools (Slow 4G & 4x CPU), dan studi kasus perbaikan kode frontend nyata untuk LCP, INP (yieldToMain), & CLS.",
+    "icon": "F4A",
+    "outcome": "Mampu mengaudit bottleneck rendering/Main Thread dan memvalidasi perbaikan performa frontend secara terukur."
   },
   {
-    "id": "Web Performance Engineering (Core Web Vitals)",
-    "name": "Web Performance Engineering (Core Web Vitals)",
+    "id": "QA Fase 4B: k6 Load Testing, CI/CD & Roadmap",
+    "name": "Fase 4B: k6 Load Testing, GitHub Actions CI/CD & Roadmap",
     "mode": "qa",
-    "category": "4. Web Performance & Load Profiling",
-    "desc": "Ambang batas 75th percentile TTFB, LCP, INP, dan CLS, diagnosis Chrome DevTools, serta studi kasus perbaikan kode nyata frontend (preload AVIF, yieldToMain, layout containment).",
-    "icon": "CWV",
-    "outcome": "Mampu mendiagnosis bottleneck performa di DevTools dan mengaudit perbaikan kode LCP, INP, dan CLS."
-  },
-  {
-    "id": "k6 Load Testing, CI/CD & 8-Week Roadmap",
-    "name": "k6 Load Testing, CI/CD & 8-Week Roadmap",
-    "mode": "qa",
-    "category": "4. Web Performance & Load Profiling",
-    "desc": "Load/Stress/Spike testing dengan skrip k6 (P95/P99 TTFB thresholds), pipeline paralel GitHub Actions (Newman + Playwright Sharding), serta peta jalan belajar 8 minggu.",
-    "icon": "K6",
-    "outcome": "Mampu menguji titik patah backend, mengotomasi Quality Gate pada Pull Request, dan mengeksekusi roadmap 8 minggu."
+    "category": "Fase 4: Performance & CI/CD (Minggu 9–10)",
+    "desc": "Load/Stress/Spike test k6 (P95/P99 TTFB), pipeline GitHub Actions (Playwright dasar hingga Newman + E2E Sharding), situs latihan mandiri & Peta Jalan terpadu.",
+    "icon": "F4B",
+    "outcome": "Mampu menguji kapasitas backend, mengotomatiskan Quality Gate di setiap Pull Request, dan mengeksekusi proyek portofolio."
   },
   {
     "id": "Fondasi Jaringan, Protokol & Trafik",

@@ -1936,3 +1936,430 @@
   line-height: 1.5;
   margin: 0;
 }
+
+
+/* ==========================================================================
+   Interactive Phase Roadmap Map & Filter (Non-Overwhelming UX)
+   ========================================================================== */
+.roadmap-navigator-card {
+  background: var(--color-elevated);
+  border: 1px solid var(--color-border-ice);
+  border-radius: var(--radius-lg);
+  padding: clamp(16px, 3vw, 24px);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.roadmap-nav-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 720px) {
+  .roadmap-nav-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.roadmap-nav-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roadmap-nav-hint {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.roadmap-phase-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.roadmap-phase-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.roadmap-phase-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-ice);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-ink-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.roadmap-phase-pill:hover {
+  border-color: var(--color-brand-blue);
+  color: var(--color-brand-blue);
+}
+
+.roadmap-phase-pill.active {
+  background: linear-gradient(135deg, #1d64ec 0%, #0284c7 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(29, 100, 236, 0.25);
+}
+
+.phase-pill-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-brand-blue);
+}
+
+.roadmap-phase-pill.active .phase-pill-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* Practice Sandbox Targets Strip (QA Mode) */
+.practice-targets-strip {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-border-subtle);
+}
+
+@media (min-width: 640px) {
+  .practice-targets-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .practice-targets-strip {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.practice-target-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 11px 13px;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.practice-target-card:hover {
+  border-color: var(--color-brand-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.practice-target-type {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-brand-cyan);
+}
+
+.practice-target-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.practice-target-desc {
+  font-size: 11px;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   3-Tier Detailed Implementation Ladder (Sederhana -> Menengah -> Pro)
+   ========================================================================== */
+.impl-ladder-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.impl-progress-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-brand-blue-soft);
+  border: 1px solid var(--color-border-ice);
+  border-radius: var(--radius-md);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.impl-tier-card {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-ice);
+  border-radius: var(--radius-md);
+  padding: clamp(14px, 3vw, 20px);
+}
+
+.impl-tier-card.tier-pro {
+  border-left: 4px solid var(--color-brand-purple);
+}
+
+.impl-tier-card.tier-mid {
+  border-left: 4px solid var(--color-brand-blue);
+}
+
+.impl-tier-card.tier-simple {
+  border-left: 4px solid var(--color-brand-cyan);
+}
+
+.impl-tier-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.impl-tier-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.impl-tier-goal {
+  font-size: 12.5px;
+  color: var(--color-muted);
+}
+
+.impl-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.impl-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--color-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.impl-step-item:hover {
+  border-color: var(--color-brand-blue);
+}
+
+.impl-step-item.checked {
+  background: var(--color-brand-lime-bg);
+  border-color: var(--color-brand-lime-border);
+}
+
+.impl-step-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-brand-blue);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.impl-step-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.impl-step-copy strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-ink);
+  margin-bottom: 3px;
+}
+
+.impl-step-copy p {
+  font-size: 12.5px;
+  color: var(--color-ink-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.impl-cmd-chip {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: var(--color-code-bg);
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-radius: var(--radius-xs);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ==========================================================================
+   Interactive Implementation Code Test Runner
+   ========================================================================== */
+.lab-runner-card {
+  background: var(--color-elevated);
+  border: 1px solid var(--color-border-ice);
+  border-radius: var(--radius-md);
+  padding: clamp(16px, 3vw, 24px);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.lab-runner-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 720px) {
+  .lab-runner-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.lab-tier-tabs {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lab-tier-btn {
+  padding: 6px 13px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-ice);
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lab-tier-btn.active {
+  background: var(--color-brand-blue);
+  color: #ffffff;
+  border-color: var(--color-brand-blue);
+}
+
+.lab-editor-textarea {
+  width: 100%;
+  min-height: 190px;
+  padding: 14px;
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
+  border: 1px solid var(--color-border-dark-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  resize: vertical;
+  tab-size: 2;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.lab-editor-textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.lab-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.lab-toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lab-console-output {
+  background: #0b1120;
+  border: 1px solid #1e293b;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.lab-console-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #1e293b;
+  font-weight: 800;
+}
+
+.lab-console-summary.all-pass { color: #34d399; }
+.lab-console-summary.has-fail { color: #fb7185; }
+
+.lab-test-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
+}
+
+.lab-test-row:last-child {
+  border-bottom: none;
+}
+
+.lab-test-status.pass { color: #34d399; }
+.lab-test-status.fail { color: #fb7185; }
+.lab-test-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  padding-left: 18px;
+}

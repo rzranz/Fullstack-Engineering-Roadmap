@@ -81,9 +81,15 @@
     { id: 'code', label: 'Kode & Visual', short: 'Specimen & Alur', icon: '04' },
     { id: 'practices', label: 'Best Practices', short: 'Standar Industri', icon: '05' },
     { id: 'cases', label: 'Kasus Nyata', short: 'Studi Kasus Produksi', icon: '06' },
-    { id: 'exercise', label: 'Latihan', short: 'Hands-on Practice', icon: '07' },
-    { id: 'quiz', label: 'Cek Pemahaman', short: 'Evaluasi & Kuis', icon: '08' }
+    { id: 'exercise', label: 'Langkah Impl.', short: 'Sederhana → Pro', icon: '07' },
+    { id: 'quiz', label: 'Uji & Kuis', short: 'Live Test & Evaluasi', icon: '08' }
   ];
+
+  const selectedCategoryByMode = {
+    fullstack: 'all',
+    qa: 'all',
+    sa: 'all'
+  };
 
   const MODE_CONFIG = {
     fullstack: {
@@ -113,28 +119,28 @@
     qa: {
       id: 'qa',
       label: 'QA Engineer',
-      directoryLabel: 'SENIOR QA BLUEPRINT DIRECTORY',
-      directoryDesc: '7 jalur penguasaan Quality Engineering, Automation (Newman/Playwright), Web Vitals & k6.',
-      kicker: 'SENIOR QA ENGINEERING & AUTOMATION / 7 JALUR · 19 MODUL · QUALITY GATE',
-      heading: 'FROM SHIFT-LEFT TESTING<br>TO PRODUCTION QUALITY GATE.',
-      quote: '“From Formal Test Design to Playwright E2E, Core Web Vitals & k6 Load Profiling”',
-      lead: 'Master Blueprint membangun kompetensi Senior Quality Assurance Engineer dari mindset Shift-Left (1x vs 100x biaya), teknik EP/BVA/State Transition/Decision Table, verifikasi SQL & OWASP, Jira/Postman/Newman/Playwright, bedah kode TTFB/LCP/INP/CLS, k6 Load Testing, hingga CI/CD GitHub Actions.',
+      directoryLabel: 'QA ENGINEER BLUEPRINT DIRECTORY',
+      directoryDesc: '4 Fase terstruktur (6 Jalur · 24 Modul) dari SDLC/STLC hingga Playwright, Web Vitals, k6 & CI/CD.',
+      kicker: 'QA SOFTWARE ENGINEER ROADMAP / 4 FASE · 24 MODUL · NOL HINGGA AUTOMASI',
+      heading: 'FROM FUNDAMENTAL QA<br>TO AUTOMATED QUALITY GATE.',
+      quote: '“From SDLC, DevTools & Postman to Playwright POM, Core Web Vitals & k6 Load Gate”',
+      lead: 'Panduan lengkap QA Software Engineer dari nol hingga automasi: SDLC/STLC, Testing Pyramid & Trophy, EP/BVA/Decision Table, Chrome DevTools, Postman & Newman, Playwright TypeScript POM (SauceDemo/Herokuapp), SQL Integrity, Web Vitals (TTFB/LCP/INP/CLS), k6 Load Testing, dan CI/CD GitHub Actions.',
       meta: [
-        { label: 'Filosofi & ROI', value: 'Shift-Left & Testing Trophy' },
-        { label: 'Cakupan Materi', value: '7 Jalur · 19 Modul Mendalam' },
-        { label: 'Tools Industri', value: 'Jira · Newman · Playwright · k6' },
-        { label: 'Web Performance', value: 'TTFB · LCP · INP · CLS Fixes' }
+        { label: 'Struktur Belajar', value: '4 Fase Terarah (10 Minggu)' },
+        { label: 'Cakupan Materi', value: '6 Jalur · 24 Modul Lengkap' },
+        { label: 'Tools Industri', value: 'Jira · DevTools · Postman · Playwright · k6' },
+        { label: 'Target Praktik', value: 'SauceDemo · Herokuapp · ReqRes · Booker' }
       ],
-      methodologyTitle: 'DESIGN → VERIFY → AUTOMATE → BENCHMARK',
-      methodologySub: 'Ubah peran dari sekadar pengklik UI menjadi Quality Engineer yang mencegah cacat sejak PRD hingga gerbang CI/CD otomatis.',
+      methodologyTitle: 'DESIGN → INSPECT → AUTOMATE → BENCHMARK',
+      methodologySub: 'Setiap fase disusun bertahap agar tidak membingungkan: kuasai analisis manual & API dulu sebelum menulis skrip automasi dan CI/CD.',
       stages: [
-        { num: 'Stage 01', pill: 'DESIGN', title: 'Desain Uji Formal', desc: 'Terapkan EP, BVA titik tepi, State Transition ilegal, Decision Table, serta pemisahan Severity vs Priority.' },
-        { num: 'Stage 02', pill: 'VERIFY', title: 'Manual, SQL & OWASP', desc: 'Uji input ekstrem, presisi IEEE 754, cek duplikasi/orphan SQL, serta tangkap IDOR dan Mass Assignment.' },
-        { num: 'Stage 03', pill: 'AUTOMATE', title: 'Newman & Playwright', desc: 'Pre-request auto-JWT/Idempotency, POM TypeScript, API seeding, dan Fault Injection HTTP 503 via page.route.' },
-        { num: 'Stage 04', pill: 'BENCHMARK', title: 'Web Vitals, k6 & CI', desc: 'Audit TTFB, LCP, INP (yieldToMain), CLS, baca P95/P99 k6, dan orkestrasi sharding di GitHub Actions.', dark: true }
+        { num: 'Fase 01', pill: 'FUNDAMENTAL', title: 'SDLC, STLC & Desain Uji', desc: 'Pahami SDLC vs STLC, 5 tipe testing, EP/BVA, Decision Table, Test Case TC-AUTH-001, dan Severity vs Priority.' },
+        { num: 'Fase 02', pill: 'WEB & API', title: 'DevTools, Postman & SQL', desc: 'Inspeksi Network/Console/Storage, Post-response assertions, Auto-JWT, Jira Gherkin/Bug Report, SQL & OWASP.' },
+        { num: 'Fase 03', pill: 'AUTOMATION', title: 'Playwright POM E2E', desc: 'TypeScript async/await, Locator user-facing, LoginPage & CheckoutPage POM, API seeding & Fault Injection 503.' },
+        { num: 'Fase 04', pill: 'PERF & CI/CD', title: 'Web Vitals, k6 & Actions', desc: 'Audit & perbaikan kode LCP/INP/CLS, Load Test k6 P95/P99, serta pipeline GitHub Actions + Artifact Report.', dark: true }
       ],
       quickActionModuleId: 'qam19',
-      quickActionLabel: 'Buka Peta Jalan 8 Minggu'
+      quickActionLabel: 'Buka Peta Jalan Terpadu'
     },
     sa: {
       id: 'sa',
@@ -297,9 +303,55 @@
     const modeModules = allModules.filter(m => (m.mode || 'fullstack') === mode);
 
     const categories = [...new Set(modeTracks.map(t => t.category))];
+    if (selectedCategoryByMode[mode] !== 'all' && !categories.includes(selectedCategoryByMode[mode])) {
+      selectedCategoryByMode[mode] = 'all';
+    }
+    const activeCategory = selectedCategoryByMode[mode];
+    const visibleCategories = activeCategory === 'all' ? categories : categories.filter(c => c === activeCategory);
     const nextModule = modeModules.find(m => !state.isCompleted(m.id)) || modeModules[0];
 
-    const clustersHTML = categories.map(category => {
+    const phasePillsHTML = [
+      `<button class="roadmap-phase-pill ${activeCategory === 'all' ? 'active' : ''}" data-phase-filter="all">
+         <span>Semua Fase</span>
+         <span class="phase-pill-count">${modeTracks.length}</span>
+       </button>`,
+      ...categories.map(cat => {
+        const groupTracks = modeTracks.filter(t => t.category === cat);
+        const groupModIds = new Set(modeModules.filter(m => groupTracks.some(t => t.id === m.track)).map(m => m.id));
+        const doneInCat = [...groupModIds].filter(id => state.isCompleted(id)).length;
+        return `<button class="roadmap-phase-pill ${activeCategory === cat ? 'active' : ''}" data-phase-filter="${escapeHTML(cat)}">
+          <span>${escapeHTML(cat)}</span>
+          <span class="phase-pill-count">${doneInCat}/${groupModIds.size}</span>
+        </button>`;
+      })
+    ].join('');
+
+    const qaPracticeTargetsHTML = mode === 'qa' ? `
+      <div class="practice-targets-strip">
+        <a class="practice-target-card" href="https://www.saucedemo.com/" target="_blank" rel="noopener">
+          <span class="practice-target-type">UI Practice Target</span>
+          <span class="practice-target-name">SauceDemo ↗</span>
+          <span class="practice-target-desc">E-commerce login, cart &amp; checkout E2E (standard_user).</span>
+        </a>
+        <a class="practice-target-card" href="https://the-internet.herokuapp.com/" target="_blank" rel="noopener">
+          <span class="practice-target-type">UI Practice Target</span>
+          <span class="practice-target-name">The Internet Herokuapp ↗</span>
+          <span class="practice-target-desc">Dynamic UI elements, upload file, shadow DOM &amp; modal.</span>
+        </a>
+        <a class="practice-target-card" href="https://restful-booker.herokuapp.com/" target="_blank" rel="noopener">
+          <span class="practice-target-type">API Practice Target</span>
+          <span class="practice-target-name">Restful-Booker ↗</span>
+          <span class="practice-target-desc">CRUD booking &amp; auth token chaining (Postman/Newman).</span>
+        </a>
+        <a class="practice-target-card" href="https://reqres.in/" target="_blank" rel="noopener">
+          <span class="practice-target-type">API Practice Target</span>
+          <span class="practice-target-name">ReqRes.in ↗</span>
+          <span class="practice-target-desc">REST mock server untuk latihan status HTTP &amp; JSON assertions.</span>
+        </a>
+      </div>
+    ` : '';
+
+    const clustersHTML = visibleCategories.map(category => {
       const groupTracks = modeTracks.filter(t => t.category === category);
       const cardsHTML = groupTracks.map(t => {
         const idx = modeTracks.findIndex(item => item.id === t.id);
@@ -398,17 +450,39 @@
       <!-- Interactive Isometric 3D Causal System Design Studio (SA Mode) -->
       ${mode === 'sa' ? '<div id="saIso3DSimMount"></div>' : ''}
 
+      <!-- Interactive Phase Roadmap Filter & Practice Targets (Tidak Pusing & Terstruktur) -->
+      <section class="roadmap-navigator-card" aria-label="Filter Peta Jalan Kurikulum">
+        <div class="roadmap-nav-top">
+          <div class="roadmap-nav-title">
+            <span style="width:8px; height:8px; border-radius:50%; background:var(--color-brand-blue); box-shadow:0 0 8px var(--color-brand-blue);"></span>
+            <span>Peta Pemetaan Fase Kurikulum (${escapeHTML(cfg.label)})</span>
+          </div>
+          <span class="roadmap-nav-hint">Klik salah satu fase untuk fokus tanpa merasa kewalahan</span>
+        </div>
+        <div class="roadmap-phase-strip">
+          ${phasePillsHTML}
+        </div>
+        ${qaPracticeTargetsHTML}
+      </section>
+
       <!-- Learning Path Clusters (Folder-Shaped Cards) -->
       <div id="tracksDirectory">
         ${clustersHTML}
       </div>
     `;
 
+    container.querySelectorAll('[data-phase-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedCategoryByMode[mode] = btn.dataset.phaseFilter;
+        renderHome(container, mode);
+      });
+    });
+
     const browseBtn = container.querySelector('#browseTracksBtn');
     if (browseBtn) {
       browseBtn.addEventListener('click', () => {
-        const dir = container.querySelector('#tracksDirectory');
-        if (dir) dir.scrollIntoView({ behavior: 'smooth' });
+        const nav = container.querySelector('.roadmap-navigator-card') || container.querySelector('#tracksDirectory');
+        if (nav) nav.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
@@ -642,14 +716,66 @@
       case 'exercise': {
         const scenario = module.exercise?.scenario || (typeof module.exercise === 'string' ? module.exercise : '');
         const task = module.exercise?.task || '';
+        const guide = window.academyLabs ? window.academyLabs.getImplementationGuide(module) : null;
+        const checkedSet = state.getImplChecks(module.id);
+
+        let ladderHTML = '';
+        if (guide) {
+          const tiers = [
+            { key: 'simple', cls: 'tier-simple', data: guide.simple },
+            { key: 'intermediate', cls: 'tier-mid', data: guide.intermediate },
+            { key: 'pro', cls: 'tier-pro', data: guide.pro }
+          ];
+          const totalSteps = tiers.reduce((sum, t) => sum + (t.data?.steps?.length || 0), 0);
+          const doneSteps = checkedSet.size;
+
+          const tiersHTML = tiers.map(t => {
+            if (!t.data) return '';
+            const stepsHTML = t.data.steps.map((s, idx) => {
+              const stepKey = `${t.key}:${idx}`;
+              const isChecked = checkedSet.has(stepKey);
+              return `
+                <label class="impl-step-item ${isChecked ? 'checked' : ''}">
+                  <input type="checkbox" class="impl-step-checkbox" data-impl-check="${stepKey}" ${isChecked ? 'checked' : ''}>
+                  <div class="impl-step-copy">
+                    <strong>Langkah ${idx + 1}. ${escapeHTML(s.title)}</strong>
+                    <p>${escapeHTML(s.detail)}</p>
+                    ${s.cmd ? `<code class="impl-cmd-chip">${escapeHTML(s.cmd)}</code>` : ''}
+                  </div>
+                </label>
+              `;
+            }).join('');
+
+            return `
+              <div class="impl-tier-card ${t.cls}">
+                <div class="impl-tier-head">
+                  <div class="impl-tier-title">${escapeHTML(t.data.title)}</div>
+                  <div class="impl-tier-goal">Goal: ${escapeHTML(t.data.goal)}</div>
+                </div>
+                <div class="impl-steps-list">${stepsHTML}</div>
+              </div>
+            `;
+          }).join('');
+
+          ladderHTML = `
+            <div class="impl-ladder-wrap">
+              <div class="impl-progress-header">
+                <span>✦ Panduan Implementasi Bertahap (Sederhana → Menengah → Profesional)</span>
+                <span id="implProgressCount" style="font-family:var(--font-mono); color:var(--color-brand-blue);">${doneSteps}/${totalSteps} Langkah Selesai</span>
+              </div>
+              ${tiersHTML}
+            </div>
+          `;
+        }
 
         return `
           <div class="stage-section-head">
             <span class="stage-number">07</span>
-            <h3 class="stage-heading">Latihan Mandiri &amp; Tantangan Praktik</h3>
+            <h3 class="stage-heading">Langkah Implementasi Detail (Sederhana → Profesional)</h3>
           </div>
+          ${ladderHTML}
           <div class="callout-block exercise">
-            <div class="callout-head">Tantangan untuk Dikerjakan:</div>
+            <div class="callout-head">Tantangan Praktik Mandiri:</div>
             <p class="callout-body" style="margin-bottom:12px;">
               ${escapeHTML(scenario || 'Buka editor kodemu, implementasikan modul ini secara mandiri, lalu lakukan verifikasi request dan penanganan kasus gagal.')}
             </p>
@@ -660,47 +786,93 @@
 
       case 'quiz': {
         const quiz = module.quiz;
-        if (!quiz) {
-          return `
-            <div class="stage-section-head">
-              <span class="stage-number">08</span>
-              <h3 class="stage-heading">Cek Pemahaman</h3>
+        const tests = window.academyLabs ? window.academyLabs.getImplementationTests(module) : null;
+        const labStatus = state.getLabPassed(module.id);
+
+        let labRunnerHTML = '';
+        if (tests) {
+          const activeLab = tests.simple;
+          labRunnerHTML = `
+            <div class="lab-runner-card" id="labRunnerCard" data-active-lab="simple">
+              <div class="lab-runner-header">
+                <div>
+                  <div style="font-family:var(--font-mono); font-size:10px; font-weight:800; color:var(--color-brand-blue); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">
+                    ● DIRECT IMPLEMENTATION TEST RUNNER
+                  </div>
+                  <h4 style="font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--color-ink); margin:0;" id="labTitle">
+                    ${escapeHTML(activeLab.title)}
+                  </h4>
+                </div>
+                <div class="lab-tier-tabs">
+                  <button class="lab-tier-btn active" data-lab-tier="simple">
+                    ${labStatus.simple ? '✓ ' : ''}1. Uji Sederhana
+                  </button>
+                  <button class="lab-tier-btn" data-lab-tier="pro">
+                    ${labStatus.pro ? '✓ ' : ''}2. Uji Profesional
+                  </button>
+                </div>
+              </div>
+              <p style="font-size:12.5px; color:var(--color-muted); margin-bottom:12px;" id="labDesc">
+                ${escapeHTML(activeLab.description)}
+              </p>
+              <textarea class="lab-editor-textarea" id="labCodeEditor" spellcheck="false" aria-label="Editor kode uji implementasi">${escapeHTML(activeLab.starterCode)}</textarea>
+              <div class="lab-toolbar">
+                <div class="lab-toolbar-left">
+                  <button class="btn btn-primary btn-sm" id="runLabTestBtn">▶ Jalankan Uji Implementasi</button>
+                  <button class="btn btn-outline btn-sm" id="toggleLabSolutionBtn">💡 Lihat Solusi Pro</button>
+                  <button class="btn btn-outline btn-sm" id="resetLabCodeBtn">↺ Reset Kode</button>
+                </div>
+                <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--color-muted);" id="labLangTag">
+                  LANG: ${escapeHTML((activeLab.language || 'code').toUpperCase())}
+                </span>
+              </div>
+              <div class="lab-console-output" id="labConsoleOutput" hidden></div>
             </div>
-            <p>Tidak ada kuis khusus untuk modul ini. Silakan tandai materi sebagai selesai jika kamu telah memahaminya.</p>
           `;
         }
 
-        const savedAnswer = state.getAnswer(module.id);
-        const hasAnswered = savedAnswer !== null;
-        const isCorrect = savedAnswer === quiz.answer;
+        let quizHTML = '';
+        if (quiz) {
+          const savedAnswer = state.getAnswer(module.id);
+          const hasAnswered = savedAnswer !== null;
+          const isCorrect = savedAnswer === quiz.answer;
 
-        const optionsHTML = quiz.options.map((option, idx) => `
-          <label class="quiz-option-label ${savedAnswer === idx ? 'selected' : ''}">
-            <input type="radio" name="quizChoice" value="${idx}" ${savedAnswer === idx ? 'checked' : ''}>
-            <span>${escapeHTML(option)}</span>
-          </label>
-        `).join('');
+          const optionsHTML = quiz.options.map((option, idx) => `
+            <label class="quiz-option-label ${savedAnswer === idx ? 'selected' : ''}">
+              <input type="radio" name="quizChoice" value="${idx}" ${savedAnswer === idx ? 'checked' : ''}>
+              <span>${escapeHTML(option)}</span>
+            </label>
+          `).join('');
+
+          quizHTML = `
+            <div class="quiz-container">
+              <div style="font-family:var(--font-mono); font-size:10px; font-weight:800; color:var(--color-brand-purple); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">
+                ● EVALUASI KONSEP &amp; TRADE-OFF
+              </div>
+              <div class="quiz-question-text">${escapeHTML(quiz.question)}</div>
+              <div class="quiz-options-list">
+                ${optionsHTML}
+              </div>
+              <button class="btn btn-primary" id="submitQuizBtn">
+                Periksa Jawaban
+              </button>
+              <div class="quiz-feedback-box ${hasAnswered ? 'show ' + (isCorrect ? 'correct' : 'wrong') : ''}" id="quizFeedback">
+                ${hasAnswered ? `
+                  <strong>${isCorrect ? '✓ Tepat Sekali!' : '✕ Belum Tepat.'}</strong>
+                  <span>${escapeHTML(quiz.explanation)}</span>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }
 
         return `
           <div class="stage-section-head">
             <span class="stage-number">08</span>
-            <h3 class="stage-heading">Cek Pemahaman (Knowledge Check)</h3>
+            <h3 class="stage-heading">Uji Langsung Implementasi &amp; Evaluasi</h3>
           </div>
-          <div class="quiz-container">
-            <div class="quiz-question-text">${escapeHTML(quiz.question)}</div>
-            <div class="quiz-options-list">
-              ${optionsHTML}
-            </div>
-            <button class="btn btn-primary" id="submitQuizBtn">
-              Periksa Jawaban
-            </button>
-            <div class="quiz-feedback-box ${hasAnswered ? 'show ' + (isCorrect ? 'correct' : 'wrong') : ''}" id="quizFeedback">
-              ${hasAnswered ? `
-                <strong>${isCorrect ? '✓ Tepat Sekali!' : '✕ Belum Tepat.'}</strong>
-                <span>${escapeHTML(quiz.explanation)}</span>
-              ` : ''}
-            </div>
-          </div>
+          ${labRunnerHTML}
+          ${quizHTML}
         `;
       }
 
@@ -893,6 +1065,113 @@
       jumpSimBtn.addEventListener('click', () => {
         renderModule(container, moduleId, 3);
       });
+    }
+
+    // Implementation Step Checkboxes (Step 07)
+    const implBoxes = container.querySelectorAll('[data-impl-check]');
+    if (implBoxes.length) {
+      implBoxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const isChecked = state.toggleImplCheck(moduleId, cb.dataset.implCheck);
+          const parentItem = cb.closest('.impl-step-item');
+          if (parentItem) parentItem.classList.toggle('checked', isChecked);
+          const countEl = container.querySelector('#implProgressCount');
+          if (countEl) {
+            countEl.textContent = `${state.getImplChecks(moduleId).size}/${implBoxes.length} Langkah Selesai`;
+          }
+        });
+      });
+    }
+
+    // Interactive Implementation Code Test Runner (Step 08)
+    const labCard = container.querySelector('#labRunnerCard');
+    if (labCard && window.academyLabs) {
+      const tests = window.academyLabs.getImplementationTests(module);
+      let currentTier = 'simple';
+      const editor = container.querySelector('#labCodeEditor');
+      const consoleOut = container.querySelector('#labConsoleOutput');
+      const titleEl = container.querySelector('#labTitle');
+      const descEl = container.querySelector('#labDesc');
+      const langEl = container.querySelector('#labLangTag');
+
+      const switchTier = (tier) => {
+        currentTier = tier;
+        const spec = tests[tier] || tests.simple;
+        labCard.querySelectorAll('[data-lab-tier]').forEach(b => {
+          b.classList.toggle('active', b.dataset.labTier === tier);
+        });
+        if (titleEl) titleEl.textContent = spec.title;
+        if (descEl) descEl.textContent = spec.description;
+        if (langEl) langEl.textContent = `LANG: ${(spec.language || 'code').toUpperCase()}`;
+        if (editor) editor.value = spec.starterCode;
+        if (consoleOut) { consoleOut.hidden = true; consoleOut.innerHTML = ''; }
+      };
+
+      labCard.querySelectorAll('[data-lab-tier]').forEach(btn => {
+        btn.addEventListener('click', () => switchTier(btn.dataset.labTier));
+      });
+
+      if (editor) {
+        editor.addEventListener('keydown', (e) => {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + 2;
+          }
+        });
+      }
+
+      const runBtn = container.querySelector('#runLabTestBtn');
+      if (runBtn && editor && consoleOut) {
+        runBtn.addEventListener('click', () => {
+          const spec = tests[currentTier] || tests.simple;
+          const results = spec.run(editor.value);
+          const passedCount = results.filter(r => r.pass).length;
+          const allPassed = results.length > 0 && passedCount === results.length;
+
+          if (allPassed) {
+            state.setLabPassed(moduleId, currentTier, true);
+            const activeTierBtn = labCard.querySelector(`[data-lab-tier="${currentTier}"]`);
+            if (activeTierBtn && !activeTierBtn.textContent.trim().startsWith('✓')) {
+              activeTierBtn.textContent = `✓ ${activeTierBtn.textContent.trim()}`;
+            }
+          }
+
+          consoleOut.hidden = false;
+          consoleOut.innerHTML = `
+            <div class="lab-console-summary ${allPassed ? 'all-pass' : 'has-fail'}">
+              <span>${allPassed ? '✓ ALL ASSERTIONS PASSED' : '✕ SOME ASSERTIONS FAILED'}</span>
+              <span>${passedCount}/${results.length} Lolos</span>
+            </div>
+            ${results.map(r => `
+              <div class="lab-test-row">
+                <span class="lab-test-status ${r.pass ? 'pass' : 'fail'}">${r.pass ? '✓ PASS' : '✕ FAIL'} · ${escapeHTML(r.label)}</span>
+                ${!r.pass && r.hint ? `<span class="lab-test-hint">Hint: ${escapeHTML(r.hint)}</span>` : ''}
+              </div>
+            `).join('')}
+          `;
+        });
+      }
+
+      const solBtn = container.querySelector('#toggleLabSolutionBtn');
+      if (solBtn && editor) {
+        solBtn.addEventListener('click', () => {
+          const spec = tests[currentTier] || tests.simple;
+          editor.value = spec.solutionCode;
+        });
+      }
+
+      const resetBtn = container.querySelector('#resetLabCodeBtn');
+      if (resetBtn && editor && consoleOut) {
+        resetBtn.addEventListener('click', () => {
+          const spec = tests[currentTier] || tests.simple;
+          editor.value = spec.starterCode;
+          consoleOut.hidden = true;
+          consoleOut.innerHTML = '';
+        });
+      }
     }
 
     const modSimMount = container.querySelector('#moduleIso3DSimMount');
