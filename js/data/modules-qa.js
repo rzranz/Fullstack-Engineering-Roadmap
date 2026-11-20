@@ -1696,5 +1696,614 @@ window.QA_MODULES = [
       "https://playwright.dev/docs/ci-intro",
       "https://www.saucedemo.com/"
     ]
+  },
+  {
+    "id": "qam25",
+    "mode": "qa",
+    "order": 1,
+    "track": "QA Fase 5A: Studi Kasus OpenMRS, GSheets & Java Automation",
+    "title": "Exploratory Manual OpenMRS: BVA Klinis, Double Encoding, Viewport 375px & GSheets COUNTIF",
+    "level": "Intermediate",
+    "summary": "Pembelajaran nyata Pilar 1 (Manual & Exploratory QA) pada OpenMRS 3 SPA & Legacy UI dengan pasien uji Randi QA_Test GITS_Patient (10001X1): 65 Test Cases (46 Pass, 16 Fail, 3 Pending), 11 Bug, 15 screenshot bukti, root cause BVA klinis, double HTML encoding, layout overlap 375x812, serta rumus rekap COUNTIF Google Sheets & audit CSV Python.",
+    "concepts": [
+      [
+        "Rekap Eksekusi Pilar 1: 65 TC & 11 Bug Nyata",
+        "Menguji OpenMRS 3 SPA & Legacy UI menggunakan pasien uji `Randi QA_Test GITS_Patient` (`10001X1`) menghasilkan 65 Test Case (46 Pass, 16 Fail, 3 Pending) serta 11 Bug terdokumentasi lengkap dengan 15 screenshot bukti."
+      ],
+      [
+        "BVA Klinis & Cross-Field Validation (Vitals)",
+        "Kasus nyata: tekanan darah `50 / 120` bisa tersimpan, berat `-5 kg` lolos ke API, dan digit awal hilang saat mengetik cepat. Validasi klinis wajib mengecek antar-kolom (`Systolic > Diastolic`) serta menyinkronkan error HTTP 400 server langsung ke field UI spesifik."
+      ],
+      [
+        "Double / Repeated HTML Encoding (XSS Integrity)",
+        "Input `<b>Test</b>` & `<script>` tampil sebagai `&lt;b&gt;` lalu berubah menjadi `&amp;lt;` ketika diedit ulang. Backend melakukan escaping saat simpan, lalu React UI meng-encode ulang saat render/edit. Uji XSS wajib memverifikasi integritas data pada siklus utuh Create → Read → Update."
+      ],
+      [
+        "Responsiveness & UI Overlap (1440x900 vs 375x812)",
+        "Tombol floating `?` menutupi tombol aksi `Check In` / `Options` pada tabel, sedangkan di viewport mobile `375x812` sidebar Registration memotong form input. Wajib menguji horizontal overflow, `position: fixed`, dan CSS grid/flex breakpoint."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Ringkasan 3 Pilar GITS QA & Root Cause Manual/UI",
+        "headers": [
+          "Area / Tahap",
+          "Temuan / Angka Nyata",
+          "Root Cause & Konsep QA yang Dipelajari"
+        ],
+        "rows": [
+          [
+            "Pilar 1 — Manual & Exploratory",
+            "65 TC (46 Pass, 16 Fail, 3 Pending) • 11 Bug • 15 Screenshot",
+            "Pasien uji `Randi QA_Test GITS_Patient` (`10001X1`) di OpenMRS 3 SPA & Legacy UI + rumus `COUNTA`/`COUNTIF` Google Sheets."
+          ],
+          [
+            "1. Manual & BVA Klinis",
+            "BP `50 / 120` tersimpan, berat `-5 kg` lolos API, digit awal hilang saat ketik cepat",
+            "Boundary Value Analysis (BVA) & cross-field validation (`Systolic > Diastolic`) + pemetaan pesan HTTP `400` ke field UI."
+          ],
+          [
+            "2. Input Security & Encoding",
+            "Input `<b>Test</b>` & `<script>` → `&lt;b&gt;` → `&amp;lt;` saat edit ulang",
+            "Double / Repeated HTML Encoding antara escaping backend & UI React. Selalu uji siklus Create → Read → Update."
+          ],
+          [
+            "3. Responsiveness & UI Overlap",
+            "Floating `?` tutupi `Check In`/`Options`; `375x812` sidebar memotong form",
+            "Viewport testing desktop (`1440x900`) vs mobile (`375x812`): cek overflow horizontal, z-index `position: fixed`, dan breakpoint."
+          ]
+        ]
+      }
+    ],
+    "compare": "Checklist test case statis hanya memeriksa fungsi normal, sedangkan exploratory testing berbasis BVA klinis + siklus Create→Read→Update + resize viewport `375x812` berhasil membongkar bug integritas data, double encoding, dan komponen tertutup overlay.",
+    "code": {
+      "language": "excel",
+      "extraTitle": "Google Sheets Tab Summary — Rumus Otomatis Hitung Pass/Fail/Severity",
+      "content": "=COUNTA(OpenMRS_Test_Cases!A2:A)\n=COUNTIF(OpenMRS_Test_Cases!J2:J,\"Pass\")\n=COUNTIF(OpenMRS_Test_Cases!J2:J,\"Fail\")\n=COUNTIF(OpenMRS_Test_Cases!J2:J,\"[PENDING_MANUAL_VERIFICATION]\")\n=IFERROR(COUNTIF(OpenMRS_Test_Cases!J2:J,\"Pass\")/(COUNTIF(OpenMRS_Test_Cases!J2:J,\"Pass\")+COUNTIF(OpenMRS_Test_Cases!J2:J,\"Fail\")),0)\n=COUNTA(OpenMRS_Bug_Reports!A2:A)\n=COUNTIF(OpenMRS_Bug_Reports!D2:D,\"High\")\n=COUNTIF(OpenMRS_Bug_Reports!D2:D,\"Medium\")\n=COUNTIF(OpenMRS_Bug_Reports!D2:D,\"Low\")"
+    },
+    "extraCodes": [
+      {
+        "title": "PowerShell + Python 3.12 — Audit Cepat File CSV Test Cases & Bug Reports",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "& \"C:\\Users\\HPrannn\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -c \"\nimport csv, collections\nbase = r'd:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\\1. Manual Testing'\nwith open(base + r'\\OpenMRS_Test_Cases.csv', encoding='utf-8') as f:\n    tcs = list(csv.DictReader(f))\nwith open(base + r'\\OpenMRS_Bug_Reports.csv', encoding='utf-8') as f:\n    bugs = list(csv.DictReader(f))\nprint('Test Cases:', len(tcs), dict(collections.Counter(r['Status'] for r in tcs)))\nprint('Bug Reports:', len(bugs), dict(collections.Counter(r['Severity'] for r in bugs)))\n\""
+      }
+    ],
+    "practices": [
+      "Selalu uji validasi antar-kolom (cross-field validation) seperti Systolic > Diastolic dan pastikan backend ikut menolak payload ilegal dengan HTTP 400 meski validasi UI dilewati.",
+      "Saat menguji XSS (`<b>Test</b>`, `<script>`), jangan berhenti setelah Save—buka kembali halaman Edit lalu Save ulang untuk mendeteksi bug Double HTML Encoding (`&amp;lt;`).",
+      "Uji viewport desktop (`1440x900`) dan mobile (`375x812`), lalu pakai rumus `IFERROR(Pass/(Pass+Fail), 0)` agar persentase Pass Rate di Google Sheets tidak `#DIV/0!` ketika semua test masih pending."
+    ],
+    "case": "Dalam assessment GITS QA di OpenMRS (`10001X1`), input tekanan darah `50/120` tetap bisa disimpan karena tidak ada pengecekan silang `Systolic > Diastolic`, sedangkan input `<b>Test</b>` mengalami double encoding saat form dibuka ulang untuk diedit.",
+    "exercise": {
+      "scenario": "Spreadsheet QA Anda memiliki sheet `OpenMRS_Test_Cases` (kolom J = Status: Pass / Fail / [PENDING_MANUAL_VERIFICATION]) dan `OpenMRS_Bug_Reports` (kolom D = Severity: High / Medium / Low).",
+      "task": "Buat rumus Pass Rate di Google Sheets yang kebal pembagian nol (`IFERROR`) dan hitung jumlah Bug berseverity `High` secara otomatis."
+    },
+    "quiz": {
+      "question": "Mengapa menguji XSS dengan payload `<b>Test</b>` di OpenMRS mewajibkan QA memeriksa ulang hasil setelah siklus Create -> Read -> Update?",
+      "options": [
+        "Untuk memverifikasi warna font tombol Edit berubah otomatis.",
+        "Untuk mendeteksi bug Double/Repeated HTML Encoding (`&lt;b&gt;` berubah menjadi `&amp;lt;b&amp;gt;`) akibat backend dan React UI sama-sama melakukan escaping berulang.",
+        "Karena HTML tag harus dieksekusi browser agar CSS terlihat rapi."
+      ],
+      "answer": 1,
+      "explanation": "Double HTML Encoding merusak integritas teks asli user tiap kali data dibaca dan disimpan ulang, sehingga merusak keakuratan catatan medis."
+    },
+    "refs": [
+      "https://o3.openmrs.org/openmrs/",
+      "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+    ]
+  },
+  {
+    "id": "qam26",
+    "mode": "qa",
+    "order": 2,
+    "track": "QA Fase 5A: Studi Kasus OpenMRS, GSheets & Java Automation",
+    "title": "Java RestAssured API Automation (`ReqResApiTest.java`) & Maven Dependency Hygiene",
+    "level": "Intermediate",
+    "summary": "Implementasi API Automation berbasis Java 17 + RestAssured + TestNG terhadap ReqRes.in (2/2 Passed: GET /api/users/2 HTTP 200 & POST /api/login missing password HTTP 400), lengkap dengan solusi Maven Dependency Hygiene untuk error Jackson serializer dan konflik Log4j2 pada Apache POI 5.3.0.",
+    "concepts": [
+      [
+        "RestAssured Fluent BDD Syntax (given-when-then)",
+        "Mengirim header `x-api-key`, `ContentType.JSON`, body `Collections.singletonMap`, lalu mengekstrak `Response` untuk assertion TestNG `Assert.assertEquals` dan logging `Reporter.log(..., true)`."
+      ],
+      [
+        "Maven Dependency Hygiene: RestAssured + Jackson",
+        "Kegagalan `IllegalStateException (no JSON serializer)` muncul ketika RestAssured menerima objek Java `Map` untuk diserialisasi ke JSON body tanpa library serializer di `pom.xml`. Solusinya: tambahkan `jackson-databind` agar konversi Map -> JSON berjalan otomatis."
+      ],
+      [
+        "Maven Dependency Hygiene: Apache POI 5.3.0 + Log4j2",
+        "Apache POI 5.3.0 kerap melempar `NoSuchMethodError` saat runtime bila versi transitif `log4j-api` dan `log4j-core` tidak cocok. Solusi produksi: selaraskan versi kedua artefak Log4j2 secara eksplisit di `pom.xml` pada versi `2.24.1`."
+      ],
+      [
+        "Negative API Assertion Terukur",
+        "Bukan hanya menguji happy path `GET /api/users/2` (`statusCode == 200`, `data.id == \"2\"`), tetapi juga memastikan negative login `POST /api/login` tanpa password mengembalikan HTTP `400` dan pesan JSON `error == \"Missing password\"`."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Diagnosa Error Dependency Maven & Verifikasi Skenario ReqRes",
+        "headers": [
+          "Komponen / Skenario",
+          "Gejala Error / Ekspektasi",
+          "Solusi / Implementasi Lulus"
+        ],
+        "rows": [
+          [
+            "RestAssured Serializer",
+            "`IllegalStateException (no JSON serializer)` saat POST Map body",
+            "Tambahkan `com.fasterxml.jackson.core:jackson-databind` pada `pom.xml`."
+          ],
+          [
+            "Apache POI 5.3.0 Runtime",
+            "`NoSuchMethodError` di kelas Log4j2 saat membaca `testdata.xlsx`",
+            "Samakan versi eksplisit `org.apache.logging.log4j:log4j-api` & `log4j-core` ke `2.24.1`."
+          ],
+          [
+            "Scenario 1 — `GET /api/users/2`",
+            "Header `x-api-key`, Accept JSON",
+            "HTTP `200 OK` & `response.jsonPath().getString(\"data.id\")` equals `\"2\"`."
+          ],
+          [
+            "Scenario 2 — `POST /api/login`",
+            "Body `{ \"email\": \"peter@klaven\" }` tanpa password",
+            "HTTP `400 Bad Request` & `response.jsonPath().getString(\"error\")` equals `\"Missing password\"`."
+          ]
+        ]
+      }
+    ],
+    "compare": "Postman sangat cepat untuk eksplorasi ad-hoc dan koleksi tim, sedangkan Java RestAssured + TestNG menyatu dalam satu build Maven (`mvn test -Dtest=ReqResApiTest`) bersama Selenium POM & Apache POI untuk pelaporan TestNG `emailable-report.html` terpadu.",
+    "code": {
+      "language": "java",
+      "extraTitle": "src/test/java/com/gits/qa/api/ReqResApiTest.java — 100% Passing Implementation",
+      "content": "package com.gits.qa.api;\n\nimport io.restassured.RestAssured;\nimport io.restassured.http.ContentType;\nimport io.restassured.response.Response;\nimport org.testng.Assert;\nimport org.testng.Reporter;\nimport org.testng.annotations.BeforeClass;\nimport org.testng.annotations.Test;\n\nimport java.util.Collections;\n\nimport static io.restassured.RestAssured.given;\n\n/**\n * RestAssured API automation tests against ReqRes (https://reqres.in/).\n */\npublic class ReqResApiTest {\n\n    private static final String BASE_URI = \"https://reqres.in\";\n    private static final String API_KEY = System.getProperty(\"reqres.api.key\", \"free_user_3MMnHzsnIN28CqZwivUmSkD0fi9\");\n\n    @BeforeClass\n    public void setup() {\n        RestAssured.baseURI = BASE_URI;\n    }\n\n    @Test(priority = 1, description = \"Scenario 1: GET /api/users/2 returns HTTP 200 and data.id equals '2'\")\n    public void testGetSingleUserById() {\n        Response response = given()\n                .header(\"x-api-key\", API_KEY)\n                .accept(ContentType.JSON)\n                .when()\n                .get(\"/api/users/2\")\n                .then()\n                .log().all()\n                .extract().response();\n\n        Reporter.log(\"GET /api/users/2 Status: \" + response.statusCode(), true);\n        Reporter.log(\"GET /api/users/2 Body: \" + response.asString(), true);\n\n        Assert.assertEquals(response.statusCode(), 200, \"Expected HTTP 200 OK\");\n        Assert.assertEquals(response.jsonPath().getString(\"data.id\"), \"2\",\n                \"Expected data.id to equal '2'\");\n    }\n\n    @Test(priority = 2, description = \"Scenario 2: POST /api/login without password returns HTTP 400 and error 'Missing password'\")\n    public void testUnsuccessfulLoginMissingPassword() {\n        Response response = given()\n                .header(\"x-api-key\", API_KEY)\n                .contentType(ContentType.JSON)\n                .accept(ContentType.JSON)\n                .body(Collections.singletonMap(\"email\", \"peter@klaven\"))\n                .when()\n                .post(\"/api/login\")\n                .then()\n                .log().all()\n                .extract().response();\n\n        Reporter.log(\"POST /api/login Status: \" + response.statusCode(), true);\n        Reporter.log(\"POST /api/login Body: \" + response.asString(), true);\n\n        Assert.assertEquals(response.statusCode(), 400, \"Expected HTTP 400 Bad Request\");\n        Assert.assertEquals(response.jsonPath().getString(\"error\"), \"Missing password\",\n                \"Expected error message to equal 'Missing password'\");\n    }\n}"
+    },
+    "extraCodes": [
+      {
+        "title": "PowerShell — Jalankan Hanya ReqResApiTest (2/2 API Test) di Terminal Mana Pun",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "$env:JAVA_HOME = \"C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot\"\n$env:Path = \"C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin;$env:JAVA_HOME\\bin;$env:Path\"\nSet-Location \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\\2. Automation Testing\\GITS-QA-Automation\"\n& \"C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin\\mvn.cmd\" test -Dtest=ReqResApiTest"
+      }
+    ],
+    "practices": [
+      "Eksternalisasi API key lewat `System.getProperty(\"reqres.api.key\", ...)` agar mudah diganti di CI/CD tanpa mengubah kode Java.",
+      "Selalu selaraskan versi `log4j-api` dan `log4j-core` (`2.24.1`) saat memakai Apache POI 5.3.0, dan pastikan `jackson-databind` hadir sebelum mengirim `Map` body di RestAssured.",
+      "Gunakan `Reporter.log(..., true)` di TestNG supaya status code dan JSON response tercatat sekaligus di console Maven maupun `emailable-report.html`."
+    ],
+    "case": "Saat pertama kali mengeksekusi POST Map body di RestAssured, suite melempar `IllegalStateException (no JSON serializer)` sementara suite Excel melempar `NoSuchMethodError`. Menambahkan `jackson-databind` serta menyamakan `log4j-api` & `log4j-core` ke `2.24.1` membuat API suite lulus 2/2 seketika.",
+    "exercise": {
+      "scenario": "Endpoint `https://reqres.in/api/login` wajib menolak request yang tidak membawa field `password` dengan status `400` dan pesan `Missing password`.",
+      "task": "Tulis method `@Test` RestAssured dengan header `x-api-key`, kirim `Collections.singletonMap(\"email\", \"peter@klaven\")`, lalu verifikasi status code dan key `error`."
+    },
+    "quiz": {
+      "question": "Apa penyebab utama error `IllegalStateException (no JSON serializer)` ketika RestAssured mengirim objek Java `Map` di method `.body(...)`?",
+      "options": [
+        "Method GET salah ketik menjadi POST.",
+        "Tidak adanya library JSON serializer seperti `jackson-databind` di classpath Maven `pom.xml`.",
+        "Server ReqRes sedang offline."
+      ],
+      "answer": 1,
+      "explanation": "RestAssured membutuhkan library pihak ketiga seperti Jackson (`jackson-databind`) atau Gson untuk mengubah objek Java (`Map`/POJO) menjadi payload JSON."
+    },
+    "refs": [
+      "https://rest-assured.io/",
+      "https://reqres.in/"
+    ]
+  },
+  {
+    "id": "qam27",
+    "mode": "qa",
+    "order": 3,
+    "track": "QA Fase 5A: Studi Kasus OpenMRS, GSheets & Java Automation",
+    "title": "Selenium 4 POM & POI DDT (`OpenMrsLoginPage` & `Test`): Dual UI, CSRFGuard & CDP Port 9223",
+    "level": "Advanced",
+    "summary": "Bedah lengkap suite UI Automation Java Selenium 4 + Apache POI Excel DDT + TestNG yang meraih 5/5 Passed (3/3 UI + 2/2 API dalam 18.025 s) pada OpenMRS: arsitektur Dual UI, race condition asinkron OWASP-CSRFTOKEN, penanganan Cloudflare & konflik port 9222 IPv4/IPv6 via port 9223 + CDP window state recovery.",
+    "concepts": [
+      [
+        "Inspect Live DOM: Dual UI Architecture OpenMRS",
+        "`https://o3.openmrs.org/openmrs/` menampilkan Legacy UI 2.8.10 (form 1-langkah, `#sessionLocation`, error `#openmrs_error`: `\"Invalid username/password. Please try again.\"`), sedangkan `https://o3.openmrs.org/` adalah O3 React SPA (form 2-langkah, LocationPicker, Carbon notification)."
+      ],
+      [
+        "Asynchronous OWASP CSRFGuard Race Condition",
+        "Mengklik `Log In` langsung kembali ke halaman awal tanpa error? Script `/openmrs/csrfguard` menyuntikkan `<input name=\"OWASP-CSRFTOKEN\">` secara asinkron setelah HTML selesai di-parse. Wajib menunggu `wait.until(ExpectedConditions.presenceOfElementLocated(By.name(\"OWASP-CSRFTOKEN\")))` di `open()`."
+      ],
+      [
+        "Ethical Anti-Bot, Konflik Port 9222 & Port Bebas 9223",
+        "Browser headless/baru memicu Cloudflare `Just a moment...`, sementara port `9222` sering bentrok IPv4 vs IPv6 `[::1]`. Gunakan profil Chrome terverifikasi user di port `9223` (`127.0.0.1:9223`), jangan bypass CAPTCHA, dan jaga cookie `cf_clearance` dengan `logoutIfLoggedIn()` bukan `driver.quit()`."
+      ],
+      [
+        "Pemulihan Minimized Chrome via CDP & Apache POI DDT",
+        "Jendela Chrome yang ter-minimize gagal menerima `sendKeys`. Pulihkan ke `normal (1440x900)` memakai CDP `Page.bringToFront`, `Browser.getWindowForTarget`, dan `Browser.setWindowBounds`, lalu jalankan Scenario 1 (invalid), Scenario 2 (hardcoded + PNG), dan Scenario 3 (`ExcelUtils.readSheetData(\"testdata.xlsx\", \"LoginData\")` + PNG)."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Perbandingan Arsitektur Dual UI OpenMRS & Solusi Flakiness Selenium 4",
+        "headers": [
+          "Aspek / Kendala",
+          "Detail Teknis / Masalah Nyata",
+          "Solusi Terverifikasi (18.025 s — 5/5 Pass)"
+        ],
+        "rows": [
+          [
+            "URL `/openmrs/` (Legacy 2.8.10)",
+            "1-step login (`#username`, `#password`, `#sessionLocation`, `#openmrs_error`)",
+            "Gunakan `OpenMrsLoginPage.BASE_URL = \"https://o3.openmrs.org/openmrs/\"`."
+          ],
+          [
+            "URL `/` (O3 React SPA)",
+            "2-step login + LocationPicker + Carbon Design System toast notification",
+            "Pisahkan Page Object bila menargetkan O3 SPA; jangan campur selector."
+          ],
+          [
+            "CSRFGuard Race Condition",
+            "Form tersubmit sebelum input hidden `OWASP-CSRFTOKEN` disuntik JS",
+            "`wait.until(ExpectedConditions.presenceOfElementLocated(By.name(\"OWASP-CSRFTOKEN\")))`."
+          ],
+          [
+            "Minimized Chrome + `cf_clearance`",
+            "Port `9222` bentrok `[::1]`; window minimize gagal `sendKeys`; quit menghapus cookie CF",
+            "Gunakan `127.0.0.1:9223`, CDP `Page.bringToFront` + `Browser.setWindowBounds`, dan `logoutIfLoggedIn()`."
+          ]
+        ]
+      }
+    ],
+    "compare": "Menutup browser antar test (`driver.quit()`) memang mengisolasi sesi, tetapi pada target ber-Cloudflare cookie `cf_clearance` milik user ikut terhapus. Menempel ke profil debug terverifikasi `127.0.0.1:9223` plus `logoutIfLoggedIn()` menjaga sesi tetap valid sambil mereset state login.",
+    "code": {
+      "language": "java",
+      "extraTitle": "src/test/java/com/gits/qa/pages/OpenMrsLoginPage.java — Page Object Model + OWASP CSRFGuard Wait",
+      "content": "package com.gits.qa.pages;\n\nimport org.openqa.selenium.By;\nimport org.openqa.selenium.WebDriver;\nimport org.openqa.selenium.WebElement;\nimport org.openqa.selenium.support.ui.ExpectedConditions;\nimport org.openqa.selenium.support.ui.WebDriverWait;\n\nimport java.time.Duration;\nimport java.util.List;\n\npublic class OpenMrsLoginPage {\n\n    public static final String BASE_URL = \"https://o3.openmrs.org/openmrs/\";\n\n    private static final By USERNAME_INPUT = By.id(\"username\");\n    private static final By PASSWORD_INPUT = By.id(\"password\");\n    private static final By LOGIN_SUBMIT_BUTTON = By.cssSelector(\"input[type='submit'][value='Log In'], form button[type='submit']\");\n    private static final By SESSION_LOCATION_LIST = By.id(\"sessionLocation\");\n    private static final By ERROR_MESSAGE_CONTAINER = By.id(\"openmrs_error\");\n\n    private static final By LOGOUT_LINK = By.linkText(\"Log out\");\n    private static final By LOGGED_IN_USER_BAR = By.id(\"userLoggedInAs\");\n    private static final By NAV_LIST = By.cssSelector(\"ul.navList\");\n\n    private final WebDriver driver;\n    private final WebDriverWait wait;\n\n    public OpenMrsLoginPage(WebDriver driver) {\n        this.driver = driver;\n        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));\n    }\n\n    public void open() {\n        driver.get(BASE_URL);\n        wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));\n        wait.until(ExpectedConditions.presenceOfElementLocated(By.name(\"OWASP-CSRFTOKEN\")));\n    }\n\n    public void enterUsername(String username) {\n        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));\n        el.clear();\n        el.sendKeys(username);\n    }\n\n    public void enterPassword(String password) {\n        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(PASSWORD_INPUT));\n        el.clear();\n        el.sendKeys(password);\n    }\n\n    public boolean selectLocationIfRequired(String locationName) {\n        if (locationName == null || locationName.isBlank()) {\n            return false;\n        }\n        List<WebElement> locationLists = driver.findElements(SESSION_LOCATION_LIST);\n        if (!locationLists.isEmpty() && locationLists.get(0).isDisplayed()) {\n            WebElement option = locationLists.get(0).findElement(\n                    By.xpath(\".//li[normalize-space()='\" + locationName + \"']\"));\n            option.click();\n            return true;\n        }\n        return false;\n    }\n\n    public void clickLogin() {\n        WebElement submitBtn = wait.until(ExpectedConditions.elementToBeClickable(LOGIN_SUBMIT_BUTTON));\n        submitBtn.click();\n    }\n\n    public boolean login(String username, String password, String locationName) {\n        enterUsername(username);\n        enterPassword(password);\n        boolean locationSelected = selectLocationIfRequired(locationName);\n        clickLogin();\n        return locationSelected;\n    }\n\n    public String getErrorMessageText() {\n        WebElement err = wait.until(ExpectedConditions.visibilityOfElementLocated(ERROR_MESSAGE_CONTAINER));\n        return err.getText().trim();\n    }\n\n    public boolean isDashboardDisplayed() {\n        wait.until(ExpectedConditions.and(\n                ExpectedConditions.visibilityOfElementLocated(LOGOUT_LINK),\n                ExpectedConditions.visibilityOfElementLocated(NAV_LIST)\n        ));\n        List<WebElement> userBar = driver.findElements(LOGGED_IN_USER_BAR);\n        boolean hasUserBar = !userBar.isEmpty() && userBar.get(0).isDisplayed();\n        return driver.findElement(LOGOUT_LINK).isDisplayed()\n                && driver.findElement(NAV_LIST).isDisplayed()\n                && (hasUserBar || driver.getPageSource().contains(\"Welcome to OpenMRS\"));\n    }\n\n    public String getLoggedInUserText() {\n        List<WebElement> userBar = driver.findElements(LOGGED_IN_USER_BAR);\n        return userBar.isEmpty() ? \"\" : userBar.get(0).getText().trim();\n    }\n\n    public void logoutIfLoggedIn() {\n        List<WebElement> logoutLinks = driver.findElements(LOGOUT_LINK);\n        if (!logoutLinks.isEmpty() && logoutLinks.get(0).isDisplayed()) {\n            logoutLinks.get(0).click();\n            wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));\n        }\n    }\n}"
+    },
+    "extraCodes": [
+      {
+        "title": "src/test/java/com/gits/qa/ui/OpenMrsLoginTest.java — Selenium 4 + Apache POI DDT + CDP Recovery",
+        "language": "java",
+        "variant": "neutral",
+        "content": "package com.gits.qa.ui;\n\nimport com.gits.qa.pages.OpenMrsLoginPage;\nimport com.gits.qa.utils.ExcelUtils;\nimport org.openqa.selenium.Dimension;\nimport org.openqa.selenium.OutputType;\nimport org.openqa.selenium.TakesScreenshot;\nimport org.openqa.selenium.WebDriver;\nimport org.openqa.selenium.chrome.ChromeDriver;\nimport org.openqa.selenium.chrome.ChromeOptions;\nimport org.testng.Assert;\nimport org.testng.ITestResult;\nimport org.testng.Reporter;\nimport org.testng.annotations.AfterMethod;\nimport org.testng.annotations.BeforeMethod;\nimport org.testng.annotations.DataProvider;\nimport org.testng.annotations.Test;\n\nimport java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.time.Duration;\n\npublic class OpenMrsLoginTest {\n\n    private static final String SCREENSHOT_DIR = \"screenshots\";\n    private WebDriver driver;\n    private OpenMrsLoginPage loginPage;\n    private boolean attachedToExistingBrowser;\n\n    @BeforeMethod\n    public void setUp() {\n        String debuggerAddress = System.getProperty(\"chrome.debuggerAddress\", \"\").trim();\n        attachedToExistingBrowser = !debuggerAddress.isEmpty();\n\n        if (!attachedToExistingBrowser || driver == null) {\n            ChromeOptions options = new ChromeOptions();\n            if (attachedToExistingBrowser) {\n                options.setExperimentalOption(\"debuggerAddress\", debuggerAddress);\n            } else {\n                options.addArguments(\"--window-size=1440,900\");\n            }\n            driver = new ChromeDriver(options);\n            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));\n            if (attachedToExistingBrowser) {\n                try {\n                    ChromeDriver cd = (ChromeDriver) driver;\n                    cd.executeCdpCommand(\"Page.bringToFront\", java.util.Collections.emptyMap());\n                    java.util.Map<String, Object> winInfo = cd.executeCdpCommand(\"Browser.getWindowForTarget\", java.util.Collections.emptyMap());\n                    cd.executeCdpCommand(\"Browser.setWindowBounds\", java.util.Map.of(\n                            \"windowId\", winInfo.get(\"windowId\"),\n                            \"bounds\", java.util.Map.of(\"windowState\", \"normal\", \"width\", 1440, \"height\", 900)\n                    ));\n                } catch (Exception e) {\n                    System.out.println(\"DEBUG CDP WINDOW ERROR: \" + e.getMessage());\n                }\n            }\n            loginPage = new OpenMrsLoginPage(driver);\n        }\n\n        if (attachedToExistingBrowser) {\n            loginPage.logoutIfLoggedIn();\n        }\n    }\n\n    @AfterMethod(alwaysRun = true)\n    public void tearDown(ITestResult result) {\n        if (driver != null) {\n            if (!result.isSuccess()) {\n                try {\n                    Reporter.log(\"Failure URL: \" + driver.getCurrentUrl() + \" | Title: \" + driver.getTitle(), true);\n                } catch (Exception ignored) {\n                }\n            }\n            if (attachedToExistingBrowser) {\n                try {\n                    loginPage.logoutIfLoggedIn();\n                } catch (Exception ignored) {\n                }\n            } else {\n                driver.quit();\n                driver = null;\n            }\n        }\n    }\n\n    @DataProvider(name = \"loginData\")\n    public Object[][] getLoginDataFromExcel() {\n        return ExcelUtils.readSheetData(\"testdata.xlsx\", \"LoginData\");\n    }\n\n    @Test(priority = 1, description = \"Scenario 1: Failed Login with Invalid Credentials\")\n    public void scenario1_FailedLoginWithInvalidCredentials() {\n        loginPage.open();\n        boolean locationSelected = loginPage.login(\"randi_invalid\", \"invalid_qa_pass\", \"Outpatient Clinic\");\n        Reporter.log(\"Scenario 1 location selector present: \" + locationSelected, true);\n\n        String actualError = loginPage.getErrorMessageText();\n        Reporter.log(\"Scenario 1 observed error message: \" + actualError, true);\n\n        Assert.assertTrue(\n                actualError.equalsIgnoreCase(\"Invalid Username/Password. Please Try Again.\"),\n                \"Expected error message 'Invalid Username/Password. Please Try Again.' (case-insensitive), but got: \" + actualError\n        );\n    }\n\n    @Test(priority = 2, description = \"Scenario 2: Successful Login with Hardcoded Valid Credentials\")\n    public void scenario2_SuccessfulLoginHardcoded() {\n        loginPage.open();\n        boolean locationSelected = loginPage.login(\"admin\", \"Admin123\", \"Outpatient Clinic\");\n        Reporter.log(\"Scenario 2 location selector present: \" + locationSelected, true);\n\n        Assert.assertTrue(loginPage.isDashboardDisplayed(),\n                \"Expected OpenMRS Home Dashboard to be visible after valid hardcoded login\");\n        Reporter.log(\"Scenario 2 logged in user: \" + loginPage.getLoggedInUserText(), true);\n\n        captureScreenshot(\"Scenario2_Hardcoded_Login.png\");\n    }\n\n    @Test(priority = 3, dataProvider = \"loginData\",\n            description = \"Scenario 3: Successful Login Using Dynamic Credentials from Excel\")\n    public void scenario3_SuccessfulLoginExcelDdt(String username, String password, String location) {\n        loginPage.open();\n        boolean locationSelected = loginPage.login(username, password, location);\n        Reporter.log(\"Scenario 3 loaded from Excel -> user=\" + username + \", location=\" + location\n                + \", locationSelectorPresent=\" + locationSelected, true);\n\n        Assert.assertTrue(loginPage.isDashboardDisplayed(),\n                \"Expected OpenMRS Home Dashboard to be visible after valid Excel DDT login\");\n        Reporter.log(\"Scenario 3 logged in user: \" + loginPage.getLoggedInUserText(), true);\n\n        captureScreenshot(\"Scenario3_Excel_Login.png\");\n    }\n\n    private void captureScreenshot(String filename) {\n        try {\n            Path outputDir = Paths.get(SCREENSHOT_DIR);\n            Files.createDirectories(outputDir);\n            byte[] pngBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);\n            Path target = outputDir.resolve(filename);\n            Files.write(target, pngBytes);\n            Reporter.log(\"Saved screenshot: \" + target.toAbsolutePath(), true);\n        } catch (IOException e) {\n            throw new RuntimeException(\"Unable to save screenshot \" + filename, e);\n        }\n    }\n}"
+      },
+      {
+        "title": "PowerShell #1 & #2 — Launch Chrome Debug Port 9223 & Run Full Maven Suite (5/5 Passed)",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "# PowerShell #1 — Buka Chrome Debug Port 9223 (Selesaikan Cloudflare sekali -> Login -> Log out -> Jangan minimize)\n& \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" --remote-debugging-port=9223 --user-data-dir=\"$env:TEMP\\chrome-qa-debug\" \"https://o3.openmrs.org/openmrs/\"\n\n# PowerShell #2 — Jalankan Full Suite Maven 5/5 (API + UI + Screenshots)\n$env:JAVA_HOME = \"C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot\"\n$env:Path = \"C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin;$env:JAVA_HOME\\bin;$env:Path\"\nSet-Location \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\\2. Automation Testing\\GITS-QA-Automation\"\n& \"C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin\\mvn.cmd\" clean test \"-Dchrome.debuggerAddress=127.0.0.1:9223\""
+      }
+    ],
+    "practices": [
+      "Inspeksi DOM halaman target secara langsung sebelum memilih selector — bedakan URL `/openmrs/` (Legacy 1-step) dari root `/` (O3 React SPA 2-step).",
+      "Tunggu `<input name=\"OWASP-CSRFTOKEN\">` hadir di DOM sebelum submit form pada aplikasi yang memakai proteksi asynchronous CSRFGuard.",
+      "Gunakan port bebas `9223` + `127.0.0.1` untuk menghindari tabrakan IPv4/IPv6 `[::1]` di port `9222`, serta kembalikan ukuran jendela dengan CDP `Browser.setWindowBounds` agar `sendKeys` selalu andal."
+    ],
+    "case": "Saat menjalankan skenario login OpenMRS, Selenium terlalu cepat menekan `Log In` sebelum `/openmrs/csrfguard` menyuntikkan token hidden sehingga form terus kembali ke halaman awal. Menunggu `By.name(\"OWASP-CSRFTOKEN\")` serta memulihkan window via CDP menghasilkan 5/5 Passed (2 API + 3 UI + 2 PNG) dalam 18.025 detik.",
+    "exercise": {
+      "scenario": "Test UI Java Anda menempel ke Chrome Debug Port `9223` milik user, namun jendela browser sempat ter-minimize sebelum tes dijalankan.",
+      "task": "Tambahkan blok CDP `Page.bringToFront` dan `Browser.setWindowBounds` (`windowState: \"normal\"`, `1440x900`) serta verifikasi `By.name(\"OWASP-CSRFTOKEN\")` di `OpenMrsLoginPage.open()`."
+    },
+    "quiz": {
+      "question": "Mengapa pada kasus OpenMRS kita memanggil `loginPage.logoutIfLoggedIn()` pada mode `attachedToExistingBrowser` daripada memanggil `driver.quit()` di `@AfterMethod`?",
+      "options": [
+        "Agar Chrome tidak bisa ditutup selamanya.",
+        "Untuk menjaga cookie `cf_clearance` milik profil debug agar tetap valid antar-skenario tanpa menghapus sesi verifikasi browser.",
+        "Karena Apache POI melarang pemakaian driver.quit()."
+      ],
+      "answer": 1,
+      "explanation": "Memanggil `driver.quit()` pada debug session menutup proses Chrome beserta konteks cookie, sedangkan `logoutIfLoggedIn()` mengembalikan UI ke form login sambil mempertahankan status verifikasi sesi."
+    },
+    "refs": [
+      "https://o3.openmrs.org/openmrs/",
+      "https://www.selenium.dev/documentation/"
+    ]
+  },
+  {
+    "id": "qam28",
+    "mode": "qa",
+    "order": 1,
+    "track": "QA Fase 5B: Web Vitals Nyata, k6 Trend & Command Center",
+    "title": "Audit Core Web Vitals Praktis: Lighthouse CLI, `k6/browser` & Pembuktian `TTFB / INP / TBT`",
+    "level": "Intermediate",
+    "summary": "Pemetaan dua lapisan QA Performance Engineering: k6 API Protocol Testing (backend RPS & TTFB `http_req_waiting`) vs Frontend User-Centric Core Web Vitals (`LCP`, `INP` pengganti FID sejak Maret 2024, `CLS`, `FCP`, `TBT`), disertai perintah Lighthouse CLI siap jalan dan template `k6/browser` untuk `k6 v2.4.0`.",
+    "concepts": [
+      [
+        "TTFB Sudah Terukur Langsung di k6 Protocol Test",
+        "TTFB (Time to First Byte) diukur oleh metrik `http_req_waiting` pada k6. Hasil real dari Modul 3: `avg 229.05 ms`, `p95 415.14 ms` — masuk kategori Good (`<= 800 ms`; Warn 800–1800 ms; Poor > 1800 ms)."
+      ],
+      [
+        "INP (Pengganti FID Maret 2024) & Kasus OpenMRS Vitals",
+        "INP (Good `<= 200 ms`; Warn 200–500 ms; Poor > 500 ms) mengukur latensi p98 interaksi user (klik/ketik) ke frame berikutnya. Dipicu Long Tasks (> 50 ms) / state React berat — relevan langsung dengan bug hilangnya ketikan awal di input Vitals OpenMRS!"
+      ],
+      [
+        "LCP, CLS, FCP & TBT (Proksi Lab INP di Lighthouse)",
+        "LCP (Good `<= 2.5 s`, Poor `> 4.0 s`), CLS (Good `<= 0.10`, Poor `> 0.25`), FCP (Good `<= 1.8 s`), dan TBT (Good `<= 200 ms`). Karena audit lab Lighthouse tidak menekan semua tombol interaktif, TBT dipakai sebagai proksi kuat memprediksi buruknya INP."
+      ],
+      [
+        "Kapan Memakai k6 Protocol vs Lighthouse / k6/browser?",
+        "k6 Protocol test (ringan, mampu 1.000+ VUs dari 1 laptop) menguji daya tahan backend/DB/CDN, error rate, connection pool & TTFB. Lighthouse/`k6/browser` (1–10 instances Chromium karena boros RAM/CPU) membedah `LCP`, `INP`, `CLS`, dan JS main-thread blocking."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Matriks Ambang Batas Core Web Vitals & Cara Mengukurnya di Proyek QA",
+        "headers": [
+          "Metrik",
+          "Definisi Ringkas",
+          "Ambang Batas Google (Good / Warn / Poor)",
+          "Posisi Proyek Ini & Instrumen Ukur"
+        ],
+        "rows": [
+          [
+            "TTFB (Time to First Byte)",
+            "Waktu sejak HTTP request dikirim hingga byte pertama respons server/CDN diterima.",
+            "Good <= 800 ms · Warn 800–1800 ms · Poor > 1800 ms",
+            "Terukur di k6 (`http_req_waiting`): avg 229.05 ms, p95 415.14 ms (Good)."
+          ],
+          [
+            "LCP (Largest Contentful Paint)",
+            "Waktu elemen konten terbesar di viewport selesai ter-render.",
+            "Good <= 2.5 s · Warn 2.5–4.0 s · Poor > 4.0 s",
+            "Diukur via Lighthouse CLI, Chrome DevTools Performance, atau `k6/browser`."
+          ],
+          [
+            "INP (Interaction to Next Paint)",
+            "Pengganti FID sejak Maret 2024: latensi klik/ketik ke frame visual berikutnya.",
+            "Good <= 200 ms · Warn 200–500 ms · Poor > 500 ms",
+            "Dipicu Long Task > 50 ms / React re-render berat (kasus ketikan hilang di OpenMRS Vitals)."
+          ],
+          [
+            "CLS (Cumulative Layout Shift)",
+            "Total pergeseran elemen visual tiba-tiba saat load/interaksi.",
+            "Good <= 0.10 · Warn 0.10–0.25 · Poor > 0.25",
+            "Dipicu image tanpa width/height, webfont late-swap, atau toast banner dinamis."
+          ],
+          [
+            "FCP & TBT",
+            "First Contentful Paint & Total Blocking Time (>50 ms main thread terkunci).",
+            "FCP Good <= 1.8 s · TBT Good <= 200 ms",
+            "Proksi lab Lighthouse untuk mendeteksi potensi buruknya INP di produksi."
+          ]
+        ]
+      }
+    ],
+    "compare": "Jangan memaksa 1.000 VUs memakai `k6/browser` karena tiap instance Chromium menghabiskan ratusan MB RAM dan CPU. Jalankan 500–1.000 VUs di layer k6 Protocol untuk TTFB & DB, lalu jalankan 1–10 instances di Lighthouse / `k6/browser` untuk `LCP`, `INP`, `TBT`, dan `CLS`.",
+    "code": {
+      "language": "javascript",
+      "extraTitle": "k6/browser Template — Mengukur Core Web Vitals (LCP, INP, CLS, TTFB) dengan k6 v2.4.0",
+      "content": "import { browser } from 'k6/browser';\nimport { check } from 'k6';\n\nexport const options = {\n  scenarios: {\n    ui_vitals: {\n      executor: 'shared-iterations',\n      vus: 1,\n      iterations: 1,\n      options: { browser: { type: 'chromium' } },\n    },\n  },\n  thresholds: {\n    browser_web_vital_lcp: ['p(95)<2500'],\n    browser_web_vital_inp: ['p(95)<200'],\n    browser_web_vital_cls: ['p(95)<0.1'],\n    browser_web_vital_ttfb: ['p(95)<800'],\n  },\n};\n\nexport default async function () {\n  const page = await browser.newPage();\n  try {\n    await page.goto('https://example.com', { waitUntil: 'networkidle' });\n    await page.locator('a').first().click();\n    check(page, { 'page loaded': () => page.url().length > 0 });\n  } finally {\n    await page.close();\n  }\n}"
+    },
+    "extraCodes": [
+      {
+        "title": "PowerShell — Audit Core Web Vitals (LCP, CLS, TTFB, TBT, FCP) via Lighthouse CLI + Catatan k6/browser",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "$env:CHROME_PATH = \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"\n$env:Path = \"C:\\Program Files\\nodejs;$env:Path\"\n$outReport = \"d:\\Portofolio\\QA Testing\\lighthouse-openmrs-report.html\"\n\n& \"C:\\Program Files\\nodejs\\npx.cmd\" --yes lighthouse \"https://o3.openmrs.org/openmrs/spa/login\" `\n  --only-categories=performance `\n  --output=html `\n  --output-path=\"$outReport\" `\n  --chrome-flags=\"--headless=new\"\n\nStart-Process \"$outReport\"\n\n# Catatan penting untuk menjalankan k6/browser di Windows lokal:\n# $env:K6_BROWSER_EXECUTABLE_PATH = \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"\n# Target publik ber-Cloudflare (o3.openmrs.org) dapat memicu anti-bot pada headless browser baru."
+      }
+    ],
+    "practices": [
+      "Selalu set `$env:K6_BROWSER_EXECUTABLE_PATH = \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"` di PowerShell sebelum mengeksekusi skrip `k6/browser` di Windows.",
+      "Gunakan TBT (`<= 200 ms`) di laporan Lighthouse lab sebagai sinyal peringatan dini terhadap masalah INP (`<= 200 ms`) di lapangan.",
+      "Ingat bahwa situs publik yang diproteksi Cloudflare seperti `o3.openmrs.org` dapat memunculkan tantangan anti-bot saat diaudit dengan browser headless baru."
+    ],
+    "case": "Gejala ketikan angka pertama hilang saat user mengisi form Vitals di OpenMRS 3 sering kali merupakan indikasi Long Task React pada main thread (INP > 200 ms), sesuatu yang tidak terlihat dari test API `k6` (`http_req_waiting` 229 ms) dan hanya terbongkar dengan audit DevTools/Lighthouse/`k6/browser`.",
+    "exercise": {
+      "scenario": "Anda ingin menambahkan Quality Gate frontend Web Vitals di skrip `k6/browser` (`k6 v2.4.0`) sesuai ambang batas Google Good.",
+      "task": "Tuliskan objek `thresholds` untuk `browser_web_vital_lcp`, `browser_web_vital_inp`, `browser_web_vital_cls`, dan `browser_web_vital_ttfb` pada p(95)."
+    },
+    "quiz": {
+      "question": "Mengapa Lighthouse lab menggunakan Total Blocking Time (TBT) untuk memprediksi INP di dunia nyata?",
+      "options": [
+        "Karena TBT menghitung ukuran gambar PNG.",
+        "Karena Lighthouse lab tidak mengetik/mengklik seluruh elemen interaktif, sementara main thread yang terkunci >50 ms (TBT tinggi) secara langsung membuat input user tertunda (INP buruk).",
+        "Karena TTFB selalu sama dengan CLS."
+      ],
+      "answer": 1,
+      "explanation": "TBT menjumlahkan waktu blokir main thread lebih dari 50 ms selama loading sehingga akurat menjadi proksi lab untuk risiko degradasi INP."
+    },
+    "refs": [
+      "https://web.dev/articles/inp",
+      "https://grafana.com/docs/k6/latest/using-k6-browser/"
+    ]
+  },
+  {
+    "id": "qam29",
+    "mode": "qa",
+    "order": 2,
+    "track": "QA Fase 5B: Web Vitals Nyata, k6 Trend & Command Center",
+    "title": "k6 Custom `Trend` & `Rate` Instrumentation (`500 → 1.000 VUs` GET vs POST)",
+    "level": "Advanced",
+    "summary": "Implementasi penuh `performance-test.js` Pilar 3 yang mengeksekusi 134,896 requests dengan 0% error rate selama 4m 30s (495.49 req/s, p95 = 416.27 ms < 2000 ms), membedah latensi GET vs POST serta fase 500 vs 1.000 VUs via custom `Trend`, `Rate`, dan `k6/execution`.",
+    "concepts": [
+      [
+        "KPI Eksekusi Pilar 3 (500 → 1.000 VUs, 4m 30s)",
+        "Tahapan beban: 1m ramp ke 500 VU -> 1m hold 500 VU -> 1m ramp ke 1.000 VU -> 1m hold 1.000 VU -> 30s ramp-down ke 0. Hasil total: 134,896 Reqs, 0% Error, 495.49 req/s, SLA `p(95) = 416.27 ms < 2000 ms`."
+      ],
+      [
+        "Membedah Angka: Custom `Trend` GET vs POST",
+        "Rata-rata global sering menipu. Memisahkan metrik via `get_req_duration` (`137.90 ms`) dan `post_req_duration` (`321.08 ms`) membuktikan operasi baca (`GET /posts/1`) 2.33x lebih cepat berkat edge cache Cloudflare (`cf-cache-status: HIT`)."
+      ],
+      [
+        "Isolasi Fase 500 vs 1.000 VU via `exec.scenario.startTime`",
+        "Helper `recordPhaseMetrics(durationMs, isFailed)` membaca `Date.now() - exec.scenario.startTime`: 0–120 detik masuk ke `phase_500vu_duration`, sedangkan 120–240 detik ke `phase_1000vu_duration`. Hasilnya memperlihatkan kenaikan p95 +20.77% dan `http_req_waiting` mendominasi 99.81% durasi."
+      ],
+      [
+        "Validasi Payload Integritas + Demo Cepat vs Penuh",
+        "Setiap `POST /posts` memvalidasi status 201 sekaligus kesesuaian echo `title`, `body`, `userId`, dan `id !== undefined`. Tersedia command demo cepat 10 VUs / 5s agar eksperimen tidak menimpa `summary-result.json` resmi."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Hasil Pengukuran & Isolasi Custom Metrics k6 (`performance-test.js`)",
+        "headers": [
+          "Metrik / Dimensi",
+          "Nilai Terukur",
+          "Temuan Teknis & SLA"
+        ],
+        "rows": [
+          [
+            "Total Requests & Error Rate",
+            "134,896 Reqs · 0% Error · 495.49 req/s",
+            "Threshold `http_req_failed: ['rate<0.05']` lulus sempurna 0%."
+          ],
+          [
+            "SLA Global Duration (`p95`) & TTFB",
+            "`p(95) = 416.27 ms` (`http_req_waiting` = 99.81%)",
+            "Lulus SLA `< 2000 ms`. Hampir seluruh waktu tunggu berasal dari TTFB jaringan/server."
+          ],
+          [
+            "`GET /posts/1` vs `POST /posts`",
+            "`137.90 ms` vs `321.08 ms`",
+            "Read 2.33x lebih cepat daripada write karena edge caching Cloudflare (`cf-cache-status: HIT`)."
+          ],
+          [
+            "Fase `500 VU` vs `1.000 VU`",
+            "`p95` fase 1000 VU naik `+20.77%`",
+            "Terisolasi presisi melalui `exec.scenario.startTime` (window <= 120s vs <= 240s)."
+          ]
+        ]
+      }
+    ],
+    "compare": "Skrip k6 standar hanya mencetak rata-rata gabungan seluruh request sehingga masalah endpoint write lambat tertutup oleh GET yang ter-cache di CDN. Memakai custom `Trend` dan `Rate` per group serta per window waktu mengungkap perilaku GET vs POST dan dampak kenaikan VU secara objektif.",
+    "code": {
+      "language": "javascript",
+      "extraTitle": "3. Performance Testing/src/performance-test.js — Full Custom Trend & Phase Instrumentation",
+      "content": "import http from 'k6/http';\nimport { check, sleep, group } from 'k6';\nimport { Trend, Rate } from 'k6/metrics';\nimport exec from 'k6/execution';\n\nconst getReqDuration = new Trend('get_req_duration', true);\nconst postReqDuration = new Trend('post_req_duration', true);\nconst getReqFailed = new Rate('get_req_failed');\nconst postReqFailed = new Rate('post_req_failed');\n\nconst phase500Duration = new Trend('phase_500vu_duration', true);\nconst phase1000Duration = new Trend('phase_1000vu_duration', true);\nconst phase500Failed = new Rate('phase_500vu_failed');\nconst phase1000Failed = new Rate('phase_1000vu_failed');\n\nconst BASE_URL = 'https://jsonplaceholder.typicode.com';\n\nexport const options = {\n  stages: [\n    { duration: '1m', target: 500 },\n    { duration: '1m', target: 500 },\n    { duration: '1m', target: 1000 },\n    { duration: '1m', target: 1000 },\n    { duration: '30s', target: 0 },\n  ],\n  thresholds: {\n    http_req_duration: ['p(95)<2000'],\n    http_req_failed: ['rate<0.05'],\n  },\n};\n\nfunction recordPhaseMetrics(durationMs, isFailed) {\n  const elapsedMs = Date.now() - exec.scenario.startTime;\n  if (elapsedMs <= 120000) {\n    phase500Duration.add(durationMs);\n    phase500Failed.add(isFailed);\n  } else if (elapsedMs <= 240000) {\n    phase1000Duration.add(durationMs);\n    phase1000Failed.add(isFailed);\n  }\n}\n\nexport default function () {\n  group('GET /posts/1', function () {\n    const getRes = http.get(`${BASE_URL}/posts/1`, {\n      tags: { endpoint: 'GET_posts_1' },\n    });\n\n    const getOk = check(getRes, {\n      'GET /posts/1 status is 200': (r) => r.status === 200,\n      'GET /posts/1 body id === 1': (r) => {\n        if (r.status !== 200) return false;\n        try {\n          return r.json('id') === 1;\n        } catch (e) {\n          return false;\n        }\n      },\n    });\n\n    getReqDuration.add(getRes.timings.duration);\n    getReqFailed.add(!getOk);\n    recordPhaseMetrics(getRes.timings.duration, !getOk);\n  });\n\n  sleep(1);\n\n  group('POST /posts', function () {\n    const payloadObj = {\n      title: `GITS QA Load Test VU-${__VU}`,\n      body: `Performance iteration ${__ITER}`,\n      userId: (__VU % 10) + 1,\n    };\n    const params = {\n      headers: { 'Content-Type': 'application/json; charset=UTF-8' },\n      tags: { endpoint: 'POST_posts' },\n    };\n\n    const postRes = http.post(`${BASE_URL}/posts`, JSON.stringify(payloadObj), params);\n\n    const postOk = check(postRes, {\n      'POST /posts status is 201': (r) => r.status === 201,\n      'POST /posts payload matches': (r) => {\n        if (r.status !== 201) return false;\n        try {\n          const data = r.json();\n          return (\n            data.title === payloadObj.title &&\n            data.body === payloadObj.body &&\n            Number(data.userId) === payloadObj.userId &&\n            data.id !== undefined\n          );\n        } catch (e) {\n          return false;\n        }\n      },\n    });\n\n    postReqDuration.add(postRes.timings.duration);\n    postReqFailed.add(!postOk);\n    recordPhaseMetrics(postRes.timings.duration, !postOk);\n  });\n\n  sleep(1);\n}"
+    },
+    "extraCodes": [
+      {
+        "title": "PowerShell — Demo Cepat k6 (10 VUs, 5s) vs Eksekusi Penuh (500->1.000 VUs + Export JSON & Log)",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "# 1. Demo Cepat k6 (10 VUs, 5 Detik — Tidak menimpa laporan resmi)\nSet-Location \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\"\n& \"C:\\Program Files\\k6\\k6.exe\" run --vus 10 --duration 5s \"3. Performance Testing/src/performance-test.js\"\n\n# 2. Eksekusi Penuh k6 (500 -> 1,000 VUs, 4m 30s) + Ekspor summary-result.json & execution-log.txt\n& \"C:\\Program Files\\k6\\k6.exe\" run --summary-export=\"3. Performance Testing/src/summary-result.json\" \"3. Performance Testing/src/performance-test.js\" 2>&1 | Tee-Object -FilePath \"3. Performance Testing/src/execution-log.txt\"\n\n# 3. Cek 45 Baris Terakhir Log Resmi\nGet-Content \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\\3. Performance Testing\\src\\execution-log.txt\" -Tail 45"
+      }
+    ],
+    "practices": [
+      "Berikan parameter kedua `true` (`new Trend('get_req_duration', true)`) agar k6 memformat unit durasi dalam milidetik secara rapi di summary report.",
+      "Selalu bungkus `r.json()` di dalam blok `try/catch` saat melakukan `check()` sehingga HTML error page 502/504 di bawah beban ekstrem tidak menyebabkan exception skrip.",
+      "Gunakan flag CLI `--vus 10 --duration 5s` saat smoke-testing skrip baru agar tidak menimpa artefak laporan resmi `summary-result.json`."
+    ],
+    "case": "Saat menganalisis laporan 134,896 request, custom `Trend` membuktikan `GET /posts/1` hanya `137.90 ms` sementara `POST /posts` membutuhkan `321.08 ms` (2.33x lebih lama), dan `http_req_waiting` menyumbang `99.81%` dari durasi total—artinya optimasi ada pada server/edge caching bukan client CPU.",
+    "exercise": {
+      "scenario": "Skrip k6 memiliki stage 2 menit pertama pada target 500 VU (`0–120000 ms`) dan 2 menit berikutnya menuju 1.000 VU (`120001–240000 ms`).",
+      "task": "Tulis helper `recordPhaseMetrics(durationMs, isFailed)` memakai `exec.scenario.startTime` dan custom `Trend` terpisah untuk fase 500 vs 1.000 VU."
+    },
+    "quiz": {
+      "question": "Apa tujuan menambahkan argumen `true` pada konstruktor `new Trend('get_req_duration', true)` di k6?",
+      "options": [
+        "Mengaktifkan enkripsi TLS 1.3.",
+        "Memberi tahu k6 bahwa nilai metrik tersebut adalah satuan waktu (isTime) sehingga statistik p90/p95 tampil sebagai milidetik/detik di output summary.",
+        "Mengubah jenis metrik menjadi Counter."
+      ],
+      "answer": 1,
+      "explanation": "Argumen kedua `isTime: true` pada `Trend` di k6 membuat formatter summary menampilkan satuan waktu (ms/s) selaras dengan `http_req_duration`."
+    },
+    "refs": [
+      "https://grafana.com/docs/k6/latest/using-k6/metrics/create-custom-metrics/",
+      "https://grafana.com/docs/k6/latest/javascript-api/k6-execution/"
+    ]
+  },
+  {
+    "id": "qam30",
+    "mode": "qa",
+    "order": 3,
+    "track": "QA Fase 5B: Web Vitals Nyata, k6 Trend & Command Center",
+    "title": "Profil Perangkat Lokal, Command Runner PowerShell & Clean ZIP/Drive Packaging",
+    "level": "Beginner",
+    "summary": "Referensi lengkap environment lokal Windows yang terverifikasi (`OpenJDK 17.0.21+9`, `Maven 3.9.16`, `Grafana k6 v2.4.0`, `Chrome 158.0.8127.36`, `Python 3.12.1`, `Node/npx`), perintah membuka report HTML & PNG, skrip Python build 3 file ZIP bersih (tanpa `target/`), serta checklist upload Google Drive.",
+    "concepts": [
+      [
+        "Profil Binary Terverifikasi di Perangkat Lokal",
+        "Seluruh binary di `Test-GITS-QA-Randi Zakaria Putra` telah terverifikasi ada (`Exists = True`): JDK 17 Temurin (`17.0.21+9`), Maven `3.9.16`, k6 `v2.4.0`, Chrome `158.0.8127.36`, Python `3.12.1`, dan Node.js/npx."
+      ],
+      [
+        "Self-Contained PowerShell ENV Snippet",
+        "Dengan mendefinisikan `$env:JAVA_HOME` dan prepending path Maven, Java, k6, dan Node ke `$env:Path`, seluruh command runner langsung berjalan mulus bahkan di terminal VS Code/PowerShell lama yang belum di-restart."
+      ],
+      [
+        "Clean ZIP Packaging Tanpa Folder `target/`",
+        "Sebelum diunggah, artefak hasil (`emailable-report.html`, `Scenario2_Hardcoded_Login.png`, `Scenario3_Excel_Login.png`, `README.md`) disalin keluar proyek lalu Python `zipfile.ZIP_DEFLATED` mengemas ulang `GITS-QA-Manual.zip`, `GITS-QA-Automation.zip` (hanya `pom.xml`, `README.md`, `src/` — tanpa `target/`), dan `GITS-QA-Performance.zip`."
+      ],
+      [
+        "Checklist Struktur Upload Google Drive (3 Subfolder)",
+        "Drive `Manual Testing`: import CSV ke Sheets + `evidence/` + `README_Manual.md` + `GITS-QA-Manual.zip`. `Automation Testing`: ZIP + `emailable-report.html` + 2 PNG + `README.md`. `Performance Testing`: `Performance_Test_Report.md` + ZIP + `README.md`. File pribadi (`qa-test-runner-cheatsheet.html`, `QA_Prompt_Engineering_Playbook.md`) tetap di root pribadi."
+      ]
+    ],
+    "tables": [
+      {
+        "title": "Profil Binary Perangkat Lokal Terverifikasi (`Exists = True`)",
+        "headers": [
+          "Tool",
+          "Versi Terverifikasi",
+          "Lokasi Eksak Binary di Perangkat Windows"
+        ],
+        "rows": [
+          [
+            "OpenJDK 17",
+            "Temurin `17.0.21+9`",
+            "`C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot\\bin\\java.exe`"
+          ],
+          [
+            "Apache Maven",
+            "`3.9.16`",
+            "`C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin\\mvn.cmd`"
+          ],
+          [
+            "Grafana k6",
+            "`v2.4.0`",
+            "`C:\\Program Files\\k6\\k6.exe`"
+          ],
+          [
+            "Google Chrome",
+            "`158.0.8127.36`",
+            "`C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`"
+          ],
+          [
+            "Python",
+            "`3.12.1`",
+            "`C:\\Users\\HPrannn\\AppData\\Local\\Programs\\Python\\Python312\\python.exe`"
+          ],
+          [
+            "Node.js / npx",
+            "Installed",
+            "`C:\\Program Files\\nodejs\\node.exe` & `npx.cmd`"
+          ]
+        ]
+      }
+    ],
+    "compare": "Meng-zip seluruh folder proyek Maven secara mentah akan menyertakan folder `target/` berisi ratusan file class hasil kompilasi yang membengkakkan ukuran file dan memicu curiga reviewer. Mengemas ulang dengan skrip Python hanya menyertakan `pom.xml`, `README.md`, `src/`, dan menyalin report keluar folder proyek.",
+    "code": {
+      "language": "powershell",
+      "extraTitle": "PowerShell — Rebuild 3 Clean ZIPs (Tanpa target/) + Copy Report & Screenshots",
+      "content": "$py = \"C:\\Users\\HPrannn\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\"\n$root = \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\"\n$autoRoot = \"$root\\2. Automation Testing\"\n$autoProj = \"$autoRoot\\GITS-QA-Automation\"\n\nCopy-Item \"$autoProj\\target\\surefire-reports\\emailable-report.html\" \"$autoRoot\\emailable-report.html\" -Force\nCopy-Item \"$autoProj\\screenshots\\Scenario2_Hardcoded_Login.png\" \"$autoRoot\\Scenario2_Hardcoded_Login.png\" -Force\nCopy-Item \"$autoProj\\screenshots\\Scenario3_Excel_Login.png\" \"$autoRoot\\Scenario3_Excel_Login.png\" -Force\nCopy-Item \"$autoProj\\README.md\" \"$autoRoot\\README.md\" -Force\n\n& $py -c \"\nimport os, zipfile\nroot = r'$root'\n\n# 1. Manual ZIP\nm = os.path.join(root, '1. Manual Testing')\nwith zipfile.ZipFile(os.path.join(m, 'GITS-QA-Manual.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:\n    for f in ['OpenMRS_Test_Cases.csv', 'OpenMRS_Bug_Reports.csv', 'README_Manual.md']:\n        zf.write(os.path.join(m, f), f)\n    ev = os.path.join(m, 'evidence')\n    for fn in sorted(os.listdir(ev)):\n        zf.write(os.path.join(ev, fn), f'evidence/{fn}')\n\n# 2. Automation ZIP (tanpa target/)\na = os.path.join(root, '2. Automation Testing')\nproj = os.path.join(a, 'GITS-QA-Automation')\nwith zipfile.ZipFile(os.path.join(a, 'GITS-QA-Automation.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:\n    for f in ['pom.xml', 'README.md']:\n        zf.write(os.path.join(proj, f), f)\n    for r, _, files in os.walk(os.path.join(proj, 'src')):\n        for fn in files:\n            full = os.path.join(r, fn)\n            zf.write(full, os.path.relpath(full, proj).replace(os.sep, '/'))\n\n# 3. Performance ZIP\np = os.path.join(root, '3. Performance Testing')\nwith zipfile.ZipFile(os.path.join(p, 'GITS-QA-Performance.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:\n    zf.write(os.path.join(p, 'README.md'), 'README.md')\n    for fn in ['performance-test.js', 'summary-result.json', 'execution-log.txt']:\n        zf.write(os.path.join(p, 'src', fn), f'src/{fn}')\nprint('All 3 ZIPs rebuilt cleanly.')\n\""
+    },
+    "extraCodes": [
+      {
+        "title": "PowerShell — Aktivasi Environment Session & Buka Report HTML/PNG Langsung",
+        "language": "powershell",
+        "variant": "neutral",
+        "content": "# 1. Aktifkan semua tool di terminal mana pun & verifikasi versi\n$env:JAVA_HOME = \"C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot\"\n$env:Path = \"C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin;$env:JAVA_HOME\\bin;C:\\Program Files\\k6;C:\\Program Files\\nodejs;$env:Path\"\n\njava -version\nmvn -version\nk6 version\npython --version\n\n# 2. Buka emailable-report.html, surefire index.html & kedua screenshot login\n$autoRoot = \"d:\\Portofolio\\QA Testing\\Test-GITS-QA-Randi Zakaria Putra\\2. Automation Testing\"\nStart-Process \"$autoRoot\\emailable-report.html\"\nStart-Process \"$autoRoot\\GITS-QA-Automation\\target\\surefire-reports\\index.html\"\nStart-Process \"$autoRoot\\Scenario2_Hardcoded_Login.png\"\nStart-Process \"$autoRoot\\Scenario3_Excel_Login.png\""
+      }
+    ],
+    "practices": [
+      "Selalu ekspor `emailable-report.html` dan file screenshot PNG keluar folder `target/` sebelum membangun `GITS-QA-Automation.zip` tanpa `target/`.",
+      "Jaga agar file belajar & prompt pribadi (`qa-test-runner-cheatsheet.html`, `QA_Prompt_Engineering_Playbook.md`) tetap berada di root pribadi dan tidak ikut ter-upload ke subfolder Drive assessment.",
+      "Pastikan slash path ZIP dibuat portabel memakai `.replace(os.sep, '/')` di Python agar arsip ZIP tetap rapi saat diekstrak reviewer di macOS/Linux maupun Windows."
+    ],
+    "case": "Menggunakan skrip packaging Python berulang memastikan reviewer di Google Drive menerima tepat 3 ZIP bersih, laporan HTML, screenshot bukti, serta dataset CSV terstruktur tanpa sampah hasil kompilasi Java atau file catatan pribadi.",
+    "exercise": {
+      "scenario": "Proyek Maven berada di terminal VS Code lama yang belum memuat variabel sistem `JAVA_HOME` dan Maven terbaru.",
+      "task": "Jalankan aktivasi session PowerShell (`$env:JAVA_HOME`, `$env:Path`), verifikasi `java -version` / `mvn -version` / `k6 version`, lalu bangun ulang 3 file ZIP deliverable tanpa menyertakan folder `target/`."
+    },
+    "quiz": {
+      "question": "Mengapa folder `target/` harus dikecualikan ketika mengemas `GITS-QA-Automation.zip` untuk pengumpulan deliverable?",
+      "options": [
+        "Karena folder target menyimpan password admin OpenMRS.",
+        "Karena `target/` hanya berisi artefak kompilasi sementara berukuran besar yang dapat dibuat ulang oleh `mvn test`, sementara bukti `emailable-report.html` dan PNG sudah disalin keluar.",
+        "Karena format ZIP tidak mendukung huruf kapital."
+      ],
+      "answer": 1,
+      "explanation": "Mengecualikan `target/` menjaga arsip bersih, ringan, dan siap diekstrak ulang oleh reviewer dengan `mvn test`."
+    },
+    "refs": [
+      "https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html",
+      "https://docs.python.org/3/library/zipfile.html"
+    ]
   }
 ];

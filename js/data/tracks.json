@@ -315,6 +315,24 @@
     "outcome": "Mampu menguji kapasitas backend, mengotomatiskan Quality Gate di setiap Pull Request, dan mengeksekusi proyek portofolio."
   },
   {
+    "id": "QA Fase 5A: Studi Kasus OpenMRS, GSheets & Java Automation",
+    "name": "Fase 5A: Studi Kasus OpenMRS, GSheets & Java Automation",
+    "mode": "qa",
+    "category": "Fase 5: Materi Pribadi & Studi Kasus GITS QA",
+    "desc": "Materi pribadi dari assessment GITS QA: Manual OpenMRS (65 TC · 11 Bug, BVA, Double HTML Encoding, Viewport 375px), Rumus COUNTIF Google Sheets, Java RestAssured, Maven Hygiene, Selenium 4 POM, POI DDT, CSRFGuard & CDP Port 9223.",
+    "icon": "F5A",
+    "outcome": "Mampu mengaudit bug nyata lintas layer UI/DOM/Security, membangun automasi Java Selenium 4 + RestAssured bebas flake, serta menyusun rekap Google Sheets akurat."
+  },
+  {
+    "id": "QA Fase 5B: Web Vitals Nyata, k6 Trend & Command Center",
+    "name": "Fase 5B: Audit Web Vitals Nyata, k6 Trend & Command Center",
+    "mode": "qa",
+    "category": "Fase 5: Materi Pribadi & Studi Kasus GITS QA",
+    "desc": "Benchmark Core Web Vitals (TTFB, LCP, INP, CLS, FCP, TBT) via Lighthouse CLI & k6/browser, k6 Custom Trend 500→1.000 VUs (GET vs POST), Profil Perangkat Windows ENV, Command Runner & Clean ZIP/Drive Packaging.",
+    "icon": "F5B",
+    "outcome": "Mampu memilih uji protokol vs browser Web Vitals, mengisolasi metrik GET/POST pada k6, serta menjalankan command runner dan packaging deliverable dengan bersih."
+  },
+  {
     "id": "Fondasi Jaringan, Protokol & Trafik",
     "name": "Fondasi Jaringan, Protokol & Trafik",
     "mode": "sa",

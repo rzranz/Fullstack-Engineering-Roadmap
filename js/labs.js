@@ -176,6 +176,186 @@
           { title: 'Gunakan GitHub Secrets', detail: 'Simpan BASE_URL dan API_TOKEN staging di Repository Secrets agar tidak pernah terekspos di file YAML.' }
         ]
       }
+    },
+
+    qam25: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Audit BVA & Viewport 375px)',
+        goal: 'Memeriksa batas nilai klinis Vitals (50/120, -5 kg) dan tata letak mobile 375x812 di OpenMRS.',
+        steps: [
+          { title: 'Buat Pasien Uji Terdedikasi', detail: 'Gunakan identitas uji seperti Randi QA_Test GITS_Patient (10001X1) agar data pengujian mudah dilacak.' },
+          { title: 'Uji BVA & Cross-Field Vitals', detail: 'Masukkan BP 50 / 120 (Systolic < Diastolic) dan berat -5 kg; catat jika backend gagal mengembalikan HTTP 400 per-field.' },
+          { title: 'Cek Responsiveness 1440x900 vs 375x812', detail: 'Resize DevTools ke 375x812 untuk memastikan sidebar Registration tidak memotong form dan floating button `?` tidak menutupi `Check In`/`Options`.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (XSS Double Encoding & Rumus COUNTIF)',
+        goal: 'Mengaudit siklus Create → Read → Update XSS serta menyusun tab Summary Google Sheets.',
+        steps: [
+          { title: 'Uji Siklus Penuh Double HTML Encoding', detail: 'Simpan `<b>Test</b>`, buka kembali form Edit, lalu Save ulang untuk mendeteksi `&lt;b&gt;` berubah menjadi `&amp;lt;`.' },
+          { title: 'Tambahkan Rumus COUNTIF di Google Sheets', detail: 'Hitung otomatis Total TC (`COUNTA`), `Pass`, `Fail`, `[PENDING_MANUAL_VERIFICATION]`, serta `High`/`Medium`/`Low` Severity.' },
+          { title: 'Lindungi Pass Rate dengan IFERROR', detail: 'Pakai `=IFERROR(COUNTIF(...,"Pass")/(Pass+Fail), 0)` agar dashboard tetap bersih meski Fail + Pass masih nol.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Audit CSV Python + Paket Manual Evidence)',
+        goal: 'Mengaudit 65 Test Cases & 11 Bug Reports secara otomatis memakai Python 3.12 sebelum build ZIP.',
+        steps: [
+          { title: 'Verifikasi Jumlah Baris CSV via Python csv.DictReader', detail: 'Jalankan inline script Python untuk memeriksa distribusi Status dan Severity sebelum impor ke Google Sheets.', cmd: 'python -c "import csv,collections; ..."' },
+          { title: 'Kaitkan 15 Screenshot Bukti Bernomor', detail: 'Simpan seluruh screenshot PNG di folder `evidence/` dan pastikan ID bug merujuk tepat ke nama file buktinya.' },
+          { title: 'Kemas Deliverable Manual Bersih', detail: 'Gabungkan `OpenMRS_Test_Cases.csv`, `OpenMRS_Bug_Reports.csv`, `README_Manual.md`, dan `evidence/` ke `GITS-QA-Manual.zip`.' }
+        ]
+      }
+    },
+
+    qam26: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (RestAssured GET Single User)',
+        goal: 'Mengirim `GET /api/users/2` ke `reqres.in` dengan header `x-api-key` dan memverifikasi status 200.',
+        steps: [
+          { title: 'Set Base URI & API Key di @BeforeClass', detail: 'Konfigurasikan `RestAssured.baseURI = "https://reqres.in"` dan baca key lewat `System.getProperty`.' },
+          { title: 'Panggil `.given().header("x-api-key", API_KEY).get("/api/users/2")`', detail: 'Tambahkan `.log().all().extract().response()` agar payload tampil di log TestNG.' },
+          { title: 'Verifikasi `statusCode() == 200` & `data.id == "2"`', detail: 'Gunakan `Assert.assertEquals(response.jsonPath().getString("data.id"), "2")`.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Negative Login 400 & Maven Jackson)',
+        goal: 'Mengirim JSON Map body untuk kasus negatif `POST /api/login` tanpa error serializer.',
+        steps: [
+          { title: 'Pastikan `jackson-databind` Terpasang di `pom.xml`', detail: 'Mencegah `IllegalStateException (no JSON serializer)` saat meneruskan `Collections.singletonMap` ke `.body(...)`.' },
+          { title: 'Kirim `POST /api/login` Hanya dengan Email', detail: 'Set `.contentType(ContentType.JSON)` dengan body `Collections.singletonMap("email", "peter@klaven")`.' },
+          { title: 'Validasi HTTP 400 & Error Message', detail: 'Pastikan `statusCode() == 400` dan JSON `error` bernilai `"Missing password"`.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Dependency Hygiene & Eksekusi Terisolasi)',
+        goal: 'Menjaga stabilitas classpath POI + Log4j2 dan menjalankan suite API secara independen.',
+        steps: [
+          { title: 'Selaraskan `log4j-api` & `log4j-core` ke `2.24.1`', detail: 'Menghindari konflik `NoSuchMethodError` ketika Apache POI `5.3.0` dan RestAssured hidup berdampingan dalam satu `pom.xml`.' },
+          { title: 'Catat Status & Body di TestNG Reporter', detail: 'Panggil `Reporter.log(..., true)` agar muncul di CLI sekaligus di `emailable-report.html`.' },
+          { title: 'Eksekusi Cepat Suite API Saja', detail: 'Jalankan Maven test filter `-Dtest=ReqResApiTest` sebelum masuk ke suite UI Selenium.', cmd: 'mvn test -Dtest=ReqResApiTest' }
+        ]
+      }
+    },
+
+    qam27: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Page Object OpenMrsLoginPage)',
+        goal: 'Memisahkan locator Legacy UI `/openmrs/` ke dalam class Page Object dengan explicit wait.',
+        steps: [
+          { title: 'Konfirmasi Target DOM (`/openmrs/` vs `/`)', detail: 'Pastikan `BASE_URL = "https://o3.openmrs.org/openmrs/"` (Legacy 1-step form) sesuai locator `#username`, `#password`, `#sessionLocation`.' },
+          { title: 'Tunggu Input Username & `OWASP-CSRFTOKEN`', detail: 'Di `open()`, wajib jalankan `wait.until(presenceOfElementLocated(By.name("OWASP-CSRFTOKEN")))` agar tidak terkena race condition CSRFGuard.' },
+          { title: 'Implementasikan `login(...)` & `getErrorMessageText()`', detail: 'Gunakan `#openmrs_error` untuk skenario gagal dan `LOGOUT_LINK` + `ul.navList` untuk validasi dashboard.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Excel DDT via Apache POI & Screenshot)',
+        goal: 'Menggabungkan hardcoded test, invalid login, dan TestNG `@DataProvider` dari `testdata.xlsx`.',
+        steps: [
+          { title: 'Buat `@DataProvider(name = "loginData")`', detail: 'Hubungkan ke `ExcelUtils.readSheetData("testdata.xlsx", "LoginData")` untuk memasok `username`, `password`, dan `location`.' },
+          { title: 'Tangkap Screenshot PNG Sukses', detail: 'Buat helper `captureScreenshot` memakai `((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)` ke folder `screenshots/`.' },
+          { title: 'Jalankan 3 Skenario Berurutan (`priority = 1..3`)', detail: 'Verifikasi invalid login error case-insensitive, login hardcoded valid (`Scenario2`), dan Excel DDT (`Scenario3`).' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Chrome Port 9223 + CDP Window Recovery)',
+        goal: 'Menstabilkan eksekusi di balik Cloudflare tanpa bypass CAPTCHA serta mencegah kegagalan window ter-minimize.',
+        steps: [
+          { title: 'Luncurkan Chrome Debug Port 9223 (Bebas Konflik `[::1]`)', detail: 'Gunakan user-data-dir khusus dan biarkan user menyelesaikan Cloudflare sekali secara sah, login, lalu log out.', cmd: 'chrome.exe --remote-debugging-port=9223 --user-data-dir="%TEMP%\\chrome-qa-debug" "https://o3.openmrs.org/openmrs/"' },
+          { title: 'Pulihkan Jendela Ter-Minimize lewat CDP', detail: 'Di `@BeforeMethod`, panggil `Page.bringToFront`, `Browser.getWindowForTarget`, dan `Browser.setWindowBounds` (`normal`, `1440x900`).' },
+          { title: 'Pertahankan Cookie `cf_clearance` dengan `logoutIfLoggedIn()`', detail: 'Jangan panggil `driver.quit()` saat menempel ke debug port 9223; reset sesi via logout lalu jalankan full Maven suite 5/5.', cmd: 'mvn clean test "-Dchrome.debuggerAddress=127.0.0.1:9223"' }
+        ]
+      }
+    },
+
+    qam28: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Audit Cepat via Lighthouse CLI)',
+        goal: 'Menghasilkan laporan HTML Core Web Vitals lengkap menggunakan Node/npx tanpa instalasi global tambahan.',
+        steps: [
+          { title: 'Set `$env:CHROME_PATH` & Node Path', detail: 'Arahkan ke binary Chrome lokal (`C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`).' },
+          { title: 'Jalankan `npx --yes lighthouse`', detail: 'Gunakan flag `--only-categories=performance --output=html --chrome-flags="--headless=new"`.', cmd: 'npx.cmd --yes lighthouse "https://o3.openmrs.org/openmrs/spa/login" --only-categories=performance --output=html' },
+          { title: 'Inspeksi TTFB, LCP, FCP, TBT & CLS', detail: 'Buka HTML report dengan `Start-Process` lalu identifikasi apakah TBT (>200 ms) menandakan risiko INP lambat.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Script `k6/browser` Web Vitals)',
+        goal: 'Mengukur metrik browser riil (`LCP`, `INP`, `CLS`, `TTFB`) terautomasi dengan `k6 v2.4.0`.',
+        steps: [
+          { title: 'Set `$env:K6_BROWSER_EXECUTABLE_PATH` di PowerShell', detail: 'Wajib menunjuk ke `chrome.exe` lokal agar `k6/browser` dapat meluncurkan Chromium.' },
+          { title: 'Konfigurasikan Skenario `browser: { type: "chromium" }`', detail: 'Gunakan `shared-iterations` (1–10 VUs, bukan 1.000 VUs!) agar RAM laptop tetap aman.' },
+          { title: 'Pasang Thresholds Google Good (p95)', detail: 'Tetapkan batas `lcp<2500`, `inp<200`, `cls<0.1`, dan `ttfb<800`, serta lakukan aksi `.click()` supaya INP terekam.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Korelasi Backend TTFB vs Frontend INP/TBT)',
+        goal: 'Menggabungkan bukti protokol `k6` (`http_req_waiting`) dengan audit browser DevTools/Lighthouse.',
+        steps: [
+          { title: 'Bandingkan `http_req_waiting` API vs TTFB Browser', detail: 'Verifikasi bahwa backend CDN cepat (`avg 229 ms`) tidak otomatis menjamin UI bebas lag bila JS main thread terblokir.' },
+          { title: 'Korelasikan Bug Vitals OpenMRS ke Long Task (INP)', detail: 'Tangkap Long Tasks >50 ms pada form input berat (seperti gejala hilangnya digit awal saat ketik cepat) memakai Performance panel.' },
+          { title: 'Kelola Limitasi Headless terhadap Anti-Bot Cloudflare', detail: 'Pisahkan benchmark frontend untuk origin staging bebas WAF vs origin publik ber-Cloudflare agar hasil lab tetap reprodusibel.' }
+        ]
+      }
+    },
+
+    qam29: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Smoke Run 10 VU Selama 5 Detik)',
+        goal: 'Memverifikasi kebenaran skrip `performance-test.js` tanpa menimpa laporan resmi.',
+        steps: [
+          { title: 'Pindah ke Root Workspace Proyek QA', detail: 'Arahkan direktori kerja ke `Test-GITS-QA-Randi Zakaria Putra`.' },
+          { title: 'Jalankan Flag CLI Override (`--vus 10 --duration 5s`)', detail: 'Uji cepat koneksi dan `check()` GET/POST tanpa menyentuh file `summary-result.json`.', cmd: 'k6 run --vus 10 --duration 5s "3. Performance Testing/src/performance-test.js"' },
+          { title: 'Periksa Lulusnya `check()` Awal', detail: 'Pastikan GET /posts/1 mengembalikan status 200 & POST /posts mengembalikan status 201.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Custom `Trend` GET vs POST & Aman JSON)',
+        goal: 'Mengisolasi waktu eksekusi endpoint baca (cached) vs tulis (uncached) dan menjaga parser tetap aman.',
+        steps: [
+          { title: 'Deklarasikan `new Trend(..., true)` & `new Rate(...)`', detail: 'Pisahkan `get_req_duration` / `get_req_failed` dan `post_req_duration` / `post_req_failed` di level global modul.' },
+          { title: 'Bungkus `r.json()` dalam `try/catch`', detail: 'Cegah crash skrip k6 bila server membalas HTML error 502/504 saat lonjakan trafik ekstrem.' },
+          { title: 'Verifikasi Payload Echo POST', detail: 'Cek tidak hanya status 201, tapi juga kesamaan `title`, `body`, `userId`, dan eksistensi `id` baru.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Isolasi 500 vs 1.000 VU & Ekspor JSON)',
+        goal: 'Mengeksekusi ramp 4m 30s (134,896 reqs) serta mengekspor JSON summary + log terminal resmi.',
+        steps: [
+          { title: 'Gunakan `exec.scenario.startTime` pada `recordPhaseMetrics`', detail: 'Kelompokkan metrik <= 120.000 ms ke `phase_500vu_duration` dan <= 240.000 ms ke `phase_1000vu_duration` untuk melihat kenaikan +20.77% p95.' },
+          { title: 'Eksekusi Penuh dengan `--summary-export` + `Tee-Object`', detail: 'Simpan `summary-result.json` dan `execution-log.txt` sekaligus untuk pelaporan akurat.', cmd: 'k6 run --summary-export="3. Performance Testing/src/summary-result.json" "3. Performance Testing/src/performance-test.js" 2>&1 | Tee-Object -FilePath "3. Performance Testing/src/execution-log.txt"' },
+          { title: 'Analisis Bottleneck (`http_req_waiting` 99.81%)', detail: 'Audit perbandingan GET (`137.90 ms` Cloudflare HIT) vs POST (`321.08 ms`) guna menyusun rekomendasi caching & scaling backend.' }
+        ]
+      }
+    },
+
+    qam30: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Aktivasi ENV Terminal Sekali Copy)',
+        goal: 'Menyiapkan JDK 17, Maven 3.9.16, k6, Node, dan Python pada terminal PowerShell mana pun.',
+        steps: [
+          { title: 'Set `$env:JAVA_HOME` ke Temurin JDK 17', detail: 'Tunjuk eksak `C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot`.' },
+          { title: 'Prepend Maven, Java, k6 & Node ke `$env:Path`', detail: 'Agar perintah berjalan langsung di terminal lama yang belum di-restart.' },
+          { title: 'Jalankan Cek Versi 4 Binary', detail: 'Verifikasi output tidak error sebelum mengeksekusi suite.', cmd: 'java -version; mvn -version; k6 version; python --version' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Kumpulkan Artefak & Verifikasi Visual)',
+        goal: 'Menyalin laporan HTML & kedua screenshot login keluar folder proyek serta mengeceknya langsung.',
+        steps: [
+          { title: 'Salin `emailable-report.html` & Kedua Screenshot PNG', detail: 'Gunakan `Copy-Item ... -Force` dari `target/surefire-reports` dan `screenshots/` menuju root `2. Automation Testing`.' },
+          { title: 'Buka Report HTML & PNG Lewat `Start-Process`', detail: 'Validasi visual `emailable-report.html`, `surefire-reports/index.html`, dan kedua PNG login tampak jelas.' },
+          { title: 'Verifikasi Log k6 & CSV Audit', detail: 'Baca 45 baris akhir `execution-log.txt` (`Get-Content ... -Tail 45`) untuk memastikan SLA lulus 100%.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Rebuild 3 Clean ZIPs & Upload Drive)',
+        goal: 'Mengemas arsip pengumpulan bebas sampah `target/` dan menempatkan file tepat pada 3 folder Drive.',
+        steps: [
+          { title: 'Jalankan Skrip Python `zipfile.ZIP_DEFLATED`', detail: 'Bangun `GITS-QA-Manual.zip`, `GITS-QA-Automation.zip` (hanya `pom.xml`, `README.md`, `src/`), dan `GITS-QA-Performance.zip`.' },
+          { title: 'Upload ke 3 Subfolder Google Drive Terpisah', detail: 'Isi folder `Manual Testing`, `Automation Testing`, dan `Performance Testing` sesuai checklist artefak masing-masing.' },
+          { title: 'Pisahkan Dokumentasi Pribadi di Root', detail: 'Simpan `qa-test-runner-cheatsheet.html` dan `QA_Prompt_Engineering_Playbook.md` hanya di workspace pribadi.' }
+        ]
+      }
     }
   };
 
@@ -688,6 +868,365 @@ return 1`,
             { regex: /if\s+current_stock\s*<\s*qty\s+then/i, label: 'Validasi atomik current_stock < qty', hint: 'Tambahkan if current_stock < qty then return 0 end' },
             { regex: /redis\.call\(\s*["']DECRBY["']/i, label: 'Mengurangi stok secara atomik via DECRBY', hint: 'Panggil redis.call("DECRBY", KEYS[1], qty)' },
             { regex: /redis\.call\(\s*["']SET["'][\s\S]*["']EX["']/i, label: 'Mengunci hold sementara dengan TTL (EX)', hint: 'Panggil redis.call("SET", KEYS[2], qty, "EX", 300)' }
+          ]);
+        }
+      }
+    },
+
+    qam25: {
+      simple: {
+        title: 'Uji Sederhana: Validator Cross-Field Tekanan Darah (BVA Klinis)',
+        description: 'Tulis fungsi JS `validateVitals(systolic, diastolic, weightKg)` yang menolak berat <= 0 atau Systolic <= Diastolic.',
+        language: 'javascript',
+        starterCode: `function validateVitals(systolic, diastolic, weightKg) {
+  // TODO: Kembalikan true jika weightKg > 0 dan systolic > diastolic, selain itu false
+  
+}`,
+        solutionCode: `function validateVitals(systolic, diastolic, weightKg) {
+  return typeof systolic === 'number' && typeof diastolic === 'number' && typeof weightKg === 'number'
+    && weightKg > 0 && systolic > diastolic;
+}`,
+        run(code) {
+          const harness = `
+            function __verify() {
+              if (typeof validateVitals !== 'function') throw new Error('Fungsi validateVitals tidak ditemukan');
+              return {
+                validCase: validateVitals(120, 80, 65),
+                badBpCase: validateVitals(50, 120, 65),
+                negWeightCase: validateVitals(120, 80, -5)
+              };
+            }
+          `;
+          const exec = runSandboxedJS(code, harness);
+          if (!exec.ok) return [{ pass: false, label: 'Sintaks Valid', hint: exec.error }];
+          const r = exec.result || {};
+          return [
+            { pass: r.validCase === true, label: 'Menerima nilai normal (120/80, 65 kg)', hint: 'Kembalikan true saat weightKg > 0 && systolic > diastolic.' },
+            { pass: r.badBpCase === false, label: 'Menolak BP 50 / 120 (Systolic <= Diastolic)', hint: 'Periksa syarat systolic > diastolic.' },
+            { pass: r.negWeightCase === false, label: 'Menolak berat badan negatif (-5 kg)', hint: 'Periksa syarat weightKg > 0.' }
+          ];
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Rumus Google Sheets Pass Rate Anti #DIV/0!',
+        description: 'Tulis rumus Google Sheets tab Summary memakai `IFERROR` + `COUNTIF` untuk kolom `OpenMRS_Test_Cases!J2:J` dengan status `"Pass"` dan `"Fail"`.',
+        language: 'excel',
+        starterCode: `=/* TODO: Tulis rumus Pass Rate aman IFERROR berbasis COUNTIF(OpenMRS_Test_Cases!J2:J, ...) */`,
+        solutionCode: `=IFERROR(COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass")/(COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass")+COUNTIF(OpenMRS_Test_Cases!J2:J,"Fail")),0)`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /=\s*IFERROR\s*\(/i, label: 'Membungkus rumus dengan IFERROR(..., 0)', hint: 'Awali rumus dengan =IFERROR(... ,0).' },
+            { regex: /COUNTIF\(\s*OpenMRS_Test_Cases!J2:J\s*,\s*["']Pass["']\s*\)/i, label: 'Menghitung status "Pass" di OpenMRS_Test_Cases!J2:J', hint: 'Sertakan COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass").' },
+            { regex: /COUNTIF\(\s*OpenMRS_Test_Cases!J2:J\s*,\s*["']Fail["']\s*\)/i, label: 'Membagi total eksekusi selesai (Pass + Fail)', hint: 'Jumlahkan Pass + Fail sebagai penyebut (abaikan Pending).' }
+          ]);
+        }
+      }
+    },
+
+    qam26: {
+      simple: {
+        title: 'Uji Sederhana: RestAssured Negative Login Request & Assertion',
+        description: 'Lengkapi blok Java RestAssured agar mengirim `POST /api/login` tanpa password dengan header `x-api-key` dan memverifikasi status 400.',
+        language: 'java',
+        starterCode: `Response response = given()
+        .header("x-api-key", API_KEY)
+        // TODO 1: Set contentType JSON & body Map email "peter@klaven"
+        .when()
+        .post("/api/login")
+        .then()
+        .extract().response();
+// TODO 2: Assert statusCode 400 & error "Missing password"`,
+        solutionCode: `Response response = given()
+        .header("x-api-key", API_KEY)
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .body(Collections.singletonMap("email", "peter@klaven"))
+        .when()
+        .post("/api/login")
+        .then()
+        .extract().response();
+Assert.assertEquals(response.statusCode(), 400);
+Assert.assertEquals(response.jsonPath().getString("error"), "Missing password");`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /contentType\(\s*ContentType\.JSON\s*\)/, label: 'Menyetel ContentType.JSON sebelum kirim body', hint: 'Tambahkan .contentType(ContentType.JSON).' },
+            { regex: /Collections\.singletonMap\(\s*"email"/, label: 'Mengirim payload email tanpa field password', hint: 'Gunakan .body(Collections.singletonMap("email", "peter@klaven")).' },
+            { regex: /Assert\.assertEquals\([\s\S]*400/, label: 'Memverifikasi status HTTP 400', hint: 'Tambahkan Assert.assertEquals(response.statusCode(), 400).' },
+            { regex: /getString\(\s*"error"\s*\)[\s\S]*"Missing password"/, label: 'Memverifikasi pesan error "Missing password"', hint: 'Cek response.jsonPath().getString("error") == "Missing password".' }
+          ]);
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Perintah Maven Terisolasi & Dependency Hygiene `pom.xml`',
+        description: 'Tulis potongan `pom.xml` / command PowerShell yang memuat `jackson-databind` + keselarasan `log4j-api`/`log4j-core` `2.24.1` dan menjalankan `-Dtest=ReqResApiTest`.',
+        language: 'xml',
+        starterCode: `<!-- TODO: Deklarasikan artifactId jackson-databind serta log4j-api & log4j-core 2.24.1 -->
+<!-- Command run: mvn test -Dtest=... -->`,
+        solutionCode: `<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-api</artifactId>
+  <version>2.24.1</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-core</artifactId>
+  <version>2.24.1</version>
+</dependency>
+<!-- mvn test -Dtest=ReqResApiTest -->`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /jackson-databind/, label: 'Menyertakan jackson-databind agar RestAssured bisa serialize Map/POJO', hint: 'Tambahkan artifactId jackson-databind.' },
+            { regex: /log4j-api[\s\S]*2\.24\.1/, label: 'Menyelaraskan versi log4j-api ke 2.24.1', hint: 'Set versi log4j-api ke 2.24.1 untuk POI 5.3.0.' },
+            { regex: /log4j-core[\s\S]*2\.24\.1/, label: 'Menyelaraskan versi log4j-core ke 2.24.1', hint: 'Set versi log4j-core ke 2.24.1.' },
+            { regex: /-Dtest=ReqResApiTest/, label: 'Menjalankan class ReqResApiTest secara terisolasi', hint: 'Sertakan flag -Dtest=ReqResApiTest.' }
+          ]);
+        }
+      }
+    },
+
+    qam27: {
+      simple: {
+        title: 'Uji Sederhana: Tunggu OWASP-CSRFTOKEN di `OpenMrsLoginPage.open()`',
+        description: 'Lengkapi method `open()` Java Selenium 4 agar menavigasi ke `BASE_URL` dan menunggu input username serta token asinkron `OWASP-CSRFTOKEN`.',
+        language: 'java',
+        starterCode: `public void open() {
+    driver.get(BASE_URL);
+    // TODO 1: Tunggu visibility USERNAME_INPUT
+    // TODO 2: Tunggu presenceOfElementLocated By.name("OWASP-CSRFTOKEN")
+}`,
+        solutionCode: `public void open() {
+    driver.get(BASE_URL);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));
+    wait.until(ExpectedConditions.presenceOfElementLocated(By.name("OWASP-CSRFTOKEN")));
+}`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /driver\.get\(\s*BASE_URL\s*\)/, label: 'Navigasi ke BASE_URL Legacy UI (/openmrs/)', hint: 'Pertahankan driver.get(BASE_URL).' },
+            { regex: /visibilityOfElementLocated\(\s*USERNAME_INPUT\s*\)/, label: 'Menunggu visibilityOfElementLocated(USERNAME_INPUT)', hint: 'Gunakan ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT).' },
+            { regex: /presenceOfElementLocated\(\s*By\.name\(\s*"OWASP-CSRFTOKEN"\s*\)\s*\)/, label: 'Mengatasi race condition /openmrs/csrfguard lewat explicit wait token', hint: 'Tambahkan wait.until(ExpectedConditions.presenceOfElementLocated(By.name("OWASP-CSRFTOKEN"))).' }
+          ]);
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: CDP Minimized Window Recovery + Debug Port 9223',
+        description: 'Lengkapi pemulihan jendela Chrome ter-minimize memakai `executeCdpCommand` (`Page.bringToFront` & `Browser.setWindowBounds`) serta perlindungan sesi Cloudflare `logoutIfLoggedIn()`.',
+        language: 'java',
+        starterCode: `ChromeOptions options = new ChromeOptions();
+options.setExperimentalOption("debuggerAddress", "127.0.0.1:9223");
+ChromeDriver cd = (ChromeDriver) driver;
+// TODO 1: Panggil cd.executeCdpCommand("Page.bringToFront", ...)
+// TODO 2: Ambil windowId via Browser.getWindowForTarget lalu panggil Browser.setWindowBounds
+// TODO 3: Panggil loginPage.logoutIfLoggedIn() alih-alih driver.quit()`,
+        solutionCode: `ChromeOptions options = new ChromeOptions();
+options.setExperimentalOption("debuggerAddress", "127.0.0.1:9223");
+ChromeDriver cd = (ChromeDriver) driver;
+cd.executeCdpCommand("Page.bringToFront", java.util.Collections.emptyMap());
+java.util.Map<String, Object> winInfo = cd.executeCdpCommand("Browser.getWindowForTarget", java.util.Collections.emptyMap());
+cd.executeCdpCommand("Browser.setWindowBounds", java.util.Map.of(
+        "windowId", winInfo.get("windowId"),
+        "bounds", java.util.Map.of("windowState", "normal", "width", 1440, "height", 900)
+));
+loginPage.logoutIfLoggedIn();`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /127\.0\.0\.1:9223/, label: 'Menempel ke debuggerAddress IPv4 port bebas 9223', hint: 'Gunakan port 9223 untuk menghindari bentrok IPv6 [::1]:9222.' },
+            { regex: /Page\.bringToFront/, label: 'Mengaktifkan tab browser ke depan via CDP Page.bringToFront', hint: 'Panggil cd.executeCdpCommand("Page.bringToFront", ...).' },
+            { regex: /Browser\.getWindowForTarget[\s\S]*Browser\.setWindowBounds/, label: 'Mengembalikan bounds jendela dari minimize ke 1440x900 normal', hint: 'Gunakan Browser.getWindowForTarget diikuti Browser.setWindowBounds.' },
+            { regex: /logoutIfLoggedIn\(\)/, label: 'Mereset sesi tanpa menghapus cookie cf_clearance', hint: 'Panggil loginPage.logoutIfLoggedIn().' }
+          ]);
+        }
+      }
+    },
+
+    qam28: {
+      simple: {
+        title: 'Uji Sederhana: Evaluator Ambang Batas Core Web Vitals',
+        description: 'Tulis fungsi JS `classifyVitals({ ttfb, lcp, inp, cls })` yang mengembalikan `"GOOD"` jika `ttfb<=800`, `lcp<=2500`, `inp<=200`, `cls<=0.1`, atau `"NEEDS_WORK"` jika ada yang melampaui.',
+        language: 'javascript',
+        starterCode: `function classifyVitals({ ttfb, lcp, inp, cls }) {
+  // TODO: Kembalikan 'GOOD' bila seluruh metrik memenuhi ambang Google, else 'NEEDS_WORK'
+  
+}`,
+        solutionCode: `function classifyVitals({ ttfb, lcp, inp, cls }) {
+  return ttfb <= 800 && lcp <= 2500 && inp <= 200 && cls <= 0.1 ? 'GOOD' : 'NEEDS_WORK';
+}`,
+        run(code) {
+          const harness = `
+            function __verify() {
+              if (typeof classifyVitals !== 'function') throw new Error('Fungsi classifyVitals tidak ditemukan');
+              return {
+                okCase: classifyVitals({ ttfb: 415, lcp: 2100, inp: 140, cls: 0.05 }),
+                slowInpCase: classifyVitals({ ttfb: 229, lcp: 1800, inp: 350, cls: 0.02 })
+              };
+            }
+          `;
+          const exec = runSandboxedJS(code, harness);
+          if (!exec.ok) return [{ pass: false, label: 'Sintaks Valid', hint: exec.error }];
+          const r = exec.result || {};
+          return [
+            { pass: r.okCase === 'GOOD', label: 'Metrik TTFB 415ms / LCP 2100ms / INP 140ms / CLS 0.05 -> GOOD', hint: 'Periksa syarat <= 800, <= 2500, <= 200, <= 0.1.' },
+            { pass: r.slowInpCase === 'NEEDS_WORK', label: 'Mendeteksi INP 350ms (> 200ms) -> NEEDS_WORK', hint: 'Meskipun TTFB 229ms Good, INP 350ms wajib flagged.' }
+          ];
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Script `k6/browser` + Env Chromium & 4 Thresholds',
+        description: 'Tulis konfigurasi `options` untuk `k6/browser` (`chromium`, `browser_web_vital_lcp`, `inp`, `cls`, `ttfb`) beserta env PowerShell `$env:K6_BROWSER_EXECUTABLE_PATH`.',
+        language: 'javascript',
+        starterCode: `// $env:K6_BROWSER_EXECUTABLE_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+import { browser } from 'k6/browser';
+export const options = {
+  scenarios: {
+    ui_vitals: { executor: 'shared-iterations', vus: 1, iterations: 1, options: { browser: { type: 'chromium' } } }
+  },
+  thresholds: {
+    // TODO: Isi p(95) threshold untuk lcp, inp, cls, dan ttfb
+  }
+};`,
+        solutionCode: `// $env:K6_BROWSER_EXECUTABLE_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+import { browser } from 'k6/browser';
+export const options = {
+  scenarios: {
+    ui_vitals: { executor: 'shared-iterations', vus: 1, iterations: 1, options: { browser: { type: 'chromium' } } }
+  },
+  thresholds: {
+    browser_web_vital_lcp: ['p(95)<2500'],
+    browser_web_vital_inp: ['p(95)<200'],
+    browser_web_vital_cls: ['p(95)<0.1'],
+    browser_web_vital_ttfb: ['p(95)<800']
+  }
+};`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /K6_BROWSER_EXECUTABLE_PATH/, label: 'Menyertakan konfigurasi K6_BROWSER_EXECUTABLE_PATH Windows', hint: 'Dokumentasikan $env:K6_BROWSER_EXECUTABLE_PATH menuju chrome.exe.' },
+            { regex: /browser_web_vital_lcp[\s\S]*2500/, label: 'Threshold browser_web_vital_lcp < 2500ms', hint: 'Tambahkan browser_web_vital_lcp: ["p(95)<2500"].' },
+            { regex: /browser_web_vital_inp[\s\S]*200/, label: 'Threshold browser_web_vital_inp < 200ms', hint: 'Tambahkan browser_web_vital_inp: ["p(95)<200"].' },
+            { regex: /browser_web_vital_cls[\s\S]*0\.1/, label: 'Threshold browser_web_vital_cls < 0.1', hint: 'Tambahkan browser_web_vital_cls: ["p(95)<0.1"].' },
+            { regex: /browser_web_vital_ttfb[\s\S]*800/, label: 'Threshold browser_web_vital_ttfb < 800ms', hint: 'Tambahkan browser_web_vital_ttfb: ["p(95)<800"].' }
+          ]);
+        }
+      }
+    },
+
+    qam29: {
+      simple: {
+        title: 'Uji Sederhana: Isolasi Fase 500 VU vs 1.000 VU Berdasarkan `elapsedMs`',
+        description: 'Tulis fungsi JS `classifyVuPhase(elapsedMs)` yang mengembalikan `"phase_500vu"` untuk `<= 120000`, `"phase_1000vu"` untuk `<= 240000`, dan `"ramp_down"` selebihnya.',
+        language: 'javascript',
+        starterCode: `function classifyVuPhase(elapsedMs) {
+  // TODO: Kembalikan nama fase yang tepat sesuai timeline k6 (0..120s, 120..240s, >240s)
+  
+}`,
+        solutionCode: `function classifyVuPhase(elapsedMs) {
+  if (elapsedMs <= 120000) return 'phase_500vu';
+  if (elapsedMs <= 240000) return 'phase_1000vu';
+  return 'ramp_down';
+}`,
+        run(code) {
+          const harness = `
+            function __verify() {
+              if (typeof classifyVuPhase !== 'function') throw new Error('Fungsi classifyVuPhase tidak ditemukan');
+              return {
+                p500: classifyVuPhase(95000),
+                p1000: classifyVuPhase(185000),
+                down: classifyVuPhase(255000)
+              };
+            }
+          `;
+          const exec = runSandboxedJS(code, harness);
+          if (!exec.ok) return [{ pass: false, label: 'Sintaks Valid', hint: exec.error }];
+          const r = exec.result || {};
+          return [
+            { pass: r.p500 === 'phase_500vu', label: '95.000 ms (<= 2m) masuk phase_500vu', hint: 'Gunakan kondisi elapsedMs <= 120000.' },
+            { pass: r.p1000 === 'phase_1000vu', label: '185.000 ms (<= 4m) masuk phase_1000vu', hint: 'Gunakan kondisi elapsedMs <= 240000.' },
+            { pass: r.down === 'ramp_down', label: '255.000 ms (> 4m) masuk ramp_down', hint: 'Kembalikan "ramp_down" di akhir.' }
+          ];
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Custom `Trend`, `exec.scenario.startTime` & Safe JSON Check',
+        description: 'Lengkapi deklarasi metrik terpisah GET/POST (`new Trend(..., true)`), `recordPhaseMetrics`, dan pengecekan POST 201 aman `try/catch`.',
+        language: 'javascript',
+        starterCode: `import { Trend, Rate } from 'k6/metrics';
+import exec from 'k6/execution';
+// TODO 1: Buat getReqDuration & postReqDuration memakai new Trend(..., true)
+// TODO 2: Gunakan Date.now() - exec.scenario.startTime di recordPhaseMetrics
+// TODO 3: Bungkus r.json() di dalam try { ... } catch (e) { return false; }`,
+        solutionCode: `import { Trend, Rate } from 'k6/metrics';
+import exec from 'k6/execution';
+
+const getReqDuration = new Trend('get_req_duration', true);
+const postReqDuration = new Trend('post_req_duration', true);
+
+function recordPhaseMetrics(durationMs) {
+  const elapsedMs = Date.now() - exec.scenario.startTime;
+  return elapsedMs <= 120000 ? '500' : '1000';
+}
+
+function safeCheckPost(r) {
+  if (r.status !== 201) return false;
+  try {
+    return r.json().id !== undefined;
+  } catch (e) {
+    return false;
+  }
+}`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /new\s+Trend\(\s*['"]get_req_duration['"]\s*,\s*true\s*\)/, label: 'Custom Trend get_req_duration bertipe waktu (true)', hint: 'Deklarasikan new Trend("get_req_duration", true).' },
+            { regex: /new\s+Trend\(\s*['"]post_req_duration['"]\s*,\s*true\s*\)/, label: 'Custom Trend post_req_duration terpisah dari GET', hint: 'Deklarasikan new Trend("post_req_duration", true).' },
+            { regex: /exec\.scenario\.startTime/, label: 'Mengukur elapsed time via exec.scenario.startTime', hint: 'Hitung Date.now() - exec.scenario.startTime.' },
+            { regex: /try\s*\{[\s\S]*r\.json\([\s\S]*\}\s*catch/, label: 'Melindungi parsing r.json() dengan blok try/catch', hint: 'Tambahkan try/catch saat parsing respons JSON.' }
+          ]);
+        }
+      }
+    },
+
+    qam30: {
+      simple: {
+        title: 'Uji Sederhana: Aktivasi `$env:JAVA_HOME` & `$env:Path` PowerShell',
+        description: 'Susun perintah PowerShell self-contained untuk mengaktifkan JDK 17 Temurin, Maven 3.9.16, k6, dan Node.js tanpa me-restart terminal.',
+        language: 'powershell',
+        starterCode: `$env:JAVA_HOME = ""
+$env:Path = ""
+# TODO: Isi path Temurin 17.0.21.9, Maven 3.9.16\\bin, k6, nodejs lalu cek versi`,
+        solutionCode: `$env:JAVA_HOME = "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot"
+$env:Path = "C:\\Users\\HPrannn\\tools\\apache-maven-3.9.16\\bin;$env:JAVA_HOME\\bin;C:\\Program Files\\k6;C:\\Program Files\\nodejs;$env:Path"
+java -version
+mvn -version
+k6 version`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /jdk-17\.0\.21\.9-hotspot/, label: 'Menunjuk OpenJDK 17 Temurin (17.0.21.9)', hint: 'Set $env:JAVA_HOME ke folder jdk-17.0.21.9-hotspot.' },
+            { regex: /apache-maven-3\.9\.16\\bin/, label: 'Menyertakan Apache Maven 3.9.16\\bin ke Path', hint: 'Tambahkan path apache-maven-3.9.16\\bin ke $env:Path.' },
+            { regex: /C:\\Program Files\\k6[\s\S]*\$env:Path/, label: 'Menyertakan k6 & mempertahankan $env:Path eksisting', hint: 'Tambahkan C:\\Program Files\\k6 danakhiri dengan ;$env:Path.' }
+          ]);
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Filter `target/` saat Membuat Clean ZIP Python',
+        description: 'Tulis logika Python `zipfile.ZipFile` yang mengemas `pom.xml`, `README.md`, dan folder `src/` tanpa memasukkan `target/`, dengan separator slash `/` yang portabel.',
+        language: 'python',
+        starterCode: `import os, zipfile
+# TODO: Buat GITS-QA-Automation.zip dengan ZIP_DEFLATED berisi pom.xml, README.md, dan os.walk('src')`,
+        solutionCode: `import os, zipfile
+with zipfile.ZipFile('GITS-QA-Automation.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
+    for f in ['pom.xml', 'README.md']:
+        zf.write(os.path.join(proj, f), f)
+    for r, _, files in os.walk(os.path.join(proj, 'src')):
+        for fn in files:
+            full = os.path.join(r, fn)
+            zf.write(full, os.path.relpath(full, proj).replace(os.sep, '/'))`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /zipfile\.ZIP_DEFLATED/, label: 'Memakai kompresi ZIP_DEFLATED standar', hint: 'Gunakan zipfile.ZipFile(..., "w", zipfile.ZIP_DEFLATED).' },
+            { regex: /pom\.xml[\s\S]*README\.md/, label: 'Menyertakan pom.xml & README.md di root ZIP', hint: 'Masukkan pom.xml dan README.md.' },
+            { regex: /os\.walk\([\s\S]*['"]src['"]/, label: 'Hanya menelusuri src/ (mengecualikan target/)', hint: 'Walk ke subfolder src, bukan root proyek.' },
+            { regex: /\.replace\(\s*os\.sep\s*,\s*['"]\/['"]\s*\)/, label: 'Normalisasi path slash portabel lintas-OS', hint: 'Tambahkan .replace(os.sep, "/").' }
           ]);
         }
       }

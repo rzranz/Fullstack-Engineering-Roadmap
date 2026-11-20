@@ -120,16 +120,16 @@
       id: 'qa',
       label: 'QA Engineer',
       directoryLabel: 'QA ENGINEER BLUEPRINT DIRECTORY',
-      directoryDesc: '4 Fase terstruktur (6 Jalur · 24 Modul) dari SDLC/STLC hingga Playwright, Web Vitals, k6 & CI/CD.',
-      kicker: 'QA SOFTWARE ENGINEER ROADMAP / 4 FASE · 24 MODUL · NOL HINGGA AUTOMASI',
+      directoryDesc: '5 Fase terstruktur (8 Jalur · 30 Modul): SDLC/STLC, DevTools, Postman, Playwright, Web Vitals, k6 & Studi Kasus Nyata OpenMRS/Java/CLI.',
+      kicker: 'QA SOFTWARE ENGINEER ROADMAP / 5 FASE · 8 JALUR · 30 MODUL',
       heading: 'FROM FUNDAMENTAL QA<br>TO AUTOMATED QUALITY GATE.',
-      quote: '“From SDLC, DevTools & Postman to Playwright POM, Core Web Vitals & k6 Load Gate”',
-      lead: 'Panduan lengkap QA Software Engineer dari nol hingga automasi: SDLC/STLC, Testing Pyramid & Trophy, EP/BVA/Decision Table, Chrome DevTools, Postman & Newman, Playwright TypeScript POM (SauceDemo/Herokuapp), SQL Integrity, Web Vitals (TTFB/LCP/INP/CLS), k6 Load Testing, dan CI/CD GitHub Actions.',
+      quote: '“From SDLC, DevTools & Postman to Playwright, Java Selenium, Web Vitals & k6 Trend”',
+      lead: 'Panduan lengkap QA Software Engineer dari nol hingga studi kasus proyek nyata: SDLC/STLC, EP/BVA, DevTools, Postman & Newman, Playwright POM, Java RestAssured + Selenium 4 POM + Apache POI DDT + CDP 9223, Web Vitals (Lighthouse & k6/browser), k6 Custom Trend 1.000 VUs, serta Command Runner lokal.',
       meta: [
-        { label: 'Struktur Belajar', value: '4 Fase Terarah (10 Minggu)' },
-        { label: 'Cakupan Materi', value: '6 Jalur · 24 Modul Lengkap' },
-        { label: 'Tools Industri', value: 'Jira · DevTools · Postman · Playwright · k6' },
-        { label: 'Target Praktik', value: 'SauceDemo · Herokuapp · ReqRes · Booker' }
+        { label: 'Struktur Belajar', value: '5 Fase Terarah + Case Study' },
+        { label: 'Cakupan Materi', value: '8 Jalur · 30 Modul Lengkap' },
+        { label: 'Tools Industri', value: 'Postman · Playwright · Selenium · k6 · Lighthouse' },
+        { label: 'Target Praktik', value: 'SauceDemo · Herokuapp · ReqRes · OpenMRS' }
       ],
       methodologyTitle: 'DESIGN → INSPECT → AUTOMATE → BENCHMARK',
       methodologySub: 'Setiap fase disusun bertahap agar tidak membingungkan: kuasai analisis manual & API dulu sebelum menulis skrip automasi dan CI/CD.',
@@ -340,13 +340,13 @@
         </a>
         <a class="practice-target-card" href="https://restful-booker.herokuapp.com/" target="_blank" rel="noopener">
           <span class="practice-target-type">API Practice Target</span>
-          <span class="practice-target-name">Restful-Booker ↗</span>
-          <span class="practice-target-desc">CRUD booking &amp; auth token chaining (Postman/Newman).</span>
+          <span class="practice-target-name">Restful-Booker &amp; ReqRes ↗</span>
+          <span class="practice-target-desc">CRUD booking, auth chaining &amp; RestAssured API (reqres.in).</span>
         </a>
-        <a class="practice-target-card" href="https://reqres.in/" target="_blank" rel="noopener">
-          <span class="practice-target-type">API Practice Target</span>
-          <span class="practice-target-name">ReqRes.in ↗</span>
-          <span class="practice-target-desc">REST mock server untuk latihan status HTTP &amp; JSON assertions.</span>
+        <a class="practice-target-card" href="https://o3.openmrs.org/openmrs/" target="_blank" rel="noopener">
+          <span class="practice-target-type">Real Project Case Study</span>
+          <span class="practice-target-name">OpenMRS 3 &amp; Legacy UI ↗</span>
+          <span class="practice-target-desc">BVA klinis, XSS double encoding, Selenium 4 POM &amp; CSRFGuard.</span>
         </a>
       </div>
     ` : '';
@@ -966,7 +966,7 @@
             <button class="btn btn-outline" id="prevStepBtn" ${safeStepIndex === 0 ? 'disabled' : ''}>
               ← Langkah Sebelumnya
             </button>
-            <div style="display:flex; gap:8px;">
+            <div style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px;">
               ${safeStepIndex === LESSON_STEPS.length - 1 ? `
                 <button class="btn btn-primary" id="finishModuleBtn">
                   ${isDone ? '✓ Materi Sudah Selesai' : 'Selesaikan Materi Ini'}

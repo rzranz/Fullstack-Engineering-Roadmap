@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Learning Map, Web Vitals &amp; Command Center — Randi Zakaria Putra</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #0b1220;
+      --border: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --warn: #f59e0b;
+      --purple: #c084fc;
+      --danger: #f87171;
+      --code-bg: #020617;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.58;
+    }
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #172554 60%, #1e293b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px 22px;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px 64px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.75rem;
+      color: #f8fafc;
+    }
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .badge {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .badge.ok {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: var(--accent-2);
+    }
+    .badge.purple {
+      background: rgba(192, 132, 252, 0.12);
+      border-color: rgba(192, 132, 252, 0.35);
+      color: var(--purple);
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 22px;
+      position: sticky;
+      top: 0;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(6px);
+      padding: 12px 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { border-color: var(--accent); }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+    }
+    section.card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+    }
+    section.card.hidden { display: none; }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      color: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    h3 {
+      margin: 20px 0 8px;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    p, li { color: #cbd5e1; font-size: 0.92rem; }
+    ul, ol { margin: 6px 0 12px 22px; padding: 0; }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin: 12px 0;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin: 12px 0;
+    }
+    .mini-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .mini-card h4 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      color: #f8fafc;
+    }
+    .kpi {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent-2);
+      margin: 4px 0;
+    }
+    .note {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 3px solid var(--warn);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #fde68a;
+      margin: 12px 0;
+    }
+    .tip {
+      background: rgba(56, 189, 248, 0.09);
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #bae6fd;
+      margin: 12px 0;
+    }
+    .code-wrap {
+      position: relative;
+      margin: 10px 0 16px;
+    }
+    .code-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: Consolas, "Cascadia Code", monospace;
+    }
+    .copy-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 11px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied {
+      background: var(--accent-2);
+      color: #052e16;
+      border-color: var(--accent-2);
+    }
+    pre {
+      margin: 0;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 0 0 8px 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: Consolas, "Cascadia Code", monospace;
+      font-size: 0.83rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+    details {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 10px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #f8fafc;
+      font-size: 0.92rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      font-size: 0.86rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--surface-2); color: #f8fafc; }
+    code.inline {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 0.84em;
+      color: #7dd3fc;
+    }
+    .pill-good { color: #4ade80; font-weight: 700; }
+    .pill-warn { color: #fbbf24; font-weight: 700; }
+    .pill-bad { color: #f87171; font-weight: 700; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 28px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="padding-bottom: 0;">
+      <h1>QA Learning Map, Core Web Vitals &amp; Device-Ready Command Center</h1>
+      <p class="subtitle">
+        Disiapkan khusus untuk perangkat <strong>Randi Zakaria Putra</strong> — Root Workspace:
+        <code class="inline">d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra</code>
+      </p>
+      <div class="badge-row">
+        <span class="badge ok">JDK 17: Temurin 17.0.21.9</span>
+        <span class="badge ok">Maven: 3.9.16</span>
+        <span class="badge ok">k6: v2.4.0</span>
+        <span class="badge ok">Chrome: 158.0.8127.36</span>
+        <span class="badge ok">Python: 3.12.1</span>
+        <span class="badge purple">Node/npx: C:\Program Files\nodejs</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-filter="all">Semua</button>
+      <button class="tab-btn" data-filter="learning">1. Pemetaan Pembelajaran</button>
+      <button class="tab-btn" data-filter="webvitals">2. Core Web Vitals (LCP, INP, CLS, TTFB)</button>
+      <button class="tab-btn" data-filter="device">3. Profil Perangkat &amp; ENV</button>
+      <button class="tab-btn" data-filter="commands">4. Command Runner (Siap Copy)</button>
+      <button class="tab-btn" data-filter="sourcecode">5. Source Code Lengkap (Siap Copy)</button>
+      <button class="tab-btn" data-filter="package">6. Packaging &amp; Drive Checklist</button>
+    </div>
+
+    <!-- 1. PEMETAAN PEMBELAJARAN -->
+    <section class="card" data-group="learning">
+      <h2>1. Pemetaan Lengkap Pembelajaran QA dari Sesi Ini</h2>
+      <p>
+        Sepanjang pengerjaan assessment GITS QA ini, Anda mempraktikkan <strong>4 lapisan Quality Engineering</strong> secara penuh—mulai dari eksplorasi manual, otomasi API &amp; UI, load testing backend, hingga debugging infrastruktur nyata.
+      </p>
+
+      <div class="grid-3">
+        <div class="mini-card">
+          <h4>Pilar 1 — Manual &amp; Exploratory QA</h4>
+          <div class="kpi">65 TC &bull; 11 Bug</div>
+          <p>
+            <strong>46 Pass</strong>, <strong>16 Fail</strong>, <strong>3 Pending</strong> di OpenMRS 3 SPA &amp; Legacy UI memakai pasien uji <code class="inline">Randi QA_Test GITS_Patient</code> (<code class="inline">10001X1</code>), dilengkapi 15 screenshot bukti &amp; rumus <code class="inline">COUNTIF</code> Google Sheets.
+          </p>
+        </div>
+        <div class="mini-card">
+          <h4>Pilar 2 — API &amp; UI Automation</h4>
+          <div class="kpi">5 / 5 Passed</div>
+          <p>
+            <strong>RestAssured (2/2)</strong> pada <code class="inline">reqres.in</code> + <strong>Selenium 4 POM &amp; Apache POI DDT (3/3)</strong> pada <code class="inline">o3.openmrs.org</code> dalam <code class="inline">18.025 s</code> dengan bukti <code class="inline">emailable-report.html</code> &amp; 2 PNG login.
+          </p>
+        </div>
+        <div class="mini-card">
+          <h4>Pilar 3 — Performance Testing (k6)</h4>
+          <div class="kpi">134,896 Reqs &bull; 0% Err</div>
+          <p>
+            Ramp-up <code class="inline">500 &rarr; 1,000 VUs</code> selama <code class="inline">4m 30s</code> (<code class="inline">495.49 req/s</code>), SLA <code class="inline">p(95) = 416.27 ms &lt; 2000 ms</code>, serta isolasi metrik GET vs POST dan 500 vs 1000 VUs.
+          </p>
+        </div>
+      </div>
+
+      <h3>Peta Pembelajaran Teknis &amp; Root Cause Debugging Nyata</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tahap</th>
+            <th>Masalah / Fenomena Nyata yang Terjadi</th>
+            <th>Root Cause &amp; Konsep QA Penting yang Dipelajari</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Manual &amp; BVA</strong></td>
+            <td>Tekanan darah <code class="inline">50 / 120</code> tersimpan, berat <code class="inline">-5 kg</code> lolos ke API, digit awal hilang saat mengetik cepat</td>
+            <td><strong>Boundary Value Analysis (BVA)</strong> &amp; <em>cross-field validation</em>: validasi klinis tidak cukup hanya min/max per kolom, tapi harus antar-kolom (<code class="inline">Systolic &gt; Diastolic</code>) dan sinkron antara client &amp; server (<code class="inline">400</code> error harus memetakan pesan spesifik ke field).</td>
+          </tr>
+          <tr>
+            <td><strong>2. Input Security &amp; Encoding</strong></td>
+            <td>Input <code class="inline">&lt;b&gt;Test&lt;/b&gt;</code> &amp; <code class="inline">&lt;script&gt;</code> tampil sebagai <code class="inline">&amp;lt;b&amp;gt;</code> lalu berubah menjadi <code class="inline">&amp;amp;lt;</code> saat diedit ulang</td>
+            <td><strong>Double / Repeated HTML Encoding:</strong> Backend melakukan escaping saat simpan lalu UI React/edit melakukan encoding lagi. Pengujian XSS tidak hanya cek apakah alert muncul, tetapi juga integritas data saat siklus <em>Create &rarr; Read &rarr; Update</em>.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Responsiveness &amp; UI Overlap</strong></td>
+            <td>Tombol floating <code class="inline">?</code> menutupi <code class="inline">Check In</code> / <code class="inline">Options</code>; di viewport <code class="inline">375x812</code> sidebar Registration memotong input form</td>
+            <td><strong>Viewport &amp; Layout Testing:</strong> Cek desktop (<code class="inline">1440x900</code>) dan mobile (<code class="inline">375x812</code>) untuk horizontal overflow, elemen <code class="inline">position: fixed</code> yang menutupi aksi tabel, dan kegagalan breakpoint CSS grid/flex.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Dual UI Architecture</strong></td>
+            <td><code class="inline">https://o3.openmrs.org/openmrs/</code> menampilkan Legacy UI 2.8.10, sedangkan <code class="inline">https://o3.openmrs.org/</code> menampilkan O3 React SPA</td>
+            <td><strong>Inspect Live DOM Before Coding:</strong> Jangan pernah mengasumsikan struktur DOM dari ingatan. Legacy UI memakai 1-step form + <code class="inline">#openmrs_error</code> (<code class="inline">"Invalid username/password. Please try again."</code>), sedangkan O3 SPA memakai 2-step form + LocationPicker + Carbon notification.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Dependency Alignment</strong></td>
+            <td>RestAssured gagal <code class="inline">IllegalStateException (no JSON serializer)</code> &amp; POI gagal <code class="inline">NoSuchMethodError</code> di Log4j2</td>
+            <td><strong>Maven Dependency Hygiene:</strong> Serialisasi objek Map ke JSON di RestAssured butuh <code class="inline">jackson-databind</code>; Apache POI 5.3.0 butuh keselarasan versi <code class="inline">log4j-api</code> &amp; <code class="inline">log4j-core</code> (<code class="inline">2.24.1</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>6. Async CSRF Race Condition</strong></td>
+            <td>Klik <code class="inline">Log In</code> tetap kembali ke halaman utama tanpa error maupun login</td>
+            <td><strong>Asynchronous Script Injection:</strong> <code class="inline">/openmrs/csrfguard</code> menyuntikkan <code class="inline">&lt;input name="OWASP-CSRFTOKEN"&gt;</code> setelah HTML ter-parse. Selenium jauh lebih cepat dari manusia sehingga wajib <code class="inline">wait.until(presenceOfElementLocated(By.name("OWASP-CSRFTOKEN")))</code> sebelum submit.</td>
+          </tr>
+          <tr>
+            <td><strong>7. Anti-Bot, Port &amp; Window State</strong></td>
+            <td>Selenium baru kena Cloudflare <code class="inline">Just a moment...</code>; port <code class="inline">9222</code> bentrok IPv4 vs IPv6 (<code class="inline">[::1]</code>); jendela Chrome yang di-minimize gagal menerima <code class="inline">sendKeys</code></td>
+            <td><strong>Ethical Anti-Bot Handling &amp; CDP:</strong> Jangan bypass CAPTCHA/Turnstile; gunakan profil terverifikasi oleh user di port bebas (<code class="inline">9223</code>), pulihkan window state dari minimize lewat CDP <code class="inline">Page.bringToFront</code> + <code class="inline">Browser.setWindowBounds</code>, dan gunakan <code class="inline">logoutIfLoggedIn()</code> agar cookie <code class="inline">cf_clearance</code> tidak terhapus antar skenario.</td>
+          </tr>
+          <tr>
+            <td><strong>8. Performance Instrumentation</strong></td>
+            <td><code class="inline">GET /posts/1</code> (<code class="inline">137.90 ms</code>) vs <code class="inline">POST /posts</code> (<code class="inline">321.08 ms</code>); p95 fase 1000 VU naik <code class="inline">+20.77%</code></td>
+            <td><strong>Membedah Angka Bukan Sekadar Rata-Rata:</strong> Memisahkan metrik via custom <code class="inline">Trend</code> membuktikan edge caching Cloudflare (<code class="inline">cf-cache-status: HIT</code>) membuat read <code class="inline">2.33x</code> lebih cepat, sementara <code class="inline">http_req_waiting</code> (TTFB) menyumbang <code class="inline">99.81%</code> total durasi.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. CORE WEB VITALS -->
+    <section class="card" data-group="webvitals">
+      <h2>2. Pemetaan Core Web Vitals &amp; Web Performance (LCP, INP, CLS, TTFB, FCP, TBT)</h2>
+      <p>
+        Dalam QA Performance Engineering modern, pengujian terbagi menjadi dua layer yang saling melengkapi:
+        <strong>Backend/Protocol Load Testing (<code class="inline">k6</code> API — Modul 3)</strong> dan <strong>Frontend User-Centric Metrics (Core Web Vitals di Browser)</strong>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metrik</th>
+            <th>Kepanjangan &amp; Definisi</th>
+            <th>Ambang Batas Google</th>
+            <th>Posisi di Proyek Ini &amp; Cara Mengukurnya</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TTFB</strong></td>
+            <td><strong>Time to First Byte</strong> — Waktu sejak permintaan HTTP dikirim hingga byte pertama respons diterima dari server/CDN.</td>
+            <td><span class="pill-good">Good &le; 800 ms</span><br><span class="pill-warn">Warn 800–1800 ms</span><br><span class="pill-bad">Poor &gt; 1800 ms</span></td>
+            <td><strong>Sudah terukur di Modul 3!</strong> Pada <code class="inline">k6</code>, metrik ini bernama <code class="inline">http_req_waiting</code> (hasil kita: <code class="inline">avg 229.05 ms</code>, <code class="inline">p95 415.14 ms</code> &mdash; masuk kategori <strong>Good</strong>).</td>
+          </tr>
+          <tr>
+            <td><strong>LCP</strong></td>
+            <td><strong>Largest Contentful Paint</strong> — Waktu hingga elemen konten terbesar di viewport (hero image, heading utama, tabel/banner besar) selesai ter-render.</td>
+            <td><span class="pill-good">Good &le; 2.5 s</span><br><span class="pill-warn">Warn 2.5–4.0 s</span><br><span class="pill-bad">Poor &gt; 4.0 s</span></td>
+            <td><strong>Layer Browser Frontend.</strong> Dipengaruhi TTFB server, render-blocking CSS/JS, dan ukuran aset. Diukur via Lighthouse, Chrome DevTools Performance, atau <code class="inline">k6/browser</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>INP</strong></td>
+            <td><strong>Interaction to Next Paint</strong> <em>(pengganti resmi FID sejak Maret 2024)</em> — Latensi terlama (p98) dari klik/ketik/tap user hingga browser menggambar frame visual berikutnya.</td>
+            <td><span class="pill-good">Good &le; 200 ms</span><br><span class="pill-warn">Warn 200–500 ms</span><br><span class="pill-bad">Poor &gt; 500 ms</span></td>
+            <td><strong>Layer Browser Frontend.</strong> Dipengaruhi Long Tasks (&gt;50 ms) di main thread JS, state update React yang berat, atau event handler sinkron. <em>(Contoh relevan di OpenMRS: gejala hilangnya ketikan awal di input Vitals adalah problem responsivitas input di sisi UI!)</em></td>
+          </tr>
+          <tr>
+            <td><strong>CLS</strong></td>
+            <td><strong>Cumulative Layout Shift</strong> — Total pergeseran posisi elemen visual secara tiba-tiba saat halaman sedang dimuat/digunakan.</td>
+            <td><span class="pill-good">Good &le; 0.10</span><br><span class="pill-warn">Warn 0.10–0.25</span><br><span class="pill-bad">Poor &gt; 0.25</span></td>
+            <td><strong>Layer Browser Frontend.</strong> Dipicu gambar/iframe tanpa dimensi tetap, webfont late-swap, atau banner/toast dinamis yang mendorong konten ke bawah.</td>
+          </tr>
+          <tr>
+            <td><strong>FCP &amp; TBT</strong></td>
+            <td><strong>First Contentful Paint</strong> (teks/gambar pertama muncul) &amp; <strong>Total Blocking Time</strong> (total durasi main thread terkunci &gt;50 ms sebelum interaktif).</td>
+            <td>FCP <span class="pill-good">&le; 1.8 s</span><br>TBT <span class="pill-good">&le; 200 ms</span></td>
+            <td><strong>Proksi Lab di Lighthouse:</strong> Karena lab audit tidak selalu menekan semua tombol secara nyata, <strong>TBT</strong> digunakan Lighthouse sebagai indikator kuat potensi buruknya <strong>INP</strong> di dunia nyata.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="mini-card">
+          <h4>Kapan Pakai <code class="inline">k6</code> Protocol Test (Modul 3)?</h4>
+          <ul>
+            <li>Menguji daya tahan backend/database/CDN pada 500–10.000+ concurrent user.</li>
+            <li>Mengukur RPS, HTTP error rate, connection pooling, TLS, dan <strong>TTFB</strong> (<code class="inline">http_req_waiting</code>).</li>
+            <li>Cepat dan ringan (1 mesin laptop bisa menjalankan 1.000 VUs sekaligus).</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>Kapan Pakai Web Vitals / Lighthouse / <code class="inline">k6/browser</code>?</h4>
+          <ul>
+            <li>Mengukur pengalaman visual &amp; interaksi user di browser (<code class="inline">LCP</code>, <code class="inline">INP</code>, <code class="inline">CLS</code>).</li>
+            <li>Menemukan bundle JS terlalu besar, main thread blocking, atau layout shift.</li>
+            <li>Umumnya dijalankan pada 1–10 browser instances (karena tiap Chromium memakan RAM &amp; CPU besar), bukan 1.000 VUs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Uji Cepat Core Web Vitals di Perangkat Anda (Siap Copy)</h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Audit Core Web Vitals (LCP, CLS, TTFB, TBT, FCP) via Lighthouse CLI (Node/npx Terpasang)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$env:CHROME_PATH = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+$env:Path = "C:\Program Files\nodejs;$env:Path"
+$outReport = "d:\Portofolio\QA Testing\lighthouse-openmrs-report.html"
+
+&amp; "C:\Program Files\nodejs\npx.cmd" --yes lighthouse "https://o3.openmrs.org/openmrs/spa/login" `
+  --only-categories=performance `
+  --output=html `
+  --output-path="$outReport" `
+  --chrome-flags="--headless=new"
+
+Start-Process "$outReport"</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>JavaScript (k6/browser) — Template Mengukur Web Vitals (LCP, INP, CLS, TTFB) Bersama k6 v2.4.0</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>import { browser } from 'k6/browser';
+import { check } from 'k6';
+
+export const options = {
+  scenarios: {
+    ui_vitals: {
+      executor: 'shared-iterations',
+      vus: 1,
+      iterations: 1,
+      options: { browser: { type: 'chromium' } },
+    },
+  },
+  thresholds: {
+    browser_web_vital_lcp: ['p(95)&lt;2500'],
+    browser_web_vital_inp: ['p(95)&lt;200'],
+    browser_web_vital_cls: ['p(95)&lt;0.1'],
+    browser_web_vital_ttfb: ['p(95)&lt;800'],
+  },
+};
+
+export default async function () {
+  const page = await browser.newPage();
+  try {
+    await page.goto('https://example.com', { waitUntil: 'networkidle' });
+    await page.locator('a').first().click();
+    check(page, { 'page loaded': () =&gt; page.url().length &gt; 0 });
+  } finally {
+    await page.close();
+  }
+}</pre>
+      </div>
+      <div class="note">
+        Catatan: Untuk menjalankan <code class="inline">k6/browser</code> di perangkat ini, pastikan <code class="inline">$env:K6_BROWSER_EXECUTABLE_PATH = "C:\Program Files\Google\Chrome\Application\chrome.exe"</code> diset di PowerShell, dan perhatikan bahwa target publik ber-Cloudflare seperti <code class="inline">o3.openmrs.org</code> dapat memicu anti-bot pada headless browser baru.
+      </div>
+    </section>
+
+    <!-- 3. PROFIL PERANGKAT -->
+    <section class="card" data-group="device">
+      <h2>3. Profil Perangkat Anda &amp; Aktivasi Environment</h2>
+      <p>Seluruh path binary di bawah ini telah diverifikasi langsung ada (<code class="inline">Exists = True</code>) pada perangkat Anda:</p>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Versi Terverifikasi</th><th>Lokasi Eksak di Perangkat Anda</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>OpenJDK 17</strong></td><td>Temurin <code class="inline">17.0.21+9</code></td><td><code class="inline">C:\Program Files\Eclipse Adoptium\jdk-17.0.21.9-hotspot\bin\java.exe</code></td></tr>
+          <tr><td><strong>Apache Maven</strong></td><td><code class="inline">3.9.16</code></td><td><code class="inline">C:\Users\HPrannn\tools\apache-maven-3.9.16\bin\mvn.cmd</code></td></tr>
+          <tr><td><strong>Grafana k6</strong></td><td><code class="inline">v2.4.0</code></td><td><code class="inline">C:\Program Files\k6\k6.exe</code></td></tr>
+          <tr><td><strong>Google Chrome</strong></td><td><code class="inline">158.0.8127.36</code></td><td><code class="inline">C:\Program Files\Google\Chrome\Application\chrome.exe</code></td></tr>
+          <tr><td><strong>Python</strong></td><td><code class="inline">3.12.1</code></td><td><code class="inline">C:\Users\HPrannn\AppData\Local\Programs\Python\Python312\python.exe</code></td></tr>
+          <tr><td><strong>Node.js / npx</strong></td><td>Installed</td><td><code class="inline">C:\Program Files\nodejs\node.exe</code> &amp; <code class="inline">npx.cmd</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Aktifkan Semua Tool di Terminal Mana Pun &amp; Verifikasi Versi</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.21.9-hotspot"
+$env:Path = "C:\Users\HPrannn\tools\apache-maven-3.9.16\bin;$env:JAVA_HOME\bin;C:\Program Files\k6;C:\Program Files\nodejs;$env:Path"
+
+java -version
+mvn -version
+k6 version
+python --version</pre>
+      </div>
+    </section>
+
+    <!-- 4. COMMAND RUNNER SIAP COPY -->
+    <section class="card" data-group="commands">
+      <h2>4. Command Runner Siap Copy (Self-Contained untuk Perangkat Ini)</h2>
+      <div class="tip">
+        Setiap blok PowerShell di bawah sudah menyertakan <code class="inline">$env:JAVA_HOME</code> dan full path binary perangkat Anda, sehingga <strong>langsung jalan bahkan di terminal VS Code/PowerShell lama yang belum di-restart</strong>.
+      </div>
+
+      <h3>A. Modul 2 — Jalankan API Test Saja (<code class="inline">ReqResApiTest</code>)</h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Jalankan API Automation (2/2 Test)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.21.9-hotspot"
+$env:Path = "C:\Users\HPrannn\tools\apache-maven-3.9.16\bin;$env:JAVA_HOME\bin;$env:Path"
+Set-Location "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra\2. Automation Testing\GITS-QA-Automation"
+&amp; "C:\Users\HPrannn\tools\apache-maven-3.9.16\bin\mvn.cmd" test -Dtest=ReqResApiTest</pre>
+      </div>
+
+      <h3>B. Modul 2 — Jalankan Full Suite API + UI pada <code class="inline">o3.openmrs.org</code></h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell #1 — Buka Chrome Debug Port 9223 (Selesaikan Cloudflare Sekali &rarr; Login &rarr; Log out &rarr; Jangan Minimize)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>&amp; "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9223 --user-data-dir="$env:TEMP\chrome-qa-debug" "https://o3.openmrs.org/openmrs/"</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell #2 — Jalankan Full Suite Maven 5/5 (API + UI + Screenshots)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.21.9-hotspot"
+$env:Path = "C:\Users\HPrannn\tools\apache-maven-3.9.16\bin;$env:JAVA_HOME\bin;$env:Path"
+Set-Location "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra\2. Automation Testing\GITS-QA-Automation"
+&amp; "C:\Users\HPrannn\tools\apache-maven-3.9.16\bin\mvn.cmd" clean test "-Dchrome.debuggerAddress=127.0.0.1:9223"</pre>
+      </div>
+
+      <h3>C. Modul 2 — Buka Report HTML &amp; Screenshot Langsung</h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Buka emailable-report.html, index.html &amp; Kedua Screenshot Login</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$autoRoot = "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra\2. Automation Testing"
+Start-Process "$autoRoot\emailable-report.html"
+Start-Process "$autoRoot\GITS-QA-Automation\target\surefire-reports\index.html"
+Start-Process "$autoRoot\Scenario2_Hardcoded_Login.png"
+Start-Process "$autoRoot\Scenario3_Excel_Login.png"</pre>
+      </div>
+
+      <h3>D. Modul 3 — Jalankan k6 Performance Test</h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Demo Cepat k6 (10 VUs, 5 Detik — Tidak Menimpa Laporan Resmi)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>Set-Location "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra"
+&amp; "C:\Program Files\k6\k6.exe" run --vus 10 --duration 5s "3. Performance Testing/src/performance-test.js"</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Eksekusi Penuh k6 (500 &rarr; 1,000 VUs, 4m 30s) + Ekspor JSON &amp; Log</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>Set-Location "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra"
+&amp; "C:\Program Files\k6\k6.exe" run --summary-export="3. Performance Testing/src/summary-result.json" "3. Performance Testing/src/performance-test.js" 2&gt;&amp;1 | Tee-Object -FilePath "3. Performance Testing/src/execution-log.txt"</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Cek Ringkasan Hasil k6 &amp; Audit Modul 1 CSV</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>Get-Content "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra\3. Performance Testing\src\execution-log.txt" -Tail 45
+
+&amp; "C:\Users\HPrannn\AppData\Local\Programs\Python\Python312\python.exe" -c "
+import csv, collections
+base = r'd:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra\1. Manual Testing'
+with open(base + r'\OpenMRS_Test_Cases.csv', encoding='utf-8') as f:
+    tcs = list(csv.DictReader(f))
+with open(base + r'\OpenMRS_Bug_Reports.csv', encoding='utf-8') as f:
+    bugs = list(csv.DictReader(f))
+print('Test Cases:', len(tcs), dict(collections.Counter(r['Status'] for r in tcs)))
+print('Bug Reports:', len(bugs), dict(collections.Counter(r['Severity'] for r in bugs)))
+"</pre>
+      </div>
+    </section>
+
+    <!-- 5. SOURCE CODE LENGKAP SIAP COPY -->
+    <section class="card" data-group="sourcecode">
+      <h2>5. Source Code Test Lengkap (Siap Copy — Sesuai Implementasi Lulus 100%)</h2>
+      <p>Seluruh kode aktual proyek Anda sudah disiapkan di bawah ini jika Anda ingin mempresentasikan atau menyalin ulang ke repositori baru.</p>
+
+      <details open>
+        <summary>Java API Test — ReqResApiTest.java (RestAssured + TestNG)</summary>
+        <div class="code-wrap">
+          <div class="code-label">
+            <span>src/test/java/com/gits/qa/api/ReqResApiTest.java</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+<pre>package com.gits.qa.api;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.Collections;
+
+import static io.restassured.RestAssured.given;
+
+/**
+ * RestAssured API automation tests against ReqRes (https://reqres.in/).
+ */
+public class ReqResApiTest {
+
+    private static final String BASE_URI = "https://reqres.in";
+    private static final String API_KEY = System.getProperty("reqres.api.key", "free_user_3MMnHzsnIN28CqZwivUmSkD0fi9");
+
+    @BeforeClass
+    public void setup() {
+        RestAssured.baseURI = BASE_URI;
+    }
+
+    @Test(priority = 1, description = "Scenario 1: GET /api/users/2 returns HTTP 200 and data.id equals '2'")
+    public void testGetSingleUserById() {
+        Response response = given()
+                .header("x-api-key", API_KEY)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/users/2")
+                .then()
+                .log().all()
+                .extract().response();
+
+        Reporter.log("GET /api/users/2 Status: " + response.statusCode(), true);
+        Reporter.log("GET /api/users/2 Body: " + response.asString(), true);
+
+        Assert.assertEquals(response.statusCode(), 200, "Expected HTTP 200 OK");
+        Assert.assertEquals(response.jsonPath().getString("data.id"), "2",
+                "Expected data.id to equal '2'");
+    }
+
+    @Test(priority = 2, description = "Scenario 2: POST /api/login without password returns HTTP 400 and error 'Missing password'")
+    public void testUnsuccessfulLoginMissingPassword() {
+        Response response = given()
+                .header("x-api-key", API_KEY)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(Collections.singletonMap("email", "peter@klaven"))
+                .when()
+                .post("/api/login")
+                .then()
+                .log().all()
+                .extract().response();
+
+        Reporter.log("POST /api/login Status: " + response.statusCode(), true);
+        Reporter.log("POST /api/login Body: " + response.asString(), true);
+
+        Assert.assertEquals(response.statusCode(), 400, "Expected HTTP 400 Bad Request");
+        Assert.assertEquals(response.jsonPath().getString("error"), "Missing password",
+                "Expected error message to equal 'Missing password'");
+    }
+}</pre>
+        </div>
+      </details>
+
+      <details>
+        <summary>Java Page Object — OpenMrsLoginPage.java (Selenium 4 + OWASP CSRFGuard Wait)</summary>
+        <div class="code-wrap">
+          <div class="code-label">
+            <span>src/test/java/com/gits/qa/pages/OpenMrsLoginPage.java</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+<pre>package com.gits.qa.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
+
+public class OpenMrsLoginPage {
+
+    public static final String BASE_URL = "https://o3.openmrs.org/openmrs/";
+
+    private static final By USERNAME_INPUT = By.id("username");
+    private static final By PASSWORD_INPUT = By.id("password");
+    private static final By LOGIN_SUBMIT_BUTTON = By.cssSelector("input[type='submit'][value='Log In'], form button[type='submit']");
+    private static final By SESSION_LOCATION_LIST = By.id("sessionLocation");
+    private static final By ERROR_MESSAGE_CONTAINER = By.id("openmrs_error");
+
+    private static final By LOGOUT_LINK = By.linkText("Log out");
+    private static final By LOGGED_IN_USER_BAR = By.id("userLoggedInAs");
+    private static final By NAV_LIST = By.cssSelector("ul.navList");
+
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+
+    public OpenMrsLoginPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+    }
+
+    public void open() {
+        driver.get(BASE_URL);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("OWASP-CSRFTOKEN")));
+    }
+
+    public void enterUsername(String username) {
+        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));
+        el.clear();
+        el.sendKeys(username);
+    }
+
+    public void enterPassword(String password) {
+        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(PASSWORD_INPUT));
+        el.clear();
+        el.sendKeys(password);
+    }
+
+    public boolean selectLocationIfRequired(String locationName) {
+        if (locationName == null || locationName.isBlank()) {
+            return false;
+        }
+        List&lt;WebElement&gt; locationLists = driver.findElements(SESSION_LOCATION_LIST);
+        if (!locationLists.isEmpty() &amp;&amp; locationLists.get(0).isDisplayed()) {
+            WebElement option = locationLists.get(0).findElement(
+                    By.xpath(".//li[normalize-space()='" + locationName + "']"));
+            option.click();
+            return true;
+        }
+        return false;
+    }
+
+    public void clickLogin() {
+        WebElement submitBtn = wait.until(ExpectedConditions.elementToBeClickable(LOGIN_SUBMIT_BUTTON));
+        submitBtn.click();
+    }
+
+    public boolean login(String username, String password, String locationName) {
+        enterUsername(username);
+        enterPassword(password);
+        boolean locationSelected = selectLocationIfRequired(locationName);
+        clickLogin();
+        return locationSelected;
+    }
+
+    public String getErrorMessageText() {
+        WebElement err = wait.until(ExpectedConditions.visibilityOfElementLocated(ERROR_MESSAGE_CONTAINER));
+        return err.getText().trim();
+    }
+
+    public boolean isDashboardDisplayed() {
+        wait.until(ExpectedConditions.and(
+                ExpectedConditions.visibilityOfElementLocated(LOGOUT_LINK),
+                ExpectedConditions.visibilityOfElementLocated(NAV_LIST)
+        ));
+        List&lt;WebElement&gt; userBar = driver.findElements(LOGGED_IN_USER_BAR);
+        boolean hasUserBar = !userBar.isEmpty() &amp;&amp; userBar.get(0).isDisplayed();
+        return driver.findElement(LOGOUT_LINK).isDisplayed()
+                &amp;&amp; driver.findElement(NAV_LIST).isDisplayed()
+                &amp;&amp; (hasUserBar || driver.getPageSource().contains("Welcome to OpenMRS"));
+    }
+
+    public String getLoggedInUserText() {
+        List&lt;WebElement&gt; userBar = driver.findElements(LOGGED_IN_USER_BAR);
+        return userBar.isEmpty() ? "" : userBar.get(0).getText().trim();
+    }
+
+    public void logoutIfLoggedIn() {
+        List&lt;WebElement&gt; logoutLinks = driver.findElements(LOGOUT_LINK);
+        if (!logoutLinks.isEmpty() &amp;&amp; logoutLinks.get(0).isDisplayed()) {
+            logoutLinks.get(0).click();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_INPUT));
+        }
+    }
+}</pre>
+        </div>
+      </details>
+
+      <details>
+        <summary>Java UI Test — OpenMrsLoginTest.java (Selenium 4 + Apache POI DataProvider + Screenshots)</summary>
+        <div class="code-wrap">
+          <div class="code-label">
+            <span>src/test/java/com/gits/qa/ui/OpenMrsLoginTest.java</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+<pre>package com.gits.qa.ui;
+
+import com.gits.qa.pages.OpenMrsLoginPage;
+import com.gits.qa.utils.ExcelUtils;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+
+public class OpenMrsLoginTest {
+
+    private static final String SCREENSHOT_DIR = "screenshots";
+    private WebDriver driver;
+    private OpenMrsLoginPage loginPage;
+    private boolean attachedToExistingBrowser;
+
+    @BeforeMethod
+    public void setUp() {
+        String debuggerAddress = System.getProperty("chrome.debuggerAddress", "").trim();
+        attachedToExistingBrowser = !debuggerAddress.isEmpty();
+
+        if (!attachedToExistingBrowser || driver == null) {
+            ChromeOptions options = new ChromeOptions();
+            if (attachedToExistingBrowser) {
+                options.setExperimentalOption("debuggerAddress", debuggerAddress);
+            } else {
+                options.addArguments("--window-size=1440,900");
+            }
+            driver = new ChromeDriver(options);
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+            if (attachedToExistingBrowser) {
+                try {
+                    ChromeDriver cd = (ChromeDriver) driver;
+                    cd.executeCdpCommand("Page.bringToFront", java.util.Collections.emptyMap());
+                    java.util.Map&lt;String, Object&gt; winInfo = cd.executeCdpCommand("Browser.getWindowForTarget", java.util.Collections.emptyMap());
+                    cd.executeCdpCommand("Browser.setWindowBounds", java.util.Map.of(
+                            "windowId", winInfo.get("windowId"),
+                            "bounds", java.util.Map.of("windowState", "normal", "width", 1440, "height", 900)
+                    ));
+                } catch (Exception e) {
+                    System.out.println("DEBUG CDP WINDOW ERROR: " + e.getMessage());
+                }
+            }
+            loginPage = new OpenMrsLoginPage(driver);
+        }
+
+        if (attachedToExistingBrowser) {
+            loginPage.logoutIfLoggedIn();
+        }
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDown(ITestResult result) {
+        if (driver != null) {
+            if (!result.isSuccess()) {
+                try {
+                    Reporter.log("Failure URL: " + driver.getCurrentUrl() + " | Title: " + driver.getTitle(), true);
+                } catch (Exception ignored) {
+                }
+            }
+            if (attachedToExistingBrowser) {
+                try {
+                    loginPage.logoutIfLoggedIn();
+                } catch (Exception ignored) {
+                }
+            } else {
+                driver.quit();
+                driver = null;
+            }
+        }
+    }
+
+    @DataProvider(name = "loginData")
+    public Object[][] getLoginDataFromExcel() {
+        return ExcelUtils.readSheetData("testdata.xlsx", "LoginData");
+    }
+
+    @Test(priority = 1, description = "Scenario 1: Failed Login with Invalid Credentials")
+    public void scenario1_FailedLoginWithInvalidCredentials() {
+        loginPage.open();
+        boolean locationSelected = loginPage.login("randi_invalid", "invalid_qa_pass", "Outpatient Clinic");
+        Reporter.log("Scenario 1 location selector present: " + locationSelected, true);
+
+        String actualError = loginPage.getErrorMessageText();
+        Reporter.log("Scenario 1 observed error message: " + actualError, true);
+
+        Assert.assertTrue(
+                actualError.equalsIgnoreCase("Invalid Username/Password. Please Try Again."),
+                "Expected error message 'Invalid Username/Password. Please Try Again.' (case-insensitive), but got: " + actualError
+        );
+    }
+
+    @Test(priority = 2, description = "Scenario 2: Successful Login with Hardcoded Valid Credentials")
+    public void scenario2_SuccessfulLoginHardcoded() {
+        loginPage.open();
+        boolean locationSelected = loginPage.login("admin", "Admin123", "Outpatient Clinic");
+        Reporter.log("Scenario 2 location selector present: " + locationSelected, true);
+
+        Assert.assertTrue(loginPage.isDashboardDisplayed(),
+                "Expected OpenMRS Home Dashboard to be visible after valid hardcoded login");
+        Reporter.log("Scenario 2 logged in user: " + loginPage.getLoggedInUserText(), true);
+
+        captureScreenshot("Scenario2_Hardcoded_Login.png");
+    }
+
+    @Test(priority = 3, dataProvider = "loginData",
+            description = "Scenario 3: Successful Login Using Dynamic Credentials from Excel")
+    public void scenario3_SuccessfulLoginExcelDdt(String username, String password, String location) {
+        loginPage.open();
+        boolean locationSelected = loginPage.login(username, password, location);
+        Reporter.log("Scenario 3 loaded from Excel -&gt; user=" + username + ", location=" + location
+                + ", locationSelectorPresent=" + locationSelected, true);
+
+        Assert.assertTrue(loginPage.isDashboardDisplayed(),
+                "Expected OpenMRS Home Dashboard to be visible after valid Excel DDT login");
+        Reporter.log("Scenario 3 logged in user: " + loginPage.getLoggedInUserText(), true);
+
+        captureScreenshot("Scenario3_Excel_Login.png");
+    }
+
+    private void captureScreenshot(String filename) {
+        try {
+            Path outputDir = Paths.get(SCREENSHOT_DIR);
+            Files.createDirectories(outputDir);
+            byte[] pngBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            Path target = outputDir.resolve(filename);
+            Files.write(target, pngBytes);
+            Reporter.log("Saved screenshot: " + target.toAbsolutePath(), true);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to save screenshot " + filename, e);
+        }
+    }
+}</pre>
+        </div>
+      </details>
+
+      <details>
+        <summary>JavaScript (k6) — performance-test.js (500 &rarr; 1,000 VUs + Custom Trend Instrumentation)</summary>
+        <div class="code-wrap">
+          <div class="code-label">
+            <span>3. Performance Testing/src/performance-test.js</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+<pre>import http from 'k6/http';
+import { check, sleep, group } from 'k6';
+import { Trend, Rate } from 'k6/metrics';
+import exec from 'k6/execution';
+
+const getReqDuration = new Trend('get_req_duration', true);
+const postReqDuration = new Trend('post_req_duration', true);
+const getReqFailed = new Rate('get_req_failed');
+const postReqFailed = new Rate('post_req_failed');
+
+const phase500Duration = new Trend('phase_500vu_duration', true);
+const phase1000Duration = new Trend('phase_1000vu_duration', true);
+const phase500Failed = new Rate('phase_500vu_failed');
+const phase1000Failed = new Rate('phase_1000vu_failed');
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+export const options = {
+  stages: [
+    { duration: '1m', target: 500 },
+    { duration: '1m', target: 500 },
+    { duration: '1m', target: 1000 },
+    { duration: '1m', target: 1000 },
+    { duration: '30s', target: 0 },
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)&lt;2000'],
+    http_req_failed: ['rate&lt;0.05'],
+  },
+};
+
+function recordPhaseMetrics(durationMs, isFailed) {
+  const elapsedMs = Date.now() - exec.scenario.startTime;
+  if (elapsedMs &lt;= 120000) {
+    phase500Duration.add(durationMs);
+    phase500Failed.add(isFailed);
+  } else if (elapsedMs &lt;= 240000) {
+    phase1000Duration.add(durationMs);
+    phase1000Failed.add(isFailed);
+  }
+}
+
+export default function () {
+  group('GET /posts/1', function () {
+    const getRes = http.get(`${BASE_URL}/posts/1`, {
+      tags: { endpoint: 'GET_posts_1' },
+    });
+
+    const getOk = check(getRes, {
+      'GET /posts/1 status is 200': (r) =&gt; r.status === 200,
+      'GET /posts/1 body id === 1': (r) =&gt; {
+        if (r.status !== 200) return false;
+        try {
+          return r.json('id') === 1;
+        } catch (e) {
+          return false;
+        }
+      },
+    });
+
+    getReqDuration.add(getRes.timings.duration);
+    getReqFailed.add(!getOk);
+    recordPhaseMetrics(getRes.timings.duration, !getOk);
+  });
+
+  sleep(1);
+
+  group('POST /posts', function () {
+    const payloadObj = {
+      title: `GITS QA Load Test VU-${__VU}`,
+      body: `Performance iteration ${__ITER}`,
+      userId: (__VU % 10) + 1,
+    };
+    const params = {
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      tags: { endpoint: 'POST_posts' },
+    };
+
+    const postRes = http.post(`${BASE_URL}/posts`, JSON.stringify(payloadObj), params);
+
+    const postOk = check(postRes, {
+      'POST /posts status is 201': (r) =&gt; r.status === 201,
+      'POST /posts payload matches': (r) =&gt; {
+        if (r.status !== 201) return false;
+        try {
+          const data = r.json();
+          return (
+            data.title === payloadObj.title &amp;&amp;
+            data.body === payloadObj.body &amp;&amp;
+            Number(data.userId) === payloadObj.userId &amp;&amp;
+            data.id !== undefined
+          );
+        } catch (e) {
+          return false;
+        }
+      },
+    });
+
+    postReqDuration.add(postRes.timings.duration);
+    postReqFailed.add(!postOk);
+    recordPhaseMetrics(postRes.timings.duration, !postOk);
+  });
+
+  sleep(1);
+}</pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- 6. PACKAGING & GOOGLE DRIVE -->
+    <section class="card" data-group="package">
+      <h2>6. Packaging Bersih &amp; Checklist Upload Google Drive</h2>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>PowerShell — Rebuild Semua File ZIP Bersih (Tanpa target/)</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>$py = "C:\Users\HPrannn\AppData\Local\Programs\Python\Python312\python.exe"
+$root = "d:\Portofolio\QA Testing\Test-GITS-QA-Randi Zakaria Putra"
+$autoRoot = "$root\2. Automation Testing"
+$autoProj = "$autoRoot\GITS-QA-Automation"
+
+Copy-Item "$autoProj\target\surefire-reports\emailable-report.html" "$autoRoot\emailable-report.html" -Force
+Copy-Item "$autoProj\screenshots\Scenario2_Hardcoded_Login.png" "$autoRoot\Scenario2_Hardcoded_Login.png" -Force
+Copy-Item "$autoProj\screenshots\Scenario3_Excel_Login.png" "$autoRoot\Scenario3_Excel_Login.png" -Force
+Copy-Item "$autoProj\README.md" "$autoRoot\README.md" -Force
+
+&amp; $py -c "
+import os, zipfile
+root = r'$root'
+
+# 1. Manual ZIP
+m = os.path.join(root, '1. Manual Testing')
+with zipfile.ZipFile(os.path.join(m, 'GITS-QA-Manual.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:
+    for f in ['OpenMRS_Test_Cases.csv', 'OpenMRS_Bug_Reports.csv', 'README_Manual.md']:
+        zf.write(os.path.join(m, f), f)
+    ev = os.path.join(m, 'evidence')
+    for fn in sorted(os.listdir(ev)):
+        zf.write(os.path.join(ev, fn), f'evidence/{fn}')
+
+# 2. Automation ZIP (tanpa target/)
+a = os.path.join(root, '2. Automation Testing')
+proj = os.path.join(a, 'GITS-QA-Automation')
+with zipfile.ZipFile(os.path.join(a, 'GITS-QA-Automation.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:
+    for f in ['pom.xml', 'README.md']:
+        zf.write(os.path.join(proj, f), f)
+    for r, _, files in os.walk(os.path.join(proj, 'src')):
+        for fn in files:
+            full = os.path.join(r, fn)
+            zf.write(full, os.path.relpath(full, proj).replace(os.sep, '/'))
+
+# 3. Performance ZIP
+p = os.path.join(root, '3. Performance Testing')
+with zipfile.ZipFile(os.path.join(p, 'GITS-QA-Performance.zip'), 'w', zipfile.ZIP_DEFLATED) as zf:
+    zf.write(os.path.join(p, 'README.md'), 'README.md')
+    for fn in ['performance-test.js', 'summary-result.json', 'execution-log.txt']:
+        zf.write(os.path.join(p, 'src', fn), f'src/{fn}')
+print('All 3 ZIPs rebuilt cleanly.')
+"</pre>
+      </div>
+
+      <h3>Rumus Google Sheets (<code class="inline">Summary</code> Tab) &amp; Daftar Upload Drive</h3>
+      <div class="code-wrap">
+        <div class="code-label">
+          <span>Google Sheets Formulas — Copy ke Tab Summary</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+<pre>=COUNTA(OpenMRS_Test_Cases!A2:A)
+=COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass")
+=COUNTIF(OpenMRS_Test_Cases!J2:J,"Fail")
+=COUNTIF(OpenMRS_Test_Cases!J2:J,"[PENDING_MANUAL_VERIFICATION]")
+=IFERROR(COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass")/(COUNTIF(OpenMRS_Test_Cases!J2:J,"Pass")+COUNTIF(OpenMRS_Test_Cases!J2:J,"Fail")),0)
+=COUNTA(OpenMRS_Bug_Reports!A2:A)
+=COUNTIF(OpenMRS_Bug_Reports!D2:D,"High")
+=COUNTIF(OpenMRS_Bug_Reports!D2:D,"Medium")
+=COUNTIF(OpenMRS_Bug_Reports!D2:D,"Low")</pre>
+      </div>
+      <ul>
+        <li><strong>Google Drive &rarr; <code class="inline">Manual Testing</code>:</strong> Import CSV ke Google Sheets + upload <code class="inline">evidence/</code>, <code class="inline">README_Manual.md</code>, dan <code class="inline">GITS-QA-Manual.zip</code>.</li>
+        <li><strong>Google Drive &rarr; <code class="inline">Automation Testing</code>:</strong> Upload <code class="inline">GITS-QA-Automation.zip</code>, <code class="inline">emailable-report.html</code>, <code class="inline">Scenario2_Hardcoded_Login.png</code>, <code class="inline">Scenario3_Excel_Login.png</code>, dan <code class="inline">README.md</code>.</li>
+        <li><strong>Google Drive &rarr; <code class="inline">Performance Testing</code>:</strong> Upload <code class="inline">Performance_Test_Report.md</code>, <code class="inline">GITS-QA-Performance.zip</code>, dan <code class="inline">README.md</code>.</li>
+      </ul>
+      <div class="note">
+        File <code class="inline">qa-test-runner-cheatsheet.html</code> dan <code class="inline">QA_Prompt_Engineering_Playbook.md</code> di root folder ini adalah dokumentasi belajar &amp; alat kerja pribadi Anda (tidak perlu ikut di-upload ke subfolder Drive GITS).
+      </div>
+    </section>
+
+    <footer>
+      QA Learning Map &amp; Device-Ready Command Center &bull; Randi Zakaria Putra
+    </footer>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-btn');
+    const cards = document.querySelectorAll('section.card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.group === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const pre = btn.closest('.code-wrap').querySelector('pre');
+        const text = pre.innerText;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
