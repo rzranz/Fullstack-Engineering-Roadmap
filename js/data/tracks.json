@@ -301,7 +301,7 @@
     "name": "Fase 4A: Web Performance Engineering (TTFB, LCP, INP, CLS)",
     "mode": "qa",
     "category": "Fase 4: Performance & CI/CD (Minggu 9–10)",
-    "desc": "Ambang batas 75th percentile Core Web Vitals, diagnosis Chrome DevTools (Slow 4G & 4x CPU), dan studi kasus perbaikan kode frontend nyata untuk LCP, INP (yieldToMain), & CLS.",
+    "desc": "Urutan prioritas kausal Core Web Vitals (1. TTFB → 2. CLS → 3. LCP → 4. INP), mindset CrUX (28-day Field Data) vs Lighthouse Lab, diagnosis Chrome DevTools & Performance Insights, serta perbaikan nyata server/CDN, srcset/preload, DOM <1.500 node, font-display: swap & transform/opacity.",
     "icon": "F4A",
     "outcome": "Mampu mengaudit bottleneck rendering/Main Thread dan memvalidasi perbaikan performa frontend secara terukur."
   },

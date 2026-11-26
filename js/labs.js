@@ -28,6 +28,96 @@
   // --- Bespoke Detailed 3-Tier Implementation Guides ---
 
   const BESPOKE_GUIDES = {
+    qam13: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Audit Urutan Kausal & Network TTFB)',
+        goal: 'Mengecek Waiting for server response (TTFB) di DevTools Network sebelum mengoprek aset frontend.',
+        steps: [
+          { title: 'Buka DevTools Network (Disable Cache)', detail: 'Filter ke "Doc" lalu klik request dokumen HTML pertama yang dimuat.' },
+          { title: 'Periksa Sub-Tab Timing: Waiting for server response', detail: 'Bandingkan dengan standar Good (<= 800 ms), Needs Improvement (800 ms – 1.8 s), dan Poor (> 1.8 s).' },
+          { title: 'Deteksi Redirect Chain', detail: 'Pastikan tidak ada pengalihan berlapis (http -> https -> www) yang membuang round-trip TCP/TLS.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (CDN Edge Caching & Redis/Query)',
+        goal: 'Menekan TTFB merah melalui layer infrastruktur, database, dan caching—bukan CSS/JS.',
+        steps: [
+          { title: 'Aktifkan Full-Page / Edge Caching CDN', detail: 'Konfigurasikan header `Cache-Control: public, s-maxage=3600, stale-while-revalidate=86400` di Cloudflare untuk halaman publik.' },
+          { title: 'Basmi N+1 Query & Cold Start Serverless', detail: 'Tambahkan indexing DB, ubah lazy loop query menjadi eager loading, dan cache hasil query berat di Redis/Memcached.' },
+          { title: 'Aktifkan HTTP/2 atau HTTP/3 QUIC', detail: 'Pastikan lokasi PoP CDN atau region server berada dekat dengan mayoritas user target.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (CrUX 28-Day Triage: TTFB → CLS → LCP → INP)',
+        goal: 'Menyusun rencana aksi berbasis CrUX Field Data dan urutan prioritas eksekusi yang tepat.',
+        steps: [
+          { title: 'Gunakan CrUX Field Data 28 Hari (Bukan Obsesi Skor 100 Lighthouse)', detail: 'Audit metrik p75 dari device & koneksi asli user di PageSpeed Insights bagian Field Data.' },
+          { title: 'Urutkan Perbaikan Secara Kausal', detail: 'Eksekusi berurutan: 1. Perbaiki TTFB -> 2. Bereskan CLS (low effort, high impact) -> 3. Optimasi LCP -> 4. Bedah INP.' },
+          { title: 'Validasi Penurunan LCP Otomatis Pasca-TTFB', detail: 'Ukur ulang LCP setelah TTFB < 800 ms untuk membuktikan perbaikan backend langsung membuka jalan bagi render LCP.' }
+        ]
+      }
+    },
+
+    qam14: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Hapus Lazy-Load Hero & Tambah fetchpriority)',
+        goal: 'Memastikan gambar LCP above-the-fold langsung diprioritaskan oleh browser.',
+        steps: [
+          { title: 'Audit Tag <img> Hero Image', detail: 'Pastikan tidak ada atribut `loading="lazy"` pada gambar banner/hero di viewport pertama.' },
+          { title: 'Tambahkan `fetchpriority="high"`', detail: 'Berikan sinyal prioritas bandwidth tertinggi ke parser HTML.' },
+          { title: 'Beri Atribut `defer` pada Script Non-Kritis', detail: 'Tambahkan `defer` atau `async` pada script analytics/widget di `<head>` agar tidak memblokir render DOM.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (WebP/AVIF + Responsive srcset + Preload)',
+        goal: 'Mengirim ukuran gambar tepat untuk mobile/desktop dan menyingkat Resource Load Delay.',
+        steps: [
+          { title: 'Konversi Hero Image ke WebP atau AVIF', detail: 'Pangkas bobot aset banner secara drastis tanpa mengorbankan ketajaman visual.' },
+          { title: 'Terapkan Responsive Images (`srcset` & `sizes`)', detail: 'Sediakan varian `640w` dan `1200w` agar perangkat mobile tidak mengunduh gambar desktop besar.' },
+          { title: 'Tambahkan `<link rel="preload" as="image" fetchpriority="high">` + Critical CSS', detail: 'Inline CSS kritis dan preload gambar hero bila direferensikan lewat CSS/JS.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Verifikasi Performance Insights DevTools)',
+        goal: 'Memastikan fase LCP discovery terjadi seawal mungkin tanpa menunggu JavaScript selesai.',
+        steps: [
+          { title: 'Jalankan Performance Insights (Slow 4G & 4x CPU)', detail: 'Rekam initial load lalu buka panel Insights -> LCP by phase.' },
+          { title: 'Verifikasi LCP Discovery Time', detail: 'Pastikan request gambar hero sudah muncul tepat di awal waterfall HTML tanpa menunggu bundle JS.' },
+          { title: 'Validasi Target p75 <= 2.5 Detik', detail: 'Konfirmasi penurunan durasi dari 4.6s ke <= 2.5s (ideal ~1.4s).' }
+        ]
+      }
+    },
+
+    qam16: {
+      simple: {
+        title: 'Level 1 — Implementasi Sederhana (Kunci Dimensi Media & Skeleton)',
+        goal: 'Menghentikan loncatan visual akibat gambar/iframe dan konten dinamis (low effort, high impact).',
+        steps: [
+          { title: 'Tambahkan `width` & `height` pada Semua Media', detail: 'Isi dimensi eksplisit atau CSS `aspect-ratio` pada seluruh `<img>`, `<video>`, dan `<iframe>`.' },
+          { title: 'Berikan `min-height` & `contain: layout` pada Slot Dinamis', detail: 'Siapkan skeleton placeholder dengan tinggi tetap untuk banner/iklan/API embed.' },
+          { title: 'Cek Layout Shift Regions di DevTools', detail: 'Aktifkan menu Rendering -> Layout Shift Regions dan muat ulang halaman; pastikan nol kotak biru berkedip.' }
+        ]
+      },
+      intermediate: {
+        title: 'Level 2 — Implementasi Menengah (Anti FOUT/FOIT & Animasi Compositor)',
+        goal: 'Menghilangkan pergeseran teks dari web font dan reflow akibat animasi CSS.',
+        steps: [
+          { title: 'Tambahkan `font-display: swap;` pada `@font-face`', detail: 'Tampilkan teks segera memakai fallback font sistem yang proporsinya mirip.' },
+          { title: 'Ganti Animasi `top/left/width/height` ke `transform` & `opacity`', detail: 'Pastikan seluruh animasi toast, modal, dan banner berjalan di compositor thread tanpa reflow.' },
+          { title: 'Uji pada Throttling Slow 3G', detail: 'Verifikasi tidak ada pergeseran tombol "Simpan/Hapus" saat respons API banner datang terlambat.' }
+        ]
+      },
+      pro: {
+        title: 'Level 3 — Implementasi Profesional (Quality Gate CLS <= 0.1 di Pipeline)',
+        goal: 'Menjaga skor CLS produksi tetap <= 0.10 pada seluruh resolusi desktop dan mobile.',
+        steps: [
+          { title: 'Pasang Assertion CLS <= 0.1 di Playwright/k6/browser', detail: 'Tambahkan threshold otomatis `browser_web_vital_cls: ["p(95)<0.1"]` di suite performa.' },
+          { title: 'Audit Komponen Iklan & Widget Pihak Ketiga', detail: 'Bungkus setiap slot widget eksternal dalam container berdimensi tetap.' },
+          { title: 'Monitor CrUX CLS 28 Hari Pasca-Rilis', detail: 'Pastikan p75 CLS bertahan di zona hijau (<= 0.1).' }
+        ]
+      }
+    },
+
     qam20: {
       simple: {
         title: 'Level 1 — Implementasi Sederhana (Fondasi & Test Case Pertama)',
@@ -678,6 +768,101 @@ WHERE o.id IS NULL;`,
       }
     },
 
+    qam13: {
+      simple: {
+        title: 'Uji Sederhana: Penentu Urutan Prioritas Core Web Vitals (Causal Order)',
+        description: 'Tulis fungsi JS `prioritizeCwvAudit({ ttfb, lcp, inp, cls })` yang mengembalikan array urutan perbaikan berdasarkan metrik yang melampaui batas Good (`ttfb>800`, `cls>0.1`, `lcp>2500`, `inp>200`) sesuai aturan kausal: `["TTFB", "CLS", "LCP", "INP"]`.',
+        language: 'javascript',
+        starterCode: `function prioritizeCwvAudit({ ttfb, lcp, inp, cls }) {
+  // TODO: Kembalikan daftar metrik bermasalah dalam urutan prioritas: TTFB -> CLS -> LCP -> INP
+  
+}`,
+        solutionCode: `function prioritizeCwvAudit({ ttfb, lcp, inp, cls }) {
+  const plan = [];
+  if (ttfb > 800) plan.push('TTFB');
+  if (cls > 0.1) plan.push('CLS');
+  if (lcp > 2500) plan.push('LCP');
+  if (inp > 200) plan.push('INP');
+  return plan;
+}`,
+        run(code) {
+          const harness = `
+            function __verify() {
+              if (typeof prioritizeCwvAudit !== 'function') throw new Error('Fungsi prioritizeCwvAudit tidak ditemukan');
+              return {
+                allBad: prioritizeCwvAudit({ ttfb: 2100, cls: 0.28, lcp: 4300, inp: 420 }),
+                onlyInp: prioritizeCwvAudit({ ttfb: 320, cls: 0.02, lcp: 1600, inp: 380 })
+              };
+            }
+          `;
+          const exec = runSandboxedJS(code, harness);
+          if (!exec.ok) return [{ pass: false, label: 'Sintaks Valid', hint: exec.error }];
+          const r = exec.result || {};
+          return [
+            { pass: JSON.stringify(r.allBad) === '["TTFB","CLS","LCP","INP"]', label: 'Urutan kausal tepat: TTFB -> CLS -> LCP -> INP saat semua metrik merah', hint: 'Cek urutan kondisi: ttfb > 800, cls > 0.1, lcp > 2500, inp > 200.' },
+            { pass: JSON.stringify(r.onlyInp) === '["INP"]', label: 'Hanya membedah INP jika TTFB/CLS/LCP sudah Good', hint: 'Jangan masukkan metrik yang sudah memenuhi ambang Good.' }
+          ];
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: Konfigurasi Header Edge Caching CDN Anti-TTFB Merah',
+        description: 'Tulis respons HTTP header untuk HTML publik agar CDN Cloudflare melakukan edge caching dengan `s-maxage` + `stale-while-revalidate` pada HTTP/2 atau HTTP/3.',
+        language: 'http',
+        starterCode: `HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+# TODO: Tambahkan Cache-Control s-maxage & stale-while-revalidate`,
+        solutionCode: `HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+Cache-Control: public, s-maxage=3600, stale-while-revalidate=86400
+Alt-Svc: h3=":443"; ma=86400`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /Cache-Control:\s*public/i, label: 'Mengizinkan public CDN edge caching', hint: 'Tambahkan Cache-Control: public, ...' },
+            { regex: /s-maxage=\d+/i, label: 'Mengatur TTL cache CDN via s-maxage', hint: 'Sertakan s-maxage=3600.' },
+            { regex: /stale-while-revalidate=\d+/i, label: 'Menambahkan stale-while-revalidate agar respons tetap instan', hint: 'Tambahkan stale-while-revalidate=86400.' }
+          ]);
+        }
+      }
+    },
+
+    qam14: {
+      simple: {
+        title: 'Uji Sederhana: Perbaiki Tag `<img>` Hero Banner LCP',
+        description: 'Ubah markup hero image di bawah agar bebas `loading="lazy"`, memakai format `.avif`/`.webp`, `fetchpriority="high"`, dan `srcset` responsif.',
+        language: 'html',
+        starterCode: `<img src="/images/banner-utama.jpg" loading="lazy" alt="Promo Utama" />`,
+        solutionCode: `<img src="/images/banner-utama.webp" srcset="/images/banner-640.avif 640w, /images/banner-1200.avif 1200w" sizes="(max-width: 768px) 100vw, 1200px" width="1200" height="600" fetchpriority="high" decoding="async" alt="Promo Utama" />`,
+        run(code) {
+          return checkPatterns(code, [
+            { fn: s => !/loading\s*=\s*["']lazy["']/i.test(s), label: 'Tidak memakai loading="lazy" pada elemen LCP', hint: 'Hapus atribut loading="lazy" dari hero image.' },
+            { regex: /fetchpriority\s*=\s*["']high["']/i, label: 'Menambahkan fetchpriority="high"', hint: 'Tambahkan fetchpriority="high".' },
+            { regex: /srcset\s*=/i, label: 'Menyediakan responsive images via srcset', hint: 'Tambahkan atribut srcset="..." untuk varian lebar layar.' },
+            { regex: /\.(avif|webp)/i, label: 'Memakai format gambar modern AVIF/WebP', hint: 'Gunakan ekstensi .avif atau .webp.' }
+          ]);
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: `<head>` Anti Render-Blocking + Preload LCP',
+        description: 'Susun `<link rel="preload" as="image" fetchpriority="high">` dan muat script analitik non-kritis memakai `defer` atau `async`.',
+        language: 'html',
+        starterCode: `<head>
+  <!-- TODO: Preload banner AVIF dan tambah defer pada analytics.js -->
+  <script src="/assets/analytics-heavy.js"></script>
+</head>`,
+        solutionCode: `<head>
+  <link rel="preload" as="image" href="/images/banner-utama.avif" fetchpriority="high" />
+  <script src="/assets/analytics-heavy.js" defer></script>
+</head>`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /<link[^>]+rel=["']preload["'][^>]+as=["']image["']/i, label: 'Preload gambar LCP seawal mungkin di <head>', hint: 'Tambahkan <link rel="preload" as="image" href="...">.' },
+            { regex: /fetchpriority=["']high["']/i, label: 'Prioritas tinggi pada tag preload', hint: 'Sertakan fetchpriority="high".' },
+            { regex: /<script[^>]+(defer|async)/i, label: 'Menghapus render-blocking script dengan defer/async', hint: 'Tambahkan defer atau async pada tag <script>.' }
+          ]);
+        }
+      }
+    },
+
     qam15: {
       simple: {
         title: 'Uji Sederhana: Pisahkan Fase Read & Write (Hentikan Layout Thrashing)',
@@ -736,6 +921,67 @@ WHERE o.id IS NULL;`,
             { regex: /scheduler\.yield\(/, label: 'Mengutamakan API modern scheduler.yield()', hint: 'Cek dan panggil window.scheduler.yield().' },
             { regex: /new\s+Promise\(/, label: 'Mengembalikan Promise sebagai fallback universal', hint: 'Kembalikan new Promise((resolve) => setTimeout(resolve, 0)).' },
             { regex: /setTimeout\(\s*resolve\s*,\s*0\s*\)/, label: 'Memberi jeda ke Main Thread via setTimeout(resolve, 0)', hint: 'Gunakan setTimeout(resolve, 0).' }
+          ]);
+        }
+      }
+    },
+
+    qam16: {
+      simple: {
+        title: 'Uji Sederhana: Kunci Slot Dinamis & Dimensi Gambar Anti-CLS',
+        description: 'Tulis CSS untuk `#top-promo-slot` (`min-height`) dan `.product-img` (`aspect-ratio`) agar elemen halaman tidak melompat saat konten API/gambar dimuat.',
+        language: 'css',
+        starterCode: `#top-promo-slot {
+  /* TODO: Reservasi tinggi tetap dengan min-height */
+}
+.product-img {
+  width: 100%;
+  /* TODO: Kunci aspect-ratio 4 / 3 */
+}`,
+        solutionCode: `#top-promo-slot {
+  min-height: 48px;
+  contain: layout;
+}
+.product-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /min-height\s*:\s*\d+px/i, label: 'Mereservasi tinggi slot dinamis dengan min-height', hint: 'Tambahkan min-height: 48px; pada #top-promo-slot.' },
+            { regex: /aspect-ratio\s*:\s*4\s*\/\s*3/i, label: 'Mengunci proporsi media dengan aspect-ratio', hint: 'Tambahkan aspect-ratio: 4 / 3; pada .product-img.' }
+          ]);
+        }
+      },
+      pro: {
+        title: 'Uji Profesional: `@font-face` (`font-display: swap`) & Animasi Tanpa Reflow',
+        description: 'Lengkapi CSS anti-FOUT/FOIT (`font-display: swap`) dan perbaiki animasi `.toast-enter` agar hanya memakai `transform` dan `opacity` (bukan `top`/`left`/`width`/`height`).',
+        language: 'css',
+        starterCode: `@font-face {
+  font-family: 'BrandSans';
+  src: url('/fonts/brand.woff2') format('woff2');
+  /* TODO 1: Tambahkan font-display: swap; */
+}
+.toast-enter {
+  /* TODO 2: Animasikan hanya transform dan opacity */
+}`,
+        solutionCode: `@font-face {
+  font-family: 'BrandSans';
+  src: url('/fonts/brand.woff2') format('woff2');
+  font-display: swap;
+}
+.toast-enter {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}`,
+        run(code) {
+          return checkPatterns(code, [
+            { regex: /font-display\s*:\s*swap/i, label: 'Menggunakan font-display: swap mencegah FOIT/FOUT berat', hint: 'Tambahkan font-display: swap; di dalam @font-face.' },
+            { regex: /transform\s*:/i, label: 'Menggunakan transform untuk pergerakan visual', hint: 'Gunakan transform alih-alih top/left.' },
+            { regex: /opacity\s*:/i, label: 'Menggunakan opacity untuk efek kemunculan', hint: 'Sertakan opacity: 1; dan transisi opacity.' },
+            { fn: s => !/(^|[\s{;])(top|left)\s*:/im.test(s), label: 'Tidak memakai properti pemicu layout shift (top/left)', hint: 'Hapus top/left dan ganti dengan transform.' }
           ]);
         }
       }

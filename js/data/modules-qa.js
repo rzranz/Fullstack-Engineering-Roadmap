@@ -779,96 +779,128 @@ window.QA_MODULES = [
     "mode": "qa",
     "order": 1,
     "track": "QA Fase 4A: Web Performance (Core Web Vitals)",
-    "title": "Ambang Batas Core Web Vitals (75th Percentile) & Diagnosis TTFB",
+    "title": "Core Web Vitals: Urutan Kausal, CrUX vs Lighthouse & Diagnosis TTFB",
     "level": "Intermediate",
-    "summary": "Memahami standar ambang batas 75th percentile untuk TTFB, LCP, INP, dan CLS serta teknik diagnosis dan penanganan bottleneck Time to First Byte.",
+    "summary": "Memahami kesalahan paling umum saat CWV poor (langsung mengoprek frontend tanpa melihat sebab-akibat), perbedaan CrUX Field Data 28 hari vs Lighthouse Lab Data, standar ambang batas (TTFB, LCP, INP, CLS), urutan prioritas eksekusi (TTFB → CLS → LCP → INP), serta akar masalah & perbaikan TTFB di sisi backend/infrastruktur.",
     "concepts": [
       [
-        "Standar 75th Percentile Field Data",
-        "Google menilai kesehatan performa aplikasi berdasarkan pengalaman nyata 75% pengguna di perangkat seluler maupun desktop."
+        "Jebakan Umum: Urutan Sebab-Akibat (TTFB → LCP)",
+        "Kesalahan paling umum saat menangani CWV poor adalah langsung mengoprek frontend (kompres gambar, hapus CSS) tanpa melihat urutan kausal. Jika TTFB hancur (> 1.8 s), LCP mustahil bagus karena browser bahkan belum menerima dokumen HTML-nya."
       ],
       [
-        "Diagnosis TTFB di DevTools",
-        "Buka tab Network -> klik request dokumen HTML utama -> buka sub-tab Timing -> periksa durasi Waiting for server response (TTFB)."
+        "CrUX (Field Data 28 Hari) vs Lighthouse (Lab Data)",
+        "Berhenti terobsesi mengejar skor 100 di Lighthouse (Lab Data). Google menentukan peringkat dan status CWV dari CrUX (Field Data)—data asli dari device & koneksi user selama 28 hari terakhir (75th percentile). Fokus pada bottleneck nyata yang dirasakan user, bukan kosmetik skor."
       ],
       [
-        "Handling 1: Hapus Redirect Chains",
-        "Setiap pengalihan berlapis (http -> https -> www -> /id) menambah round-trip TCP/TLS berulang sebelum server mulai merender HTML."
+        "Akar Masalah TTFB (Time to First Byte)",
+        "Jika TTFB merah, masalahnya hampir pasti di backend, database, atau infrastruktur hosting—bukan di CSS/JS. Penyebab umum: query database berat (seperti N+1 query), tidak ada server-side caching, cold start serverless, atau redirect berantai (HTTP → HTTPS → www)."
       ],
       [
-        "Handling 2 & 3: Edge Caching & Query Optimization",
-        "Terapkan header Cache-Control: public, s-maxage=3600, stale-while-revalidate=86400 di CDN, hilangkan N+1 query database, dan gunakan connection pooling."
+        "Perbaikan Konkret & Verifikasi TTFB",
+        "Aktifkan full-page caching / edge caching via CDN (mis. Cloudflare), optimasi query DB (indexing, eager loading, simpan hasil query berat di Redis/Memcached), pakai HTTP/2 atau HTTP/3, serta tempatkan server/CDN dekat mayoritas user. Verifikasi di Chrome DevTools → Network → dokumen HTML utama → Waiting for server response < 800 ms."
       ]
     ],
     "tables": [
       {
-        "title": "Ambang Batas Standar Web Performance (75th Percentile)",
+        "title": "Standar Ambang Batas Core Web Vitals (75th Percentile Field Data)",
         "headers": [
           "Metrik",
-          "Definisi Singkat",
-          "Baik (Good)",
-          "Perlu Perbaikan",
-          "Buruk (Poor)"
+          "Good (Hijau)",
+          "Needs Improvement",
+          "Poor (Merah)",
+          "Fokus Utama"
         ],
         "rows": [
           [
             "TTFB",
-            "Waktu hingga byte pertama dokumen HTML diterima",
             "<= 800 ms",
-            "800 ms < t <= 1800 ms",
-            "> 1800 ms"
+            "800 ms – 1.8 s",
+            "> 1.8 s",
+            "Kecepatan respons server & jaringan"
           ],
           [
             "LCP",
-            "Waktu render elemen konten terbesar di viewport awal",
             "<= 2.5 s",
-            "2.5 s < t <= 4.0 s",
-            "> 4.0 s"
+            "2.5 s – 4.0 s",
+            "> 4.0 s",
+            "Waktu render elemen terbesar di viewport"
           ],
           [
             "INP",
-            "Latensi respons visual terburuk atas interaksi pengguna",
             "<= 200 ms",
-            "200 ms < t <= 500 ms",
-            "> 500 ms"
+            "200 ms – 500 ms",
+            "> 500 ms",
+            "Responsivitas UI saat diklik/diketik"
           ],
           [
             "CLS",
-            "Total skor pergeseran tata letak tak terduga",
             "<= 0.1",
-            "0.1 < s <= 0.25",
-            "> 0.25"
+            "0.1 – 0.25",
+            "> 0.25",
+            "Stabilitas visual (tidak ada elemen loncat)"
+          ]
+        ]
+      },
+      {
+        "title": "Urutan Prioritas Eksekusi QA Performance Engineering",
+        "headers": [
+          "Prioritas",
+          "Metrik Target",
+          "Alasan Kausal & Dampak"
+        ],
+        "rows": [
+          [
+            "1. Pertama",
+            "TTFB (Server & CDN)",
+            "Tanpa respons server cepat, optimasi frontend hanya menambal gejala karena HTML awal belum diterima browser."
+          ],
+          [
+            "2. Kedua",
+            "CLS (Visual Stability)",
+            "Low effort, high impact: paling cepat dibereskan karena cukup mengunci dimensi elemen, skeleton min-height & font-display."
+          ],
+          [
+            "3. Ketiga",
+            "LCP (Hero Render)",
+            "Setelah TTFB & dimensi stabil, fokus pada preload aset utama, srcset WebP/AVIF, dan membuang render-blocking."
+          ],
+          [
+            "4. Keempat",
+            "INP (Main Thread JS)",
+            "Paling kompleks karena menyentuh arsitektur JS, DOM <1.500 node & state management—kerjakan terakhir setelah pondasi loading beres."
           ]
         ]
       }
     ],
-    "compare": "TTFB yang lambat (> 1.8s) otomatis menyeret LCP ikut lambat karena browser tidak bisa mengunduh CSS maupun gambar hero sebelum byte pertama dokumen HTML tiba.",
+    "compare": "Skor Lighthouse 100 di laptop developer belum menjamin lulus Core Web Vitals jika CrUX Field Data 28 hari menunjukkan TTFB > 1.8s atau INP > 500ms di HP kelas menengah pengguna asli. Urutan diagnosis yang benar selalu: 1. TTFB -> 2. CLS -> 3. LCP -> 4. INP.",
     "code": {
       "language": "http",
-      "content": "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\nCache-Control: public, s-maxage=3600, stale-while-revalidate=86400"
+      "extraTitle": "Header Edge Caching CDN + Nginx/Cloudflare untuk Menekan TTFB < 800 ms",
+      "content": "HTTP/2 200 OK\nContent-Type: text/html; charset=utf-8\nCache-Control: public, s-maxage=3600, stale-while-revalidate=86400\nAlt-Svc: h3=\":443\"; ma=86400"
     },
     "practices": [
-      "Selalu cek durasi Waiting (TTFB) di DevTools Network tab pada mode tanpa cache (Disable cache).",
-      "Gunakan stale-while-revalidate agar CDN melayani HTML instan sembari memperbarui cache di latar belakang.",
-      "Audit query halaman utama untuk membasmi pola N+1 query dan pastikan connection pool database terkonfigurasi."
+      "Selalu periksa tab Network → dokumen HTML utama → Waiting for server response (< 800 ms) sebelum menyentuh optimasi CSS/gambar.",
+      "Hilangkan redirect berantai (http → https → www) agar tidak membuang round-trip TCP/TLS berulang sebelum HTML dikirim.",
+      "Gunakan full-page caching / edge caching (Cloudflare), indexing + eager loading (bebas N+1 query), serta Redis/Memcached untuk query berat, dan evaluasi via CrUX 28-day Field Data bukan sekadar skor Lighthouse."
     ],
-    "case": "Halaman katalog publik memiliki TTFB 2.4 detik karena menjalankan 45 query SQL terpisah setiap kali halaman dibuka. Penerapan CDN `s-maxage` + perbaikan eager loading menurunkan TTFB menjadi 110 ms.",
+    "case": "Tim produk menghabiskan 2 minggu mengompres gambar untuk mengejar skor Lighthouse, namun LCP di CrUX tetap 4.2s. Audit DevTools Network membuktikan TTFB dokumen HTML mencapai 2.4s akibat N+1 query (45 SQL terpisah) + cold start serverless + 2x redirect. Setelah mengaktifkan edge caching `s-maxage`, Redis cache, dan memperbaiki redirect chain, TTFB turun ke 110 ms dan LCP otomatis anjlok ke 1.6s.",
     "exercise": {
-      "scenario": "Sebuah halaman artikel memiliki TTFB 1.9 detik dan mengalami 2 kali redirect sebelum mencapai URL final.",
-      "task": "Tuliskan 3 langkah investigasi di DevTools serta rekomendasi konfigurasi server/CDN untuk menurunkannya di bawah 800 ms."
+      "scenario": "Sebuah situs e-commerce memiliki CrUX 28 hari: TTFB = 2.1s, CLS = 0.28, LCP = 4.3s, INP = 420ms, dan tim ingin langsung melakukan code-splitting React terlebih dahulu.",
+      "task": "Susun ulang urutan prioritas perbaikan (1 s.d. 4) sebagai dosen/lead QA beserta alasan kausal dan cara verifikasi DevTools untuk TTFB."
     },
     "quiz": {
-      "question": "Berapakah ambang batas kategori \"Good\" untuk metrik TTFB, LCP, INP, dan CLS pada 75th percentile?",
+      "question": "Mengapa dalam rencana aksi Core Web Vitals kita wajib membereskan TTFB terlebih dahulu sebelum mengoptimasi LCP atau membedah INP?",
       "options": [
-        "TTFB <= 1800ms, LCP <= 4.0s, INP <= 500ms, CLS <= 0.25",
-        "TTFB <= 800ms, LCP <= 2.5s, INP <= 200ms, CLS <= 0.1",
-        "TTFB <= 200ms, LCP <= 1.0s, INP <= 50ms, CLS <= 0.01"
+        "Karena TTFB hanya memengaruhi ukuran file CSS di browser.",
+        "Karena jika TTFB lambat (server/DB/jaringan belum mengirim byte HTML awal), browser tidak bisa memulai pengunduhan maupun rendering elemen LCP, sehingga optimasi frontend hanya menambal gejala.",
+        "Karena skor Lighthouse Lab Data selalu mengabaikan TTFB."
       ],
       "answer": 1,
-      "explanation": "Ambang batas Good resmi Core Web Vitals adalah TTFB <= 800 ms, LCP <= 2.5 detik, INP <= 200 ms, dan CLS <= 0.1."
+      "explanation": "LCP bergantung secara kausal pada TTFB: browser baru bisa menemukan dan merender elemen hero setelah dokumen HTML diterima dari server."
     },
     "refs": [
-      "https://web.dev/articles/vitals"
+      "https://web.dev/articles/vitals",
+      "https://web.dev/articles/ttfb"
     ]
   },
   {
@@ -876,59 +908,60 @@ window.QA_MODULES = [
     "mode": "qa",
     "order": 2,
     "track": "QA Fase 4A: Web Performance (Core Web Vitals)",
-    "title": "Studi Kasus Perbaikan LCP: Dari 4.6s ke 1.4s",
+    "title": "Studi Kasus Perbaikan LCP: Dari 4.6s ke 1.4s (Preload, srcset & Critical CSS)",
     "level": "Intermediate",
-    "summary": "Mendiagnosis Largest Contentful Paint di Chrome DevTools Performance (Slow 4G & 4x CPU) dan memperbaiki render-blocking scripts serta prioritas gambar hero.",
+    "summary": "Mendiagnosis Largest Contentful Paint lewat Performance Insights di Chrome DevTools (Slow 4G & 4x CPU) untuk memastikan LCP discovery terjadi seawal mungkin tanpa menunggu JS selesai, serta menerapkan fetchpriority=\"high\", preload, WebP/AVIF + srcset, critical CSS inline, dan defer/async.",
     "concepts": [
       [
-        "Diagnosis DevTools Performance",
-        "Aktifkan Network: Slow 4G & CPU: 4x slowdown -> Record & Reload -> klik penanda LCP untuk memisahkan Resource Load Delay vs Element Render Delay."
+        "Verifikasi Performance Insights Chrome DevTools",
+        "Jalankan Performance Insights (atau Performance panel dengan Slow 4G & CPU 4x slowdown) dan pastikan fase LCP discovery terjadi seawal mungkin di dokumen HTML—tanpa menunggu bundle JS selesai dieksekusi."
       ],
       [
-        "Kesalahan Fatal 1: Render-Blocking Script",
-        "Script analitik berat di <head> tanpa atribut defer/async menahan browser mengurai dan menggambar DOM."
+        "Kesalahan Fatal: lazy-load pada Gambar Above-the-Fold",
+        "Jangan pernah memasang loading=\"lazy\" pada elemen LCP di viewport awal! Tambahkan fetchpriority=\"high\" pada gambar hero dan gunakan <link rel=\"preload\" as=\"image\"> bila gambar dipicu dari CSS/background."
       ],
       [
-        "Kesalahan Fatal 2: loading=\"lazy\" pada Hero Image",
-        "Memberikan loading=\"lazy\" pada elemen LCP di atas lipatan (above-the-fold) menunda browser mengunduh gambar hingga layout selesai."
+        "Format Modern (WebP / AVIF) & Responsive Images (srcset)",
+        "Konversi gambar hero ke WebP atau AVIF lalu sesuaikan dimensi resolusinya dengan layar user memakai atribut srcset dan sizes agar ponsel tidak mengunduh gambar 4K desktop."
       ],
       [
-        "Perbaikan Best Practice",
-        "Gunakan <link rel=\"preload\" as=\"image\" fetchpriority=\"high\">, format modern AVIF, tambahkan defer pada script non-kritis, serta dimensi eksplisit width/height dan decoding=\"async\"."
+        "Hapus Render-Blocking CSS & JS",
+        "Pakai atribut defer atau async pada script non-kritis (seperti analytics) dan inline CSS kritis (critical CSS) langsung di <head> agar browser segera menggambar hero."
       ]
     ],
-    "compare": "Banyak developer menaruh `loading=\"lazy\"` di semua komponen `<img>` secara membabi buta. Untuk gambar LCP utama, `loading=\"lazy\"` justru merusak metrik LCP secara drastis.",
+    "compare": "Banyak developer menaruh `loading=\"lazy\"` di semua komponen `<img>` secara membabi buta dan mengirim satu file JPEG 2000px untuk semua ukuran layar. Untuk gambar LCP utama, `loading=\"lazy\"` + gambar oversizing + script tanpa `defer` menghancurkan LCP.",
     "code": {
       "language": "html",
-      "content": "<!-- KODE PERBAIKAN BEST PRACTICE (LCP Cepat - 1.4s) -->\n<head>\n  <!-- 1. Preload gambar LCP agar langsung diunduh paralel bersama CSS -->\n  <link rel=\"preload\" as=\"image\" href=\"/images/banner-utama.avif\" fetchpriority=\"high\" />\n\n  <!-- 2. Non-blocking script dengan atribut defer -->\n  <script src=\"/assets/analytics-heavy.js\" defer></script>\n  <link rel=\"stylesheet\" href=\"/assets/critical.css\" />\n</head>\n<body>\n  <section class=\"hero\">\n    <!-- 3. Hapus loading=\"lazy\", gunakan format modern AVIF & fetchpriority=\"high\" -->\n    <img\n      src=\"/images/banner-utama.avif\"\n      width=\"1200\"\n      height=\"600\"\n      fetchpriority=\"high\"\n      decoding=\"async\"\n      alt=\"Promo Utama\"\n    />\n  </section>\n</body>"
+      "extraTitle": "Kode Perbaikan Best Practice — Preload + AVIF/WebP srcset + Critical CSS + defer",
+      "content": "<!-- KODE PERBAIKAN BEST PRACTICE (LCP Cepat - 1.4s) -->\n<head>\n  <!-- 1. Inline Critical CSS agar above-the-fold langsung tergambar -->\n  <style>.hero{min-height:420px;display:grid;place-items:center}</style>\n\n  <!-- 2. Preload gambar LCP agar langsung diunduh paralel bersama stylesheet -->\n  <link rel=\"preload\" as=\"image\" href=\"/images/banner-utama.avif\" fetchpriority=\"high\" />\n\n  <!-- 3. Non-blocking script dengan defer / async -->\n  <script src=\"/assets/analytics-heavy.js\" defer></script>\n</head>\n<body>\n  <section class=\"hero\">\n    <!-- 4. Tanpa loading=\"lazy\": gunakan AVIF/WebP + responsive srcset + fetchpriority=\"high\" -->\n    <img\n      src=\"/images/banner-utama.webp\"\n      srcset=\"/images/banner-640.avif 640w, /images/banner-1200.avif 1200w\"\n      sizes=\"(max-width: 768px) 100vw, 1200px\"\n      width=\"1200\"\n      height=\"600\"\n      fetchpriority=\"high\"\n      decoding=\"async\"\n      alt=\"Promo Utama\"\n    />\n  </section>\n</body>"
     },
     "extraCodes": [
       {
         "title": "Kode Bermasalah (LCP Lambat - 4.6s) — Hindari Pola Ini",
         "language": "html",
         "variant": "bad",
-        "content": "<head>\n  <!-- Render-blocking script menahan browser menggambar DOM -->\n  <script src=\"/assets/analytics-heavy.js\"></script>\n  <link rel=\"stylesheet\" href=\"/assets/all-styles.css\" />\n</head>\n<body>\n  <!-- Kesalahan fatal: gambar hero diberi lazy-loading dan tanpa prioritas tinggi -->\n  <section class=\"hero\">\n    <img src=\"/images/banner-utama.jpg\" loading=\"lazy\" alt=\"Promo Utama\" />\n  </section>\n</body>"
+        "content": "<head>\n  <!-- Render-blocking script menahan browser menggambar DOM -->\n  <script src=\"/assets/analytics-heavy.js\"></script>\n  <link rel=\"stylesheet\" href=\"/assets/all-styles.css\" />\n</head>\n<body>\n  <!-- Kesalahan fatal: gambar hero diberi lazy-loading, format JPEG besar, tanpa srcset/priority -->\n  <section class=\"hero\">\n    <img src=\"/images/banner-utama.jpg\" loading=\"lazy\" alt=\"Promo Utama\" />\n  </section>\n</body>"
       }
     ],
     "practices": [
-      "Jangan pernah memasang loading=\"lazy\" pada elemen gambar atau banner yang berada di viewport awal (above-the-fold).",
-      "Berikan atribut fetchpriority=\"high\" pada gambar LCP agar browser memprioritaskan bandwidth untuknya.",
-      "Konversi aset banner besar ke format AVIF atau WebP dan pisahkan CSS kritis dari stylesheet non-kritis."
+      "Jangan pernah memasang loading=\"lazy\" pada elemen LCP (above-the-fold); wajib gunakan fetchpriority=\"high\" dan <link rel=\"preload\"> jika perlu.",
+      "Gunakan format gambar modern WebP/AVIF dan atribut responsive `srcset` + `sizes` sesuai resolusi viewport target.",
+      "Eliminasi render-blocking dengan `defer`/`async` pada JS non-kritis dan inline Critical CSS, lalu verifikasi LCP discovery di Performance Insights DevTools."
     ],
-    "case": "Halaman utama toko online mencatat LCP 4.6 detik pada koneksi 4G karena `analytics.js` memblokir rendering 1.8s dan banner JPEG 900KB memakai `loading=\"lazy\"`. Setelah optimasi preload + AVIF + defer, LCP turun ke 1.4 detik.",
+    "case": "Halaman utama toko online mencatat LCP 4.6 detik pada koneksi 4G karena `analytics.js` memblokir rendering 1.8s dan banner JPEG 900KB memakai `loading=\"lazy\"` tanpa `srcset`. Setelah optimasi preload + AVIF `srcset` + inline critical CSS + `defer`, LCP turun ke 1.4 detik.",
     "exercise": {
-      "scenario": "Audit DevTools menunjukkan gambar hero Anda baru mulai diunduh pada detik ke-3 setelah bundle JavaScript selesai dieksekusi.",
-      "task": "Identifikasi jenis delay tersebut dan tuliskan tag HTML `<link rel=\"preload\">` serta atribut `<img>` yang benar."
+      "scenario": "Audit Performance Insights DevTools menunjukkan gambar hero Anda baru mulai diunduh pada detik ke-3 setelah bundle JavaScript selesai dieksekusi, serta pengguna mobile mengunduh gambar selebar 1920px.",
+      "task": "Tuliskan perbaikan HTML menggunakan `<link rel=\"preload\">`, `fetchpriority=\"high\"`, `srcset` WebP/AVIF, dan atribut `defer`."
     },
     "quiz": {
       "question": "Tindakan manakah yang justru MEMPERBURUK skor LCP pada gambar banner utama di bagian paling atas halaman?",
       "options": [
-        "Menambahkan fetchpriority=\"high\" dan preload gambar.",
+        "Menambahkan fetchpriority=\"high\", preload, dan responsive srcset AVIF/WebP.",
         "Memasang atribut loading=\"lazy\" pada gambar banner utama.",
         "Menambahkan atribut defer pada script analitik di tag <head>."
       ],
       "answer": 1,
-      "explanation": "Atribut loading=\"lazy\" menunda pengunduhan gambar sampai browser selesai menghitung layout dan posisi scroll, sehingga memperlambat kemunculan LCP secara signifikan."
+      "explanation": "Atribut loading=\"lazy\" menunda pengunduhan gambar sampai browser selesai menghitung layout dan posisi scroll, sehingga memperlambat LCP discovery secara drastis."
     },
     "refs": [
       "https://web.dev/articles/optimize-lcp"
@@ -939,31 +972,32 @@ window.QA_MODULES = [
     "mode": "qa",
     "order": 3,
     "track": "QA Fase 4A: Web Performance (Core Web Vitals)",
-    "title": "Studi Kasus Perbaikan INP: Dari 620ms ke 65ms (Anti Layout Thrashing)",
+    "title": "Studi Kasus Perbaikan INP: Dari 620ms ke 65ms (Long Tasks, Code Splitting & DOM <1500)",
     "level": "Advanced",
-    "summary": "Mengatasi Interaction to Next Paint buruk akibat Long Task (> 50ms) dan Layout Thrashing melalui pemisahan fase baca/tulis DOM serta teknik yieldToMain().",
+    "summary": "Mengatasi Interaction to Next Paint buruk pada SPA/JS berat akibat Long Tasks (> 50ms), ukuran DOM masif (> 1.500 node), third-party scripts, dan Layout Thrashing—dengan memecah tugas (scheduler.yield / setTimeout / rAF), code splitting, Web Worker, dan verifikasi bebas blok kuning panjang berbenderamerah di Performance DevTools.",
     "concepts": [
       [
-        "Diagnosis DevTools Performance",
-        "Rekam saat menekan tombol filter atau mengetik di kolom pencarian, lalu cari balok merah bertanda Long Task (> 50 ms) pada trek Main Thread."
+        "Verifikasi Performance DevTools: Hindari Scripting Kuning + Long Task Merah",
+        "Rekam interaksi klik/ketik di tab Performance DevTools; pastikan tidak ada blok kuning (scripting) panjang dengan bendera merah (Long Task > 50 ms) pada Main Thread saat interaksi berlangsung."
       ],
       [
-        "Layout Thrashing (Forced Synchronous Reflow)",
-        "Membaca properti layout (card.offsetHeight) lalu langsung menulis gaya (card.style.height) berulang kali di dalam loop memaksa browser menghitung ulang tata letak ratusan kali secara sinkron."
+        "Pecah Long Tasks & Layout Thrashing (yieldToMain)",
+        "Pisahkan fase BACA (offsetHeight) dan TULIS (style) agar tidak memicu reflow berulang, lalu beri jeda pada Main Thread menggunakan scheduler.yield(), requestAnimationFrame, atau setTimeout(0) agar frame visual segera tergambar."
       ],
       [
-        "Pemisahan Fase BACA dan Fase TULIS",
-        "Baca semua nilai offsetHeight terlebih dahulu ke dalam array, baru kemudian lakukan modifikasi style pada fase terpisah."
+        "Code Splitting, Lazy Load & Offload Third-Party ke Web Worker",
+        "Lakukan code splitting & lazy load komponen/library berat yang belum dipakai saat initial load, serta kurangi third-party scripts (tracking, chat widget, analytics berlebihan) atau pindahkan eksekusinya ke Web Worker."
       ],
       [
-        "Cooperative Yielding (yieldToMain)",
-        "Memberi jeda pada Main Thread menggunakan scheduler.yield() (atau fallback setTimeout(0)) agar browser dapat segera menggambar frame UI baru sebelum menjalankan tugas analitik berat."
+        "Sederhanakan Struktur DOM (< 1.500 Node)",
+        "Ukuran DOM yang masif memperlambat kalkulasi style, layout, dan paint setiap kali komponen re-render. Jaga jumlah DOM node idealnya di bawah 1.500 node dan cegah re-render komponen yang tidak perlu."
       ]
     ],
-    "compare": "Metrik lama FID hanya mengukur keterlambatan input pertama. INP mengukur seluruh siklus (Input Delay + Processing Time + Presentation Delay) di sepanjang sesi interaksi pengguna.",
+    "compare": "INP adalah metrik yang paling sering gagal pada aplikasi berbasis JS berat (SPA) dan paling kompleks memperbaikinya karena menyentuh arsitektur JS & state management—itulah sebabnya INP dikerjakan pada urutan ke-4 setelah TTFB, CLS, dan LCP beres.",
     "code": {
       "language": "javascript",
-      "content": "// KODE PERBAIKAN BEST PRACTICE (INP Responsif - 65ms)\nfunction yieldToMain() {\n  if ('scheduler' in window && 'yield' in window.scheduler) {\n    return window.scheduler.yield();\n  }\n  return new Promise((resolve) => setTimeout(resolve, 0));\n}\n\nfilterButton.addEventListener('click', async () => {\n  const cards = document.querySelectorAll('.product-card');\n\n  // 1. Pisahkan fase BACA dan fase TULIS untuk mencegah Layout Thrashing\n  const heights = Array.from(cards).map((card) => card.offsetHeight);\n  cards.forEach((card, index) => {\n    card.style.transform = 'translateY(0px)';\n    card.style.minHeight = heights[index] + 10 + 'px';\n  });\n\n  // 2. Yield ke Main Thread sebelum menjalankan tugas latar belakang\n  await yieldToMain();\n  processHeavyAnalytics(largeDataset);\n});"
+      "extraTitle": "Perbaikan INP Responsif (65ms) — Anti Layout Thrashing + Yield ke Main Thread + Lazy Split",
+      "content": "// KODE PERBAIKAN BEST PRACTICE (INP Responsif - 65ms)\nfunction yieldToMain() {\n  if ('scheduler' in window && 'yield' in window.scheduler) {\n    return window.scheduler.yield();\n  }\n  return new Promise((resolve) => setTimeout(resolve, 0));\n}\n\nfilterButton.addEventListener('click', async () => {\n  const cards = document.querySelectorAll('.product-card');\n\n  // 1. Pisahkan fase BACA dan fase TULIS untuk mencegah Layout Thrashing\n  const heights = Array.from(cards).map((card) => card.offsetHeight);\n  cards.forEach((card, index) => {\n    card.style.transform = 'translateY(0px)';\n    card.style.minHeight = heights[index] + 10 + 'px';\n  });\n\n  // 2. Pecah Long Task: yield ke Main Thread agar frame UI tergambar dulu\n  await yieldToMain();\n\n  // 3. Code splitting: muat modul analitik/ekspor hanya saat benar-benar dibutuhkan\n  const { processHeavyAnalytics } = await import('./heavy-analytics.js');\n  processHeavyAnalytics(largeDataset);\n});"
     },
     "extraCodes": [
       {
@@ -974,24 +1008,24 @@ window.QA_MODULES = [
       }
     ],
     "practices": [
-      "Hindari membaca properti geometri (offsetHeight, getBoundingClientRect) setelah memodifikasi DOM di dalam loop yang sama.",
-      "Pecah tugas JavaScript yang memakan waktu > 50 ms menggunakan scheduler.yield() agar frame UI tetap responsif 60fps.",
-      "Gunakan transform/opacity untuk animasi alih-alih properti yang memicu layout reflow seperti height/top/left."
+      "Pecah Long Tasks (> 50 ms) memakai `scheduler.yield()`, `requestAnimationFrame`, atau `setTimeout`, serta pisahkan baca/tulis DOM.",
+      "Terapkan code splitting (`import()`) dan lazy load komponen berat, serta pindahkan third-party tracking/analytics ke Web Worker.",
+      "Jaga struktur DOM idealnya < 1.500 node, hindari re-render React/SPA tak perlu, dan verifikasi di tab Performance DevTools bebas Long Task merah."
     ],
-    "case": "Saat pengguna mengklik filter kategori di halaman berisi 200 kartu produk, layar terasa membeku 620 ms. Pemisahan fase read/write dan `yieldToMain()` menurunkan INP ke 65 ms secara instan.",
+    "case": "Saat pengguna mengklik filter kategori di halaman SPA dengan 2.800 DOM node dan analytics sinkron, layar membeku 620 ms (INP Poor). Setelah DOM dipangkas ke 980 node via virtualisasi list, analytics dipindah lewat dynamic `import()` + Web Worker, serta fase read/write dipisah dengan `yieldToMain()`, INP turun menjadi 65 ms.",
     "exercise": {
-      "scenario": "Sebuah tombol \"Expand All\" di tabel laporan melakukan loop baca `scrollHeight` dan ubah `style.maxHeight` pada 150 baris lalu mengirim log berat.",
-      "task": "Refaktor event handler tersebut menggunakan pemisahan read/write dan `yieldToMain()`."
+      "scenario": "Tab Performance DevTools menunjukkan blok kuning panjang berbendera merah (420 ms) setiap kali tombol filter ditekan pada SPA ber-3.200 DOM node yang langsung memanggil library export PDF dan tracking script.",
+      "task": "Refaktor handler dengan pemisahan read/write, `yieldToMain()`, dynamic `import()`, dan sebutkan batas target jumlah DOM node."
     },
     "quiz": {
-      "question": "Apa penyebab utama terjadinya \"Layout Thrashing\" di JavaScript?",
+      "question": "Selain memecah Long Tasks (> 50 ms) dengan scheduler.yield(), dua langkah arsitektural manakah yang paling efektif menekan INP di aplikasi SPA?",
       "options": [
-        "Memuat gambar menggunakan format AVIF.",
-        "Membaca properti geometri DOM (seperti offsetHeight) dan menulis perubahan gaya (style) secara bergantian di dalam satu loop.",
-        "Menambahkan atribut defer pada tag script."
+        "Menambah ukuran gambar hero dan menyalakan loading=\"lazy\" di banner utama.",
+        "Melakukan code splitting, memindahkan third-party scripts ke Web Worker, serta menyederhanakan struktur DOM di bawah 1.500 node.",
+        "Mengubah animasi transform menjadi animasi properti width dan top."
       ],
       "answer": 1,
-      "explanation": "Menulis style membuat layout kotor (dirty); membaca offsetHeight tepat setelahnya memaksa browser menghitung ulang layout secara sinkron di setiap iterasi loop."
+      "explanation": "Code splitting mengurangi beban parse/eksekusi JS awal, Web Worker membebaskan Main Thread dari third-party script, dan DOM < 1.500 node mempercepat layout & paint."
     },
     "refs": [
       "https://web.dev/articles/optimize-inp"
@@ -1002,59 +1036,60 @@ window.QA_MODULES = [
     "mode": "qa",
     "order": 4,
     "track": "QA Fase 4A: Web Performance (Core Web Vitals)",
-    "title": "Studi Kasus Perbaikan CLS: Dari 0.34 ke 0.00",
+    "title": "Studi Kasus Perbaikan CLS: Dari 0.34 ke 0.00 (Dimensi, font-display & transform)",
     "level": "Beginner",
-    "summary": "Menghilangkan pergeseran tata letak tak terduga (Cumulative Layout Shift) dengan mereservasi ruang dimensi tetap, aspect-ratio CSS, contain: layout, dan skeleton.",
+    "summary": "Menghilangkan Cumulative Layout Shift secara tuntas (prioritas ke-2: low effort, high impact) dengan mengunci width/height atau aspect-ratio pada media, skeleton min-height untuk konten dinamis, @font-face font-display: swap + fallback font proporsional (anti FOUT/FOIT), serta animasi khusus transform dan opacity.",
     "concepts": [
       [
-        "Diagnosis DevTools Show Layout Shift Regions",
-        "Buka Command Palette (Ctrl+Shift+P) -> ketik \"Show Layout Shift Regions\" -> muat ulang halaman dan amati kilatan kotak biru pada elemen yang terdorong ke bawah."
+        "Dimensi Eksplisit pada Semua Media (<img>, <video>, <iframe>)",
+        "Selalu definisikan atribut width dan height (atau CSS aspect-ratio) pada seluruh <img>, <video>, dan <iframe> agar browser langsung mengalokasikan ruang kotak kosong sebelum file selesai diunduh."
       ],
       [
-        "Sumber Masalah CLS 1: Injeksi Banner Dinamis",
-        "Menyisipkan banner promo dari API ke slot kosong di atas konten mendorong seluruh artikel/tombol ke bawah tepat saat pengguna hendak mengeklik."
+        "Placeholder / Skeleton Tetap untuk Konten Dinamis",
+        "Iklan, embed, atau data dari API yang disuntikkan ke atas konten wajib memiliki placeholder atau skeleton dengan tinggi tetap (min-height & contain: layout) supaya elemen di bawahnya tidak terdorong mendadak."
       ],
       [
-        "Sumber Masalah CLS 2: Gambar Tanpa Dimensi",
-        "Browser tidak mengetahui tinggi gambar sebelum file selesai diunduh jika width/height atau aspect-ratio diabaikan."
+        "Web Font Anti-FOUT/FOIT (@font-face font-display: swap)",
+        "Web font yang dimuat lambat dapat mengubah ukuran metrik teks saat bertukar (FOUT/FOIT). Gunakan `font-display: swap;` pada `@font-face` dan pilih fallback font sistem yang proporsi lebar karakternya mirip."
       ],
       [
-        "Perbaikan Best Practice",
-        "Tetapkan min-height dan contain: layout pada slot dinamis (disertai skeleton placeholder), serta kunci rasio gambar memakai atribut width/height dan CSS aspect-ratio + object-fit: cover."
+        "Animasi Khusus transform/opacity & Verifikasi Rendering DevTools",
+        "Untuk animasi UI, hanya gunakan CSS `transform` dan `opacity`—jangan pernah menganimasikan `top`, `left`, `width`, atau `height`. Verifikasi dengan mengaktifkan Layout Shift Regions di menu Rendering DevTools dan pastikan tidak ada area berkedip biru."
       ]
     ],
-    "compare": "Skor CLS > 0.25 sangat merusak UX karena pengguna sering salah klik tombol iklan atau batal akibat konten melompat tiba-tiba.",
+    "compare": "CLS adalah metrik yang paling cepat memberikan hasil (low effort, high impact) pada urutan ke-2 perbaikan CWV. Cukup dengan mengunci dimensi media, skeleton `min-height`, `font-display: swap`, dan animasi `transform/opacity`, skor CLS > 0.25 langsung turun ke ~0.00.",
     "code": {
       "language": "html",
-      "content": "<!-- KODE PERBAIKAN BEST PRACTICE (CLS Mendekati Nol - 0.00) -->\n<style>\n  /* 1. Reservasi ruang kosong sejak awal dengan min-height tetap */\n  #top-promo-slot {\n    min-height: 48px;\n    contain: layout;\n  }\n  /* 2. Kunci rasio aspek gambar sebelum file diunduh */\n  .product-img {\n    width: 100%;\n    aspect-ratio: 4 / 3;\n    object-fit: cover;\n  }\n</style>\n\n<div id=\"top-promo-slot\" aria-live=\"polite\">\n  <div class=\"skeleton-bar\">Memuat penawaran...</div>\n</div>\n<img class=\"product-img\" src=\"/images/sepatu.jpg\" width=\"800\" height=\"600\" alt=\"Sepatu Lari\" />"
+      "extraTitle": "Kode Perbaikan CLS 0.00 — Skeleton min-height, aspect-ratio, font-display: swap & transform",
+      "content": "<!-- KODE PERBAIKAN BEST PRACTICE (CLS Mendekati Nol - 0.00) -->\n<style>\n  /* 1. Webfont stabil mencegah FOUT/FOIT lonjakan ukuran teks */\n  @font-face {\n    font-family: 'BrandSans';\n    src: url('/fonts/brand.woff2') format('woff2');\n    font-display: swap;\n  }\n  body { font-family: 'BrandSans', system-ui, -apple-system, sans-serif; }\n\n  /* 2. Reservasi ruang slot dinamis dengan min-height tetap */\n  #top-promo-slot { min-height: 48px; contain: layout; }\n\n  /* 3. Kunci rasio aspek gambar/video/iframe */\n  .product-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }\n\n  /* 4. Animasi hanya gunakan transform & opacity (bukan top/left/width/height) */\n  .toast-enter { transform: translateY(0); opacity: 1; transition: transform .2s, opacity .2s; }\n</style>\n\n<div id=\"top-promo-slot\" aria-live=\"polite\">\n  <div class=\"skeleton-bar\">Memuat penawaran...</div>\n</div>\n<img class=\"product-img\" src=\"/images/sepatu.jpg\" width=\"800\" height=\"600\" alt=\"Sepatu Lari\" />"
     },
     "extraCodes": [
       {
         "title": "Kode Bermasalah (CLS Tinggi - 0.34) — Hindari Pola Ini",
         "language": "html",
         "variant": "bad",
-        "content": "<style>\n  /* Pergeseran tata letak terjadi karena gambar dan banner tidak punya dimensi awal */\n  .promo-banner { background: #fef08a; }\n  .product-img { width: 100%; }\n</style>\n\n<div id=\"top-promo-slot\"></div>\n<img class=\"product-img\" src=\"/images/sepatu.jpg\" alt=\"Sepatu Lari\" />\n\n<script>\n  // Menyisipkan banner di atas konten setelah API selesai mendorong seluruh halaman ke bawah\n  fetch('/api/promo-banner').then(r => r.text()).then(html => {\n    document.getElementById('top-promo-slot').innerHTML = html;\n  });\n</script>"
+        "content": "<style>\n  /* Pergeseran tata letak terjadi karena gambar, banner, dan animasi top memicu reflow */\n  .promo-banner { background: #fef08a; }\n  .product-img { width: 100%; }\n  .toast-bad { position: relative; top: 0; transition: top 0.3s, height 0.3s; }\n</style>\n\n<div id=\"top-promo-slot\"></div>\n<img class=\"product-img\" src=\"/images/sepatu.jpg\" alt=\"Sepatu Lari\" />\n\n<script>\n  fetch('/api/promo-banner').then(r => r.text()).then(html => {\n    document.getElementById('top-promo-slot').innerHTML = html;\n  });\n</script>"
       }
     ],
     "practices": [
-      "Selalu berikan atribut eksplisit width dan height (atau CSS aspect-ratio) pada setiap <img>, <video>, dan iframe.",
-      "Gunakan skeleton loader dengan dimensi tinggi tetap untuk slot yang diisi secara asinkron dari API.",
-      "Aktifkan \"Show Layout Shift Regions\" di DevTools saat menguji halaman pada mode koneksi Slow 3G."
+      "Selalu pasang atribut `width` & `height` (atau CSS `aspect-ratio`) pada semua `<img>`, `<video>`, dan `<iframe>`, plus `min-height` skeleton untuk konten API/iklan.",
+      "Gunakan `font-display: swap` dengan fallback font proporsional pada `@font-face`, dan hanya animasikan `transform` serta `opacity`.",
+      "Verifikasi dengan mengaktifkan **Layout Shift Regions** pada tab *Rendering* Chrome DevTools dan pastikan tidak ada area yang berkedip biru saat halaman dimuat."
     ],
-    "case": "Pengguna mengeluh sering salah menekan tombol \"Hapus\" alih-alih \"Simpan\" karena banner notifikasi muncul terlambat 800ms di bagian atas form. Penambahan `min-height: 48px` dan `contain: layout` menurunkan CLS dari 0.34 ke 0.00.",
+    "case": "Pengguna mengeluh sering salah menekan tombol \"Hapus\" alih-alih \"Simpan\" karena banner API muncul terlambat 800ms di atas form dan webfont berubah tinggi saat load. Penambahan `min-height: 48px`, `font-display: swap`, serta dimensi gambar `width/height` menurunkan CLS dari 0.34 ke 0.00 tanpa kedipan biru di Layout Shift Regions.",
     "exercise": {
-      "scenario": "Halaman daftar berita menampilkan widget cuaca asinkron setinggi 120px di atas berita utama serta foto thumbnail berdimensi 16:9.",
-      "task": "Tuliskan aturan CSS dan markup skeleton untuk menjamin skor CLS 0.00 saat dimuat pada koneksi lambat."
+      "scenario": "Halaman daftar berita menampilkan widget cuaca asinkron setinggi 120px, thumbnail 16:9, custom webfont `.woff2`, serta animasi toast yang sebelumnya menganimasikan properti `height` dan `top`.",
+      "task": "Tuliskan aturan CSS (`min-height`, `aspect-ratio`, `font-display: swap`, serta transisi `transform` & `opacity`) agar skor CLS menjadi 0.00."
     },
     "quiz": {
-      "question": "Kombinasi teknik manakah yang paling efektif mencegah Cumulative Layout Shift (CLS) pada gambar responsif?",
+      "question": "Properti CSS manakah yang AMAN digunakan untuk animasi UI tanpa menyebabkan pergeseran tata letak (CLS)?",
       "options": [
-        "Menambahkan loading=\"lazy\" dan z-index tinggi.",
-        "Menetapkan atribut width/height serta CSS aspect-ratio agar browser langsung mereservasi ruang sebelum gambar selesai diunduh.",
-        "Menghapus tag alt pada gambar."
+        "top dan left",
+        "width dan height",
+        "transform dan opacity"
       ],
-      "answer": 1,
-      "explanation": "Mengetahui rasio aspek (lewat width/height dan aspect-ratio) memungkinkan browser mengalokasikan ruang kotak kosong secara akurat sejak render awal."
+      "answer": 2,
+      "explanation": "Animasi `transform` dan `opacity` diproses di compositor thread tanpa memicu perhitungan ulang layout (reflow) terhadap elemen di sekitarnya."
     },
     "refs": [
       "https://web.dev/articles/optimize-cls"
